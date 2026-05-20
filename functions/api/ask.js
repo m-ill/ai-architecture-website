@@ -101,8 +101,10 @@ export async function onRequest(context) {
    - 입학 정보(정원, 전형별 모집 인원 등)에 관해 답할 때는 2027학년도 대입전형시행계획 기준임을 명시하고, 다음의 공식 디스클레이머 문구를 답변 끝에 반드시 삽입해라:
      "${policy.admission_disclaimer}"
 
-[답변의 구조 및 출력 금지 규칙]
-- **구조**: 인사 및 공감 -> 가독성 높은 본문 설명 -> 따뜻하고 환영하는 끝맺음 멘트 순으로 자연스럽게 작성해.
+[답변의 구조 및 출력 금지 규칙 🚫]
+- **구조**: 인사 및 공감 -> 가독성 높은 본문 설명 (Markdown 적용) -> 따뜻하고 환영하는 끝맺음 멘트 순으로 자연스럽게 작성해.
+- **기계적 카테고리 헤더 출력 절대 금지**: `* *Long-term/License info (with disclaimer):`, `* *AI·디지털 기업:*`, `[진출 가능 기업 예시]`와 같은 영어/한글로 구성된 **기계적 템플릿 항목명, 작업용 메모, 분류용 소괄호 텍스트는 절대로 출력물에 그대로 내보내지 마라.**
+- **자연스러운 연결형 구어체 일관성**: 항목을 구분할 때도 기계적인 메모 명칭 대신, "향후 자격증 및 장기 진로의 경우는 다음과 같은 경로가 열려 있습니다." 등 부드럽고 수려한 실제 한국어 문장으로 연결해야 해.
 - **출력 금지**: 'Closing: Friendly wrap-up'이나 'Introduction:', 'System instruction' 같은 포맷 제어용 기호나 템플릿 메타 텍스트는 절대 출력창에 포함되지 않아야 해! 오직 질문자가 직접 읽을 수 있는 실제 한국어 편지/대화문 형태로만 출력해라.`;
 
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${apiModel}:generateContent?key=${apiKey}`, {
