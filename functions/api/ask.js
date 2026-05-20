@@ -63,9 +63,11 @@ export async function onRequest(context) {
 
     // Rule B: Generative AI natural language search via Gemini API (if API Key provided)
     const apiKey = env.GEMINI_API_KEY;
+    const apiModel = env.GEMINI_MODEL || "gemini-3.5-flash";
+    let apiErrorMsg = null;
+    
     if (apiKey) {
       try {
-        const apiModel = env.GEMINI_MODEL || "gemini-3.5-flash";
         const systemInstruction = `너는 단국대학교 AI융합대학 AI건축융합학과 공식 AI 안내원이야. 아래 제공되는 학과 공식 문서(Context)를 바탕으로 사용자의 질문에 친절하고 전문적인 자연어로 대답해야 해.
 
 [중요 규칙 - 절대 준수]
@@ -119,13 +121,31 @@ export async function onRequest(context) {
                 category: m.item.category,
                 score: m.score
               })),
-              sources: ["/content/canonical.md", `Gemini API (${apiModel})`]
+              sources: ["/content/canonical.md", `Gemini API (${apiModel})`],
+              debug: {
+                gemini_configured: true,
+                gemini_model: apiModel,
+                gemini_error: null,
+                static_score: score,
+                best_match: best ? best.item.question : null
+              }
             }, corsHeaders);
+          } else {
+            apiErrorMsg = "Gemini API returned no text parts: " + JSON.stringify(apiData);
           }
+        } else {
+          const errText = await response.text().catch(() => "");
+          apiErrorMsg = `Gemini API returned HTTP ${response.status}: ${errText}`;
         }
       } catch (aiError) {
-        console.error("Gemini API call failed, falling back to static matching:", aiError);
+        apiErrorMsg = `Gemini API fetch error: ${aiError.message || String(aiError)}`;
       }
+      
+      if (apiErrorMsg) {
+        console.error("Gemini API call failed, falling back to static matching:", apiErrorMsg);
+      }
+    } else {
+      apiErrorMsg = "GEMINI_API_KEY environment variable is missing or empty. Please check Cloudflare Pages settings and Redeploy.";
     }
 
     // Rule C: Standard Static Scored Matching (Fallback if Gemini is missing or fails)
@@ -137,7 +157,14 @@ export async function onRequest(context) {
         answer: policy.fallback_answer,
         confidence: 0,
         department: department.name_ko,
-        sources: ["/data/faq.json", "/data/answer_policy.json"]
+        sources: ["/data/faq.json", "/data/answer_policy.json"],
+        debug: {
+          gemini_configured: !!apiKey,
+          gemini_model: apiModel,
+          gemini_error: apiErrorMsg,
+          static_score: score,
+          best_match: best ? best.item.question : null
+        }
       }, corsHeaders);
     }
 
@@ -164,7 +191,14 @@ export async function onRequest(context) {
         category: m.item.category,
         score: m.score
       })),
-      sources: ["/data/faq.json", "/content/faq.md", "/llms.txt"]
+      sources: ["/data/faq.json", "/content/faq.md", "/llms.txt"],
+      debug: {
+        gemini_configured: !!apiKey,
+        gemini_model: apiModel,
+        gemini_error: apiErrorMsg,
+        static_score: score,
+        best_match: best ? best.item.question : null
+      }
     }, corsHeaders);
   } catch (error) {
     return json({ ok: false, error: String(error && error.message ? error.message : error) }, corsHeaders, 500);
