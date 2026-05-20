@@ -104,7 +104,7 @@ export async function onRequest(context) {
             ],
             generationConfig: {
               temperature: 0.5,
-              maxOutputTokens: 1500
+              maxOutputTokens: 8192
             }
           })
         });
