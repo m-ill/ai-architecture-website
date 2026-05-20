@@ -1635,9 +1635,9 @@
       <div class="persona-tabs-container">
         <span class="persona-tabs-label">👤 페르소나별 맞춤형 추천 질문</span>
         <div class="persona-tabs" id="personaTabs">
-          <button class="persona-tab-btn active" onclick="switchPersona('student')">👨‍🎓 수험생</button>
-          <button class="persona-tab-btn" onclick="switchPersona('parent')">👩‍👩‍👦 학부모</button>
-          <button class="persona-tab-btn" onclick="switchPersona('teacher')">🏫 진학지도교사</button>
+          <button class="persona-tab-btn active" data-persona="student" onclick="switchPersona('student')">👨‍🎓 수험생</button>
+          <button class="persona-tab-btn" data-persona="parent" onclick="switchPersona('parent')">👩‍👩‍👦 학부모</button>
+          <button class="persona-tab-btn" data-persona="teacher" onclick="switchPersona('teacher')">🏫 진학지도교사</button>
         </div>
       </div>
 
@@ -2275,8 +2275,16 @@
       if (container && suggestedQuestionsData && suggestedQuestionsData[currentPersona]) {
         const questions = suggestedQuestionsData[currentPersona];
         container.innerHTML = questions.map(item => `
-          <span class="ask-chip" onclick="executeQuickAsk('${item.question.replace(/'/g, "\\'")}')">${item.label}</span>
+          <span class="ask-chip" data-question="${item.question.replace(/"/g, '&quot;')}">${item.label}</span>
         `).join('');
+
+        // Dynamic event binding to prevent inline event handler stripping and scoping issues
+        container.querySelectorAll('.ask-chip').forEach(chip => {
+          chip.addEventListener('click', () => {
+            const q = chip.getAttribute('data-question');
+            executeQuickAsk(q);
+          });
+        });
       }
     }
 
@@ -2284,10 +2292,10 @@
     function switchPersona(persona) {
       currentPersona = persona;
       
-      // Update UI active state
+      // Update UI active state using dataset attributes for absolute reliability
       const buttons = document.querySelectorAll('.persona-tab-btn');
       buttons.forEach(btn => {
-        if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${persona}'`)) {
+        if (btn.getAttribute('data-persona') === persona) {
           btn.classList.add('active');
         } else {
           btn.classList.remove('active');
@@ -2684,7 +2692,7 @@
           <div class="answer-related" style="margin-top: 18px; border-top: 1px solid var(--neutral-light-gray); padding-top: 14px;">
             <strong style="font-size: 0.85rem; color: var(--neutral-gray); display: block; margin-bottom: 8px;">연관 질문:</strong>
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-              ${data.related.map(rel => `<span class="ask-chip" style="padding: 4px 10px; font-size: 0.8rem; margin: 0;" onclick="executeQuickAsk('${rel.question.replace(/'/g, "\\'")}')">${rel.question}</span>`).join('')}
+              ${data.related.map(rel => `<span class="ask-chip related-ask-chip" style="padding: 4px 10px; font-size: 0.8rem; margin: 0;" data-question="${rel.question.replace(/"/g, '&quot;')}">${rel.question}</span>`).join('')}
             </div>
           </div>
         ` : ''}
@@ -2694,6 +2702,16 @@
           ${data.sources ? data.sources.map(src => `<a href="${src}" target="_blank">${src.substring(src.lastIndexOf('/')+1)}</a>`).join(' · ') : 'data/faq.json'}
         </div>
       `;
+
+      // Dynamic related question chips event binding
+      if (data.related && data.related.length > 0) {
+        answerBox.querySelectorAll('.related-ask-chip').forEach(chip => {
+          chip.addEventListener('click', () => {
+            const q = chip.getAttribute('data-question');
+            executeQuickAsk(q);
+          });
+        });
+      }
     }
 
     // Lightbox image viewer controllers
