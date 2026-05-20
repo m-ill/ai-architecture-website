@@ -65,7 +65,7 @@ export async function onRequest(context) {
     const apiKey = env.GEMINI_API_KEY;
     if (apiKey) {
       try {
-        const apiModel = env.GEMINI_MODEL || "gemini-2.5-flash";
+        const apiModel = env.GEMINI_MODEL || "gemini-3.5-flash";
         const systemInstruction = `너는 단국대학교 AI융합대학 AI건축융합학과 공식 AI 안내원이야. 아래 제공되는 학과 공식 문서(Context)를 바탕으로 사용자의 질문에 친절하고 전문적인 자연어로 대답해야 해.
 
 [중요 규칙 - 절대 준수]
