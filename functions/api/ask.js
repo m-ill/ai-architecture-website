@@ -21,10 +21,11 @@ export async function onRequest(context) {
       }, corsHeaders);
     }
 
-    const [faq, policy, department] = await Promise.all([
+    const [faq, policy, department, canonicalText] = await Promise.all([
       fetchAssetJson(env, request, "/data/faq.json"),
       fetchAssetJson(env, request, "/data/answer_policy.json"),
-      fetchAssetJson(env, request, "/data/department.json")
+      fetchAssetJson(env, request, "/data/department.json"),
+      fetchAssetString(env, request, "/content/canonical.md")
     ]);
 
     const matches = scoreFaq(question, faq);
@@ -32,7 +33,102 @@ export async function onRequest(context) {
     const score = best ? best.score : 0;
     const confidence = Math.min(1.0, score / 10000.0);
 
-    // Fallback threshold
+    // Rule A: Exact or highly confident match in static FAQ -> Return instantly to save cost and latency
+    if (best && score >= 10000) {
+      let answer = best.item.answer;
+      const isAdmissionQuery = ["정원", "수시", "정시", "논술", "수능", "최저", "dku", "지역균형", "모집"].some(k => question.toLowerCase().includes(k)) || best.item.category === "입학";
+      if (isAdmissionQuery && !answer.includes("모집요강")) {
+        answer += "\n\n" + policy.admission_disclaimer;
+      }
+      return json({
+        ok: true,
+        type: "answer",
+        question,
+        answer,
+        confidence,
+        match: {
+          id: best.item.id,
+          question: best.item.question,
+          category: best.item.category
+        },
+        related: matches.slice(1, 4).filter(m => m.score >= 1000).map(m => ({
+          id: m.item.id,
+          question: m.item.question,
+          category: m.item.category,
+          score: m.score
+        })),
+        sources: ["/data/faq.json", "/content/faq.md", "/llms.txt"]
+      }, corsHeaders);
+    }
+
+    // Rule B: Generative AI natural language search via Gemini API (if API Key provided)
+    const apiKey = env.GEMINI_API_KEY;
+    if (apiKey) {
+      try {
+        const apiModel = env.GEMINI_MODEL || "gemini-2.5-flash";
+        const systemInstruction = `너는 단국대학교 AI융합대학 AI건축융합학과 공식 AI 안내원이야. 아래 제공되는 학과 공식 문서(Context)를 바탕으로 사용자의 질문에 친절하고 전문적인 자연어로 대답해야 해.
+
+[중요 규칙 - 절대 준수]
+1. 학과 정체성 슬로건은 반드시 다음 표현을 토씨 하나 바꾸지 말고 사용해라: "건축 정보를 읽고, AI와 데이터로 판단·설계·개선하는 융합형 책임기술 인재 양성"
+2. 공식 UI 및 공개 답변에서는 "심화 교육축"이라는 용어를 반드시 사용해라. ("트랙"이라는 단어가 질문에 오면 "심화 교육축"의 내용으로 답변해야 한다.)
+3. 어떠한 경우에도 입학, 취업, 건축사 자격증 취득, 교수 참여 등이 보장(guaranteed)된다고 단정적으로 답하지 말라. (예시 기업명은 단순 예시일 뿐이다.)
+4. 내신 등급컷, 수능 합격 등급선, 경쟁률 등 구체적인 등급이나 수치가 확정적인 것처럼 말하지 말고, "모집요강을 통해 최종 확인해야 한다"고 입학처 홈페이지 확인을 유도해라.
+5. 입학 정보(정원, 전형별 모집 인원 등)에 관해 답할 때는 2027학년도 대입전형시행계획 기준임을 명시하고, 다음의 공식 디스클레이머 문구를 답변 끝에 반드시 삽입해라:
+"${policy.admission_disclaimer}"
+6. 주어진 문서(Context)에 기반하여 사실에만 입각해 답하고 없는 내용은 절대 날조하지 말며, 만약 관련 정보가 Context에 전혀 명시되어 있지 않다면 반드시 다음의 폴백 공식 답변으로만 응답해라:
+"${policy.fallback_answer}"`;
+
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${apiModel}:generateContent?key=${apiKey}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            systemInstruction: {
+              parts: [{ text: systemInstruction }]
+            },
+            contents: [
+              {
+                role: "user",
+                parts: [{ text: `[Context]\n${canonicalText}\n\n[User Question]\n${question}` }]
+              }
+            ],
+            generationConfig: {
+              temperature: 0.2,
+              maxOutputTokens: 1200
+            }
+          })
+        });
+
+        if (response.ok) {
+          const apiData = await response.json();
+          const generatedAnswer = apiData.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (generatedAnswer) {
+            return json({
+              ok: true,
+              type: "ai-answer",
+              question,
+              answer: generatedAnswer.trim(),
+              confidence: 0.95,
+              match: {
+                id: "gemini-generative",
+                question: "AI 자연어 탐색",
+                category: "AI 자연어 답변"
+              },
+              related: matches.slice(0, 3).filter(m => m.score >= 1000).map(m => ({
+                id: m.item.id,
+                question: m.item.question,
+                category: m.item.category,
+                score: m.score
+              })),
+              sources: ["/content/canonical.md", `Gemini API (${apiModel})`]
+            }, corsHeaders);
+          }
+        }
+      } catch (aiError) {
+        console.error("Gemini API call failed, falling back to static matching:", aiError);
+      }
+    }
+
+    // Rule C: Standard Static Scored Matching (Fallback if Gemini is missing or fails)
     if (!best || score < 1000) {
       return json({
         ok: true,
@@ -46,13 +142,7 @@ export async function onRequest(context) {
     }
 
     let answer = best.item.answer;
-    
-    // Automatic Disclaimer Rules
-    // 키워드: 정원, 수시, 정시, 논술, 수능, 최저, DKU, 지역균형, 모집
-    const admissionKeywords = ["정원", "수시", "정시", "논술", "수능", "최저", "dku", "지역균형", "모집"];
-    const normQ = question.toLowerCase();
-    const isAdmissionQuery = admissionKeywords.some(k => normQ.includes(k)) || best.item.category === "입학";
-
+    const isAdmissionQuery = ["정원", "수시", "정시", "논술", "수능", "최저", "dku", "지역균형", "모집"].some(k => question.toLowerCase().includes(k)) || best.item.category === "입학";
     if (isAdmissionQuery && !answer.includes("모집요강")) {
       answer += "\n\n" + policy.admission_disclaimer;
     }
@@ -98,6 +188,15 @@ async function fetchAssetJson(env, request, path) {
   const response = await env.ASSETS.fetch(url.toString());
   if (!response.ok) throw new Error(`Failed to load ${path}: ${response.status}`);
   return await response.json();
+}
+
+async function fetchAssetString(env, request, path) {
+  const url = new URL(request.url);
+  url.pathname = path;
+  url.search = "";
+  const response = await env.ASSETS.fetch(url.toString());
+  if (!response.ok) throw new Error(`Failed to load ${path}: ${response.status}`);
+  return await response.text();
 }
 
 function normalize(text) {
