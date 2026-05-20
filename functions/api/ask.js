@@ -137,6 +137,7 @@ export async function onRequest(context) {
                 gemini_configured: true,
                 gemini_model: apiModel,
                 gemini_error: null,
+                gemini_raw_response: apiData,
                 static_score: score,
                 best_match: best ? best.item.question : null
               }
