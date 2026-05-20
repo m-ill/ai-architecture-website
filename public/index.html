@@ -1635,15 +1635,19 @@
       <div class="persona-tabs-container">
         <span class="persona-tabs-label">👤 페르소나별 맞춤형 추천 질문</span>
         <div class="persona-tabs" id="personaTabs">
-          <button class="persona-tab-btn active" data-persona="student" onclick="switchPersona('student')">👨‍🎓 수험생</button>
-          <button class="persona-tab-btn" data-persona="parent" onclick="switchPersona('parent')">👩‍👩‍👦 학부모</button>
-          <button class="persona-tab-btn" data-persona="teacher" onclick="switchPersona('teacher')">🏫 진학지도교사</button>
+          <button class="persona-tab-btn active" data-persona="student">👨‍🎓 수험생</button>
+          <button class="persona-tab-btn" data-persona="parent">👩‍👩‍👦 학부모</button>
+          <button class="persona-tab-btn" data-persona="teacher">🏫 진학지도교사</button>
         </div>
       </div>
 
-      <!-- Recommended chips -->
+      <!-- Recommended chips (Pre-populated with high-quality fallback questions for instant interaction) -->
       <div class="ask-chips-container" id="recommendChips">
-        <!-- Will be hydrated dynamically -->
+        <span class="ask-chip" data-question="건축도 AI도 처음인데 괜찮나요?">💡 코딩도 AI도 처음인데 괜찮나요?</span>
+        <span class="ask-chip" data-question="학생부에는 어떤 관심이 드러나면 좋나요?">📋 생기부(학생부)는 어떻게 채우나요?</span>
+        <span class="ask-chip" data-question="신설학과라 입결이 없는데 어떻게 준비해야 하나요?">🚩 신설학과라 입결이 없는데 불안해요</span>
+        <span class="ask-chip" data-question="이 학과의 한 문장 핵심은 무엇인가요?">✨ 학과의 한 문장 핵심 슬로건은?</span>
+        <span class="ask-chip" data-question="4년 동안 어떤 흐름으로 배우나요?">🏫 4년 동안 어떤 흐름으로 배우나요?</span>
       </div>
 
       <!-- Input box -->
@@ -1983,11 +1987,11 @@
 
       <!-- Filter tabs -->
       <div class="faq-tabs" id="faqTabs">
-        <button class="faq-tab-btn active" onclick="filterFaq('전체')">전체</button>
-        <button class="faq-tab-btn" onclick="filterFaq('학과소개')">학과소개</button>
-        <button class="faq-tab-btn" onclick="filterFaq('교육과정')">교육과정</button>
-        <button class="faq-tab-btn" onclick="filterFaq('진로')">진로</button>
-        <button class="faq-tab-btn" onclick="filterFaq('입학')">입학</button>
+        <button class="faq-tab-btn active" data-category="전체">전체</button>
+        <button class="faq-tab-btn" data-category="학과소개">학과소개</button>
+        <button class="faq-tab-btn" data-category="교육과정">교육과정</button>
+        <button class="faq-tab-btn" data-category="진로">진로</button>
+        <button class="faq-tab-btn" data-category="입학">입학</button>
       </div>
 
       <!-- FAQ Accordion -->
@@ -2093,21 +2097,117 @@
     let rawFaqData = [];
     let activeFaqCategory = '전체';
     let departmentPolicy = {};
+    let currentPersona = 'student';
+    let suggestedQuestionsData = null;
+
+    const DEFAULT_SUGGESTED_QUESTIONS = {
+      "student": [
+        { "label": "💡 코딩도 AI도 처음인데 괜찮나요?", "question": "건축도 AI도 처음인데 괜찮나요?" },
+        { "label": "📋 생기부(학생부)는 어떻게 채우나요?", "question": "학생부에는 어떤 관심이 드러나면 좋나요?" },
+        { "label": "🚩 신설학과라 입결이 없는데 불안해요", "question": "신설학과라 입결이 없는데 어떻게 준비해야 하나요?" },
+        { "label": "✨ 학과의 한 문장 핵심 슬로건은?", "question": "이 학과의 한 문장 핵심은 무엇인가요?" },
+        { "label": "🏫 4년 동안 어떤 흐름으로 배우나요?", "question": "4년 동안 어떤 흐름으로 배우나요?" }
+      ],
+      "parent": [
+        { "label": "💼 AI 때문에 건축 직업이 사라지진 않나요?", "question": "AI 때문에 건축 직업이 사라지는 건 아닌가요?" },
+        { "label": "🏢 졸업 후 어떤 회사에 취업할 수 있나요?", "question": "어떤 회사에 취업할 수 있나요?" },
+        { "label": "🔎 학부모 관점에서 학과의 실무 수요는?", "question": "학부모 입장에서 이 학과를 어떻게 봐야 하나요?" },
+        { "label": "🎓 취업이 보장되는지 걱정됩니다", "question": "취업이 보장되나요?" },
+        { "label": "👪 정원과 수시/정시 인원이 궁금합니다", "question": "수시와 정시 모집인원은 어떻게 되나요?" }
+      ],
+      "teacher": [
+        { "label": "👨‍🏫 진학상담 시 어떤 학생에게 추천하나요?", "question": "진학상담교사는 어떤 학생에게 추천하면 좋을까요?" },
+        { "label": "📊 입결이 없는데 어떻게 상담해야 하나요?", "question": "신설학과라 입결이 없는데 어떻게 준비해야 하나요?" },
+        { "label": "📝 학생부 세특 작성에 도움될 융합 팁은?", "question": "학생부에는 어떤 관심이 드러나면 좋나요?" },
+        { "label": "🔍 건축학과/건축공학과와의 차이점은?", "question": "건축학과와 무엇이 다른가요?" },
+        { "label": "🎯 전형별 수능최저학력기준 유무는?", "question": "수능최저학력기준이 있나요?" }
+      ]
+    };
 
     // Run initialization
     window.addEventListener('DOMContentLoaded', async () => {
-      await hydrateDepartmentData();
-      await hydrateFaqAccordion();
-      await hydrateSuggestedQuestions();
-      
-      // Hook search event
-      document.getElementById('submitAskBtn').addEventListener('click', executeAskSearch);
-      document.getElementById('questionInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          executeAskSearch();
+      // 1. Initial event binding for static fallback chips (immediate responsiveness)
+      try {
+        const container = document.getElementById('recommendChips');
+        if (container) {
+          container.querySelectorAll('.ask-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+              const q = chip.getAttribute('data-question') || chip.textContent.replace(/^[\s\S]*?\s/, '').trim();
+              executeQuickAsk(q);
+            });
+          });
         }
-      });
+      } catch (err) {
+        console.warn("Failed static chip binding", err);
+      }
+
+      // 2. Hydrate dynamic content
+      try {
+        await hydrateDepartmentData();
+      } catch (err) {
+        console.error("Failed to hydrate department data", err);
+      }
+
+      try {
+        await hydrateFaqAccordion();
+      } catch (err) {
+        console.error("Failed to hydrate FAQ accordion", err);
+      }
+
+      try {
+        await hydrateSuggestedQuestions();
+      } catch (err) {
+        console.error("Failed to hydrate suggested questions", err);
+      }
+      
+      // 3. Dynamic binding of UI controls
+      try {
+        const askBtn = document.getElementById('submitAskBtn');
+        if (askBtn) {
+          askBtn.addEventListener('click', executeAskSearch);
+        }
+      } catch (err) {
+        console.error("Failed to bind search button event", err);
+      }
+
+      try {
+        const qInput = document.getElementById('questionInput');
+        if (qInput) {
+          qInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              executeAskSearch();
+            }
+          });
+        }
+      } catch (err) {
+        console.error("Failed to bind question input enter key event", err);
+      }
+      
+      try {
+        const personaTabs = document.querySelectorAll('.persona-tab-btn');
+        personaTabs.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const persona = btn.getAttribute('data-persona') || 
+                            (btn.textContent.includes('수험생') ? 'student' : btn.textContent.includes('학부모') ? 'parent' : 'teacher');
+            switchPersona(persona);
+          });
+        });
+      } catch (err) {
+        console.error("Failed to bind persona tabs", err);
+      }
+
+      try {
+        const faqTabs = document.querySelectorAll('.faq-tab-btn');
+        faqTabs.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const category = btn.getAttribute('data-category') || btn.textContent.trim();
+            filterFaq(category);
+          });
+        });
+      } catch (err) {
+        console.error("Failed to bind FAQ tabs", err);
+      }
     });
 
     // Helper to fetch json safely with try-catch and fallbacks
@@ -2262,23 +2362,33 @@
       }
     }
 
-    // Persona state & suggested questions
-    let currentPersona = 'student';
-    let suggestedQuestionsData = null;
-
     // Hydrate suggested question chips dynamically
     async function hydrateSuggestedQuestions() {
       if (!suggestedQuestionsData) {
-        suggestedQuestionsData = await fetchJsonSafely('/data/suggested_questions.json');
+        // Use unique timestamp to bypass aggressive Cloudflare edge and browser caches
+        suggestedQuestionsData = await fetchJsonSafely('/data/suggested_questions.json?v=' + new Date().getTime());
       }
       const container = document.getElementById('recommendChips');
-      if (container && suggestedQuestionsData && suggestedQuestionsData[currentPersona]) {
-        const questions = suggestedQuestionsData[currentPersona];
+      if (container) {
+        // Bulletproof parsing against invalid or partial JSON
+        if (!suggestedQuestionsData || typeof suggestedQuestionsData !== 'object') {
+          suggestedQuestionsData = DEFAULT_SUGGESTED_QUESTIONS;
+        }
+
+        let questions = [];
+        if (Array.isArray(suggestedQuestionsData)) {
+          questions = suggestedQuestionsData;
+        } else if (suggestedQuestionsData[currentPersona]) {
+          questions = suggestedQuestionsData[currentPersona];
+        } else {
+          questions = DEFAULT_SUGGESTED_QUESTIONS[currentPersona] || DEFAULT_SUGGESTED_QUESTIONS.student;
+        }
+
         container.innerHTML = questions.map(item => `
           <span class="ask-chip" data-question="${item.question.replace(/"/g, '&quot;')}">${item.label}</span>
         `).join('');
 
-        // Dynamic event binding to prevent inline event handler stripping and scoping issues
+        // Dynamic event binding to prevent scoping and inline stripping issues
         container.querySelectorAll('.ask-chip').forEach(chip => {
           chip.addEventListener('click', () => {
             const q = chip.getAttribute('data-question');
@@ -2292,17 +2402,24 @@
     function switchPersona(persona) {
       currentPersona = persona;
       
-      // Update UI active state using dataset attributes for absolute reliability
+      // Update UI active state using multiple fallback strategies for maximum reliability
       const buttons = document.querySelectorAll('.persona-tab-btn');
-      buttons.forEach(btn => {
-        if (btn.getAttribute('data-persona') === persona) {
+      buttons.forEach((btn, idx) => {
+        const btnPersona = btn.getAttribute('data-persona') || 
+                           (btn.textContent.includes('수험생') ? 'student' : btn.textContent.includes('학부모') ? 'parent' : 'teacher');
+        
+        if (btnPersona === persona) {
           btn.classList.add('active');
         } else {
           btn.classList.remove('active');
         }
       });
 
-      hydrateSuggestedQuestions();
+      try {
+        hydrateSuggestedQuestions();
+      } catch (err) {
+        console.error("Failed to hydrate suggested questions during switch", err);
+      }
     }
 
     // Hydrate FAQ Accordion and manage state
@@ -2350,10 +2467,11 @@
     function filterFaq(category) {
       activeFaqCategory = category;
       
-      // Update tab buttons
+      // Update tab buttons using multiple robust matching strategies
       const buttons = document.querySelectorAll('.faq-tab-btn');
       buttons.forEach(btn => {
-        if (btn.textContent === category) {
+        const btnCategory = btn.getAttribute('data-category') || btn.textContent.trim();
+        if (btnCategory === category) {
           btn.classList.add('active');
         } else {
           btn.classList.remove('active');
