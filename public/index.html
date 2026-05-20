@@ -1635,19 +1635,19 @@
       <div class="persona-tabs-container">
         <span class="persona-tabs-label">👤 페르소나별 맞춤형 추천 질문</span>
         <div class="persona-tabs" id="personaTabs">
-          <button class="persona-tab-btn active" data-persona="student">👨‍🎓 수험생</button>
-          <button class="persona-tab-btn" data-persona="parent">👩‍👩‍👦 학부모</button>
-          <button class="persona-tab-btn" data-persona="teacher">🏫 진학지도교사</button>
+          <button class="persona-tab-btn active" data-persona="student" onclick="switchPersona('student')">👨‍🎓 수험생</button>
+          <button class="persona-tab-btn" data-persona="parent" onclick="switchPersona('parent')">👩‍👩‍👦 학부모</button>
+          <button class="persona-tab-btn" data-persona="teacher" onclick="switchPersona('teacher')">🏫 진학지도교사</button>
         </div>
       </div>
 
       <!-- Recommended chips (Pre-populated with high-quality fallback questions for instant interaction) -->
       <div class="ask-chips-container" id="recommendChips">
-        <span class="ask-chip" data-question="건축도 AI도 처음인데 괜찮나요?">💡 코딩도 AI도 처음인데 괜찮나요?</span>
-        <span class="ask-chip" data-question="학생부에는 어떤 관심이 드러나면 좋나요?">📋 생기부(학생부)는 어떻게 채우나요?</span>
-        <span class="ask-chip" data-question="신설학과라 입결이 없는데 어떻게 준비해야 하나요?">🚩 신설학과라 입결이 없는데 불안해요</span>
-        <span class="ask-chip" data-question="이 학과의 한 문장 핵심은 무엇인가요?">✨ 학과의 한 문장 핵심 슬로건은?</span>
-        <span class="ask-chip" data-question="4년 동안 어떤 흐름으로 배우나요?">🏫 4년 동안 어떤 흐름으로 배우나요?</span>
+        <span class="ask-chip" data-question="건축도 AI도 처음인데 괜찮나요?" onclick="executeQuickAsk('건축도 AI도 처음인데 괜찮나요?')">💡 코딩도 AI도 처음인데 괜찮나요?</span>
+        <span class="ask-chip" data-question="학생부에는 어떤 관심이 드러나면 좋나요?" onclick="executeQuickAsk('학생부에는 어떤 관심이 드러나면 좋나요?')">📋 생기부(학생부)는 어떻게 채우나요?</span>
+        <span class="ask-chip" data-question="신설학과라 입결이 없는데 어떻게 준비해야 하나요?" onclick="executeQuickAsk('신설학과라 입결이 없는데 어떻게 준비해야 하나요?')">🚩 신설학과라 입결이 없는데 불안해요</span>
+        <span class="ask-chip" data-question="이 학과의 한 문장 핵심은 무엇인가요?" onclick="executeQuickAsk('이 학과의 한 문장 핵심은 무엇인가요?')">✨ 학과의 한 문장 핵심 슬로건은?</span>
+        <span class="ask-chip" data-question="4년 동안 어떤 흐름으로 배우나요?" onclick="executeQuickAsk('4년 동안 어떤 흐름으로 배우나요?')">🏫 4년 동안 어떤 흐름으로 배우나요?</span>
       </div>
 
       <!-- Input box -->
@@ -1987,11 +1987,11 @@
 
       <!-- Filter tabs -->
       <div class="faq-tabs" id="faqTabs">
-        <button class="faq-tab-btn active" data-category="전체">전체</button>
-        <button class="faq-tab-btn" data-category="학과소개">학과소개</button>
-        <button class="faq-tab-btn" data-category="교육과정">교육과정</button>
-        <button class="faq-tab-btn" data-category="진로">진로</button>
-        <button class="faq-tab-btn" data-category="입학">입학</button>
+        <button class="faq-tab-btn active" data-category="전체" onclick="filterFaq('전체')">전체</button>
+        <button class="faq-tab-btn" data-category="학과소개" onclick="filterFaq('학과소개')">학과소개</button>
+        <button class="faq-tab-btn" data-category="교육과정" onclick="filterFaq('교육과정')">교육과정</button>
+        <button class="faq-tab-btn" data-category="진로" onclick="filterFaq('진로')">진로</button>
+        <button class="faq-tab-btn" data-category="입학" onclick="filterFaq('입학')">입학</button>
       </div>
 
       <!-- FAQ Accordion -->
@@ -2126,22 +2126,58 @@
 
     // Run initialization
     window.addEventListener('DOMContentLoaded', async () => {
-      // 1. Initial event binding for static fallback chips (immediate responsiveness)
+      // 1. Parent Event Delegation for recommended question chips
       try {
-        const container = document.getElementById('recommendChips');
-        if (container) {
-          container.querySelectorAll('.ask-chip').forEach(chip => {
-            chip.addEventListener('click', () => {
-              const q = chip.getAttribute('data-question') || chip.textContent.replace(/^[\s\S]*?\s/, '').trim();
-              executeQuickAsk(q);
-            });
+        const recommendChips = document.getElementById('recommendChips');
+        if (recommendChips) {
+          recommendChips.addEventListener('click', (e) => {
+            const chip = e.target.closest('.ask-chip');
+            if (chip) {
+              const q = chip.getAttribute('data-question');
+              if (q) {
+                executeQuickAsk(q);
+              }
+            }
           });
         }
       } catch (err) {
-        console.warn("Failed static chip binding", err);
+        console.error("Failed to bind recommended chips delegation", err);
       }
 
-      // 2. Hydrate dynamic content
+      // 2. Parent Event Delegation for persona tab buttons
+      try {
+        const personaTabs = document.getElementById('personaTabs');
+        if (personaTabs) {
+          personaTabs.addEventListener('click', (e) => {
+            const btn = e.target.closest('.persona-tab-btn');
+            if (btn) {
+              const persona = btn.getAttribute('data-persona') || 
+                              (btn.textContent.includes('수험생') ? 'student' : btn.textContent.includes('학부모') ? 'parent' : 'teacher');
+              switchPersona(persona);
+            }
+          });
+        }
+      } catch (err) {
+        console.error("Failed to bind persona tabs delegation", err);
+      }
+
+      // 3. Parent Event Delegation for FAQ category buttons
+      try {
+        const faqTabs = document.getElementById('faqTabs');
+        if (faqTabs) {
+          faqTabs.addEventListener('click', (e) => {
+            const btn = e.target.closest('.faq-tab-btn');
+            if (btn) {
+              const category = btn.getAttribute('data-category') || btn.textContent.trim();
+              filterFaq(category);
+            }
+          });
+        }
+      } catch (err) {
+        console.error("Failed to bind FAQ tabs delegation", err);
+      }
+
+      // 4. Hydrate dynamic content
       try {
         await hydrateDepartmentData();
       } catch (err) {
@@ -2160,7 +2196,7 @@
         console.error("Failed to hydrate suggested questions", err);
       }
       
-      // 3. Dynamic binding of UI controls
+      // 5. Dynamic binding of search control buttons
       try {
         const askBtn = document.getElementById('submitAskBtn');
         if (askBtn) {
@@ -2183,31 +2219,6 @@
       } catch (err) {
         console.error("Failed to bind question input enter key event", err);
       }
-      
-      try {
-        const personaTabs = document.querySelectorAll('.persona-tab-btn');
-        personaTabs.forEach(btn => {
-          btn.addEventListener('click', () => {
-            const persona = btn.getAttribute('data-persona') || 
-                            (btn.textContent.includes('수험생') ? 'student' : btn.textContent.includes('학부모') ? 'parent' : 'teacher');
-            switchPersona(persona);
-          });
-        });
-      } catch (err) {
-        console.error("Failed to bind persona tabs", err);
-      }
-
-      try {
-        const faqTabs = document.querySelectorAll('.faq-tab-btn');
-        faqTabs.forEach(btn => {
-          btn.addEventListener('click', () => {
-            const category = btn.getAttribute('data-category') || btn.textContent.trim();
-            filterFaq(category);
-          });
-        });
-      } catch (err) {
-        console.error("Failed to bind FAQ tabs", err);
-      }
     });
 
     // Helper to fetch json safely with try-catch and fallbacks
@@ -2226,6 +2237,7 @@
     async function hydrateDepartmentData() {
       // 1. Department identity
       const dept = await fetchJsonSafely('/data/department.json');
+      if (dept) {
         if (document.querySelector('.nav-logo .dept-title')) {
           document.querySelector('.nav-logo .dept-title').textContent = dept.name_ko;
         } else if (document.querySelector('.nav-logo span')) {
@@ -2261,6 +2273,7 @@
             </div>
           `;
         }
+      }
       }
 
       // 2. Curriculum Data
@@ -2385,17 +2398,10 @@
         }
 
         container.innerHTML = questions.map(item => `
-          <span class="ask-chip" data-question="${item.question.replace(/"/g, '&quot;')}">${item.label}</span>
+          <span class="ask-chip" data-question="${item.question.replace(/"/g, '&quot;')}" onclick="executeQuickAsk(this.getAttribute('data-question'))">${item.label}</span>
         `).join('');
-
-        // Dynamic event binding to prevent scoping and inline stripping issues
-        container.querySelectorAll('.ask-chip').forEach(chip => {
-          chip.addEventListener('click', () => {
-            const q = chip.getAttribute('data-question');
-            executeQuickAsk(q);
-          });
-        });
       }
+    }
     }
 
     // Switch persona handler
@@ -2850,6 +2856,15 @@
         modal.classList.remove('active');
       }
     }
+
+    // Expose interactive controller functions to global window object
+    window.switchPersona = switchPersona;
+    window.filterFaq = filterFaq;
+    window.executeQuickAsk = executeQuickAsk;
+    window.toggleAccordion = toggleAccordion;
+    window.openLightbox = openLightbox;
+    window.closeLightbox = closeLightbox;
+    window.executeAskSearch = executeAskSearch;
   </script>
 </body>
 </html>
