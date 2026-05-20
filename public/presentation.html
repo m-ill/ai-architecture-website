@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI건축융합학과 홍보 플랫폼 & AI 검색 고도화 시스템 기술 설명회</title>
+  <!-- Google Fonts: Inter, Outfit, Noto Sans KR -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons for Visual Enhancements -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* CSS 변수를 이용한 Harmonious 프리미엄 다크 테마 설계 */
+    :root {
+      --bg-dark: #070B19;
+      --bg-card: rgba(16, 24, 48, 0.7);
+      --bg-card-hover: rgba(24, 36, 68, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(0, 235, 255, 0.3);
+      
+      --color-primary: #00EBFF;
+      --color-primary-glow: rgba(0, 235, 255, 0.15);
+      --color-secondary: #8A4FFF;
+      --color-accent: #00FF87;
+      --color-gold: #FFC947;
+      --color-gold-bg: rgba(255, 201, 71, 0.08);
+      --color-gold-border: rgba(255, 201, 71, 0.25);
+      
+      --text-main: #E2E8F0;
+      --text-muted: #94A3B8;
+      --text-highlight: #FFFFFF;
+      
+      --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Noto Sans KR', 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(138, 79, 255, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(0, 235, 255, 0.08) 0%, transparent 45%);
+      background-attachment: fixed;
+    }
+
+    /* 프리미엄 헤더 영역 */
+    header {
+      background: rgba(7, 11, 25, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      width: 2.2rem;
+      height: 2.2rem;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFF;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: -0.5px;
+      background: linear-gradient(to right, #FFF, var(--text-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-badge {
+      background: rgba(0, 235, 255, 0.1);
+      border: 1px solid rgba(0, 235, 255, 0.2);
+      color: var(--color-primary);
+      padding: 0.35rem 0.85rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* 메인 히어로 영역 */
+    .hero-container {
+      max-width: 1200px;
+      margin: 3.5rem auto 2.5rem;
+      padding: 0 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .canonical-tagline-container {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-top: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .canonical-tagline-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--color-primary), var(--color-secondary));
+    }
+
+    .badge-top {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--color-secondary);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -1px;
+      background: linear-gradient(to right, #FFFFFF, #CBD5E1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.25rem;
+    }
+
+    .canonical-phrase {
+      font-size: 1.65rem;
+      font-weight: 700;
+      line-height: 1.4;
+      background: linear-gradient(to right, #00EBFF, #8A4FFF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      word-break: keep-all;
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      max-width: 800px;
+      margin: 1.25rem auto 0;
+      font-size: 1.05rem;
+      word-break: keep-all;
+    }
+
+    /* 탭 메뉴 디자인 */
+    .tabs-wrapper {
+      max-width: 1200px;
+      margin: 2.5rem auto;
+      padding: 0 2rem;
+    }
+
+    .tabs-nav {
+      display: flex;
+      background: rgba(16, 24, 48, 0.5);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0.4rem;
+      gap: 0.35rem;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.9rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-highlight);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .tab-btn.active {
+      color: #000;
+      background: #FFFFFF;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 탭 콘텐츠 컨테이너 */
+    .tab-content-container {
+      max-width: 1200px;
+      margin: 0 auto 5rem;
+      padding: 0 2rem;
+    }
+
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 카드 그리드 및 글라스모피즘 스타일 */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      background: var(--bg-card-hover);
+      border-color: rgba(0, 235, 255, 0.2);
+      box-shadow: 0 12px 30px rgba(0, 235, 255, 0.05);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-highlight);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .card-title i {
+      color: var(--color-primary);
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      word-break: keep-all;
+    }
+
+    /* 데이터 하이라이트 배지 */
+    .tech-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+
+    .tech-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .tech-item i {
+      color: var(--color-accent);
+      margin-top: 0.15rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .badge.cyan {
+      background: rgba(0, 235, 255, 0.1);
+      color: var(--color-primary);
+    }
+
+    .badge.purple {
+      background: rgba(138, 79, 255, 0.1);
+      color: #B593FF;
+    }
+
+    /* AI 스코어링 진행 바 차트 */
+    .scoring-chart {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .chart-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .chart-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .chart-label span.score {
+      color: var(--color-primary);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .progress-bar-bg {
+      background: rgba(255, 255, 255, 0.05);
+      height: 8px;
+      border-radius: 10px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 10px;
+      background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+      transition: var(--transition-smooth);
+    }
+
+    /* 프리미엄 옐로우/골드 디스클레이머 모형 */
+    .sample-disclaimer {
+      background: var(--color-gold-bg);
+      border: 1px solid var(--color-gold-border);
+      border-left: 4px solid var(--color-gold);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+      position: relative;
+    }
+
+    .sample-disclaimer-title {
+      color: var(--color-gold);
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sample-disclaimer-body {
+      color: #E2E8F0;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      word-break: keep-all;
+    }
+
+    /* CSS 기반 시스템 아키텍처 다이어그램 */
+    .arch-container {
+      background: rgba(16, 24, 48, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      align-items: center;
+      position: relative;
+    }
+
+    .arch-flow-row {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      gap: 2rem;
+      position: relative;
+      flex-wrap: wrap;
+    }
+
+    .arch-node {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      width: 250px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transition: var(--transition-smooth);
+      position: relative;
+      z-index: 2;
+    }
+
+    .arch-node:hover {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 15px var(--color-primary-glow);
+    }
+
+    .arch-node i {
+      font-size: 1.75rem;
+      color: var(--color-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .arch-node h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      color: var(--text-highlight);
+    }
+
+    .arch-node span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .arch-arrow-down {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--color-primary);
+      animation: pulseArrow 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseArrow {
+      0%, 100% { transform: translateY(0); opacity: 0.4; }
+      50% { transform: translateY(5px); opacity: 1; }
+    }
+
+    .arch-connector {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(to right, var(--color-primary) 0%, var(--color-secondary) 50%, var(--color-accent) 100%);
+      opacity: 0.2;
+      z-index: 1;
+      display: block;
+    }
+
+    /* 코드 블록 스타일 */
+    pre {
+      background: rgba(7, 11, 25, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.85rem;
+      color: #A5B4FC;
+      margin-top: 1rem;
+    }
+
+    code {
+      font-family: 'Consolas', 'Courier New', monospace;
+      color: var(--color-primary);
+      background: rgba(0, 235, 255, 0.05);
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    /* 푸터 */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 3rem 2rem;
+      margin-top: 5rem;
+      text-align: center;
+      background: rgba(7, 11, 25, 0.9);
+    }
+
+    .footer-desc {
+      max-width: 600px;
+      margin: 0.75rem auto 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    /* 모바일 대응 반응형 브레이크포인트 */
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      .canonical-phrase { font-size: 1.3rem; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .arch-node { width: 100%; }
+      .arch-connector { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 프리미엄 헤더 -->
+  <header>
+    <div class="logo-area">
+      <div class="logo-icon">AI</div>
+      <div class="logo-text">AI ARCHITECTURE FUSION</div>
+    </div>
+    <div class="header-badge">
+      <i data-lucide="shield-check"></i> Enterprise NLWeb-Lite System Verified
+    </div>
+  </header>
+
+  <!-- 메인 히어로 영역 -->
+  <section class="hero-container">
+    <span class="badge-top">Dankook University | AI 융합대학</span>
+    <h1>AI건축융합학과 홍보 플랫폼 & 검색엔진 고도화</h1>
+    
+    <!-- 학과 핵심 캐노니컬 메시지 각인 -->
+    <div class="canonical-tagline-container">
+      <span class="badge cyan" style="margin-bottom: 0.75rem;">학과 핵심 인재상 및 교육 철학</span>
+      <div class="canonical-phrase">
+        "건축 정보를 읽고, AI와 데이터로 판단·설계·개선하는 융합형 책임기술 인재 양성"
+      </div>
+      <p class="hero-desc">
+        본 플랫폼은 단순 웹 구축에 그치지 않고, 검색엔진 지수가 부족한 수험생 Q&A를 정밀 스코어링하여 억측을 제어하고, 외부 인공지능(LLM)이 학과의 정책 원문을 정확하게 해석·활용할 수 있도록 설계된 차세대 **NLWeb-lite** 규격을 탑재하고 있습니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- 탭 메뉴 선택 인터페이스 -->
+  <div class="tabs-wrapper">
+    <nav class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab(event, 'tab-philosophy')">
+        <i data-lucide="compass"></i> 핵심 철학 (NLWeb-Lite)
+      </button>
+      <button class="tab-btn" onclick="switchTab(event, 'tab-search')">
+        <i data-lucide="cpu"></i> 검색 알고리즘 (Scoring)
+      </button>
+      <button class="tab-btn" onclick="switchTab(event, 'tab-safety')">
+        <i data-lucide="shield-alert"></i> 보안 및 안전장치 (Safety)
+      </button>
+      <button class="tab-btn" onclick="switchTab(event, 'tab-architecture')">
+        <i data-lucide="network"></i> 시스템 아키텍처
+      </button>
+      <button class="tab-btn" onclick="switchTab(event, 'tab-operation')">
+        <i data-lucide="settings"></i> 배포 및 1-Click 운영
+      </button>
+    </nav>
+  </div>
+
+  <!-- 탭 콘텐츠 영역 -->
+  <main class="tab-content-container">
+
+    <!-- TAB 1: 핵심 철학 -->
+    <div id="tab-philosophy" class="tab-pane active">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <i data-lucide="users"></i>
+            사람을 위한 웹 인터페이스 (Human Web)
+          </div>
+          <p>수험생과 학부모가 직관적으로 학과의 비전을 느끼고, 정보에 쉽고 빠르게 접근할 수 있는 프리미엄 레이아웃을 구현했습니다.</p>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <i data-lucide="check-circle-2"></i>
+              <span><strong>동적 퀵 칩 스택</strong>: 자주 묻는 질문 10가지를 <code>suggested_questions.json</code>을 통해 비동기 바인딩하여 탐색 유연성 확보.</span>
+            </li>
+            <li class="tech-item">
+              <i data-lucide="check-circle-2"></i>
+              <span><strong>라이트박스 갤러리</strong>: 건축 인재상 그래픽 및 공식 안내 브로셔를 클릭하면 블러 글라스 오버레이로 중앙 확대하여 모던한 감성을 시각화.</span>
+            </li>
+            <li class="tech-item">
+              <i data-lucide="check-circle-2"></i>
+              <span><strong>반응형 모션 설계</strong>: Outfit & Inter 폰트 적용 및 HSL 가변 컬러, 호버 효과를 통한 몰입감 넘치는 미학적 인터랙션 선사.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <i data-lucide="bot"></i>
+            인공지능을 위한 웹 규격 (Machine-Readable NLWeb)
+          </div>
+          <p>ChatGPT, Claude, Gemini, Perplexity 등 최신 AI 검색 크롤러와 챗봇이 왜곡(환각 현상) 없이 학과 데이터를 정식 훈련할 수 있도록 설계했습니다.</p>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <i data-lucide="check-circle-2"></i>
+              <span><strong><code>/llms.txt</code> 규격 수립</strong>: AI 서비스 봇을 전담 마킹하는 로드맵 파일을 구현해 학과 정보의 출처 신뢰성을 극대화.</span>
+            </li>
+            <li class="tech-item">
+              <i data-lucide="check-circle-2"></i>
+              <span><strong>통합 마크다운 제공 (<code>canonical.md</code>)</strong>: 자연어 형태로 가공된 학과 정보 전체 원문을 원클릭 텍스트 단위로 학습할 수 있게 적재.</span>
+            </li>
+            <li class="tech-item">
+              <i data-lucide="check-circle-2"></i>
+              <span><strong>JSON 구조화 데이터</strong>: 입학, 교과과정, 졸업 후 진로 등 고품질 관계형 스키마 데이터를 <code>public/data/</code> 경로에 정밀 분할 배치.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: 검색 알고리즘 -->
+    <div id="tab-search" class="tab-pane">
+      <div class="card">
+        <div class="card-title">
+          <i data-lucide="binary"></i>
+          Q&A 검색 엔진 다중 가중치 정밀 스코어링 시스템
+        </div>
+        <p>수험생이 입력한 엉성하거나 오타가 섞인 자연어 키워드를 구조화된 108개 FAQ 데이터베이스와 연계하는 자체 매칭 스코어링 모델입니다. <strong>Edge API (서버)와 Client Fallback (브라우저) 간의 점수 산출 공식이 100% 일치</strong>하여 대칭적 정확성을 보장합니다.</p>
+        
+        <div class="scoring-chart">
+          <div class="chart-row">
+            <div class="chart-label">
+              <span>질문명(Question) 완전 일치</span>
+              <span class="score">+10,000점</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+
+          <div class="chart-row">
+            <div class="chart-label">
+              <span>질문명(Question) 부분 포함 / 서브스트링 매칭</span>
+              <span class="score">+8,000점</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 80%;"></div>
+            </div>
+          </div>
+
+          <div class="chart-row">
+            <div class="chart-label">
+              <span>유사 질문(Aliases) 완전 일치</span>
+              <span class="score">+5,000점</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 50%;"></div>
+            </div>
+          </div>
+
+          <div class="chart-row">
+            <div class="chart-label">
+              <span>유사 질문(Aliases) 부분 포함</span>
+              <span class="score">+3,000점</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 30%;"></div>
+            </div>
+          </div>
+
+          <div class="chart-row">
+            <div class="chart-label">
+              <span>질문 토큰 일치 (개당 +1,000점) / 키워드 단어 포함 (개당 +1,000점)</span>
+              <span class="score">+1,000점</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 10%;"></div>
+            </div>
+          </div>
+
+          <div class="chart-row">
+            <div class="chart-label">
+              <span>답변 본문(Answer) 검색 매칭 / 카테고리 일치 보정</span>
+              <span class="score">+500 ~ +1,000점</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 8%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+          <i data-lucide="info" style="display:inline-block; vertical-align:middle; width:16px; height:16px; margin-right:4px;"></i>
+          <strong>검색 신뢰성 기준 제어 (Confidence Threshold)</strong>: 누적 점수가 <strong>1,000점 미만</strong>인 경우 비관련 정보로 자동 필터링하여, <code>answer_policy.json</code>에 공식 명시된 Fallback 메시지를 송출해 환각 오류를 완벽 차단합니다.
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: 보안 및 안전장치 -->
+    <div id="tab-safety" class="tab-pane">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <i data-lucide="shield-check"></i>
+            입학처 억측 차단 (Grade Safety Limit)
+          </div>
+          <p>
+            신설 학과인 만큼 예측이 불가하거나 편향될 수 있는 수능 등급컷, 내신 평균선, 경쟁률 질문에 대해 AI 챗봇이 단정적으로 말하는 것을 정책적으로 금지합니다.
+          </p>
+          <ul class="tech-list" style="margin-bottom: 1.5rem;">
+            <li class="tech-item">
+              <i data-lucide="shield"></i>
+              <span><strong>안전 장치 키워드 감지</strong>: <code>내신</code>, <code>수능</code>, <code>등급</code>, <code>합격선</code>, <code>경쟁률</code> 등이 인입될 시 시스템이 긴급 차단 코드를 발동합니다.</span>
+            </li>
+            <li class="tech-item">
+              <i data-lucide="shield"></i>
+              <span><strong>안전 답변 강제 매핑</strong>: 해당 감지 시 입학처 공식 안전 답변 가이드라인인 <code>adm-021</code>, <code>adm-022</code>, <code>adm-023</code> 문항에 **+6,000점의 초고화질 가중치**를 순간 주입하여 억측 답변을 완벽 차단합니다.</span>
+            </li>
+          </ul>
+          
+          <div class="card-title" style="font-size: 1.1rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+            <i data-lucide="sparkles" style="color: var(--color-accent)"></i>
+            동의어 반응성 보정 (Synonym Sync)
+          </div>
+          <p style="margin-bottom: 0;">
+            수험생이 학부모의 관습적인 표현인 <code>트랙</code>이라는 단어로 질문을 던지면, 플랫폼 공식 권장 용어인 **<code>심화 교육축</code>**의 모든 FAQ 문항에 자동으로 **+4,000점의 보정치**를 수여하여 유연하고 똑똑한 교과과정 매칭을 주도합니다.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <i data-lucide="alert-triangle" style="color: var(--color-gold);"></i>
+            입학 디스클레이머 자동화 및 옐로우/골드 UI
+          </div>
+          <p>
+            수집된 입학 관련 데이터를 보여줄 때는 2027학년도 대입 시행계획 기준임을 명시하고 최종 모집요강을 반드시 재확인하도록 알립니다.
+          </p>
+          <p>
+            시스템은 입학 관련 범주의 답변에 <code>answer_policy.json</code>의 경고 조항을 자동 접합하며, 본문에 '모집요강' 키워드가 중복 포함된 경우 이를 지능적으로 생략해 메시지의 피로도를 제어합니다.
+          </p>
+          
+          <span class="badge" style="background: rgba(255, 201, 71, 0.15); color: var(--color-gold); font-weight:700;">프리미엄 렌더링 실물 시뮬레이터</span>
+          
+          <!-- 실물 디스클레이머 모형 -->
+          <div class="sample-disclaimer">
+            <div class="sample-disclaimer-title">
+              <i data-lucide="alert-circle" style="width: 18px; height: 18px;"></i>
+              입학 안내 유의사항 및 법적 고지
+            </div>
+            <div class="sample-disclaimer-body">
+              입학 관련 세부사항은 대학입학전형시행계획 기준이며, 교육편제 개편 또는 정원조정 결과에 따라 추후 변경될 수 있으므로 원서 접수 전 단국대학교 입학처 홈페이지의 최종 모집요강을 반드시 확인하시기 바랍니다.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: 시스템 아키텍처 -->
+    <div id="tab-architecture" class="tab-pane">
+      <div class="arch-container">
+        
+        <!-- 커넥터 백그라운드 라인 -->
+        <div class="arch-connector"></div>
+
+        <!-- 1단계: 유저 & 크롤러 진입 -->
+        <div class="arch-flow-row">
+          <div class="arch-node">
+            <i data-lucide="users"></i>
+            <h4>Human Visitor</h4>
+            <span>브라우저 / 웹 랜딩페이지 접속</span>
+          </div>
+          
+          <div class="arch-node" style="border-color: var(--color-secondary);">
+            <i data-lucide="bot-avatar" style="color: var(--color-secondary);"></i>
+            <h4>AI Crawler & SearchBot</h4>
+            <span>llms.txt / sitemap.xml 읽기</span>
+          </div>
+        </div>
+
+        <div class="arch-arrow-down">
+          <i data-lucide="chevrons-down" style="width: 32px; height: 32px;"></i>
+        </div>
+
+        <!-- 2단계: 엣지 플랫폼 배포 인프라 -->
+        <div class="arch-flow-row">
+          <div class="arch-node" style="width: 350px; border-color: var(--color-accent);">
+            <i data-lucide="cloud" style="color: var(--color-accent);"></i>
+            <h4>Cloudflare Pages Global Edge Network</h4>
+            <span>전 세계 300여 개 거점 도시 분산 호스팅 (Zero-Cold-Start)</span>
+          </div>
+        </div>
+
+        <div class="arch-arrow-down">
+          <i data-lucide="chevrons-down" style="width: 32px; height: 32px;"></i>
+        </div>
+
+        <!-- 3단계: 연산 엔진 & DB -->
+        <div class="arch-flow-row">
+          <div class="arch-node">
+            <i data-lucide="code-2"></i>
+            <h4>Serverless Worker API</h4>
+            <span>functions/api/ask.js<br>실시간 검색/스코어 연산</span>
+          </div>
+
+          <div class="arch-node" style="border-color: var(--color-gold);">
+            <i data-lucide="database" style="color: var(--color-gold);"></i>
+            <h4>JSON Data Vault</h4>
+            <span>faq.json / answer_policy.json<br>suggested_questions.json</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: 배포 및 운영 -->
+    <div id="tab-operation" class="tab-pane">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <i data-lucide="play-circle"></i>
+            1-Click 로컬 개발 가동 배시 스크립트
+          </div>
+          <p>윈도우 개발자의 편의성을 최우선으로 고려하여, 콘솔 명령어를 입력할 필요 없이 더블 클릭 한 번으로 모든 로컬 개발 서버가 작동하는 환경을 배포했습니다.</p>
+          <ul class="tech-list" style="margin-bottom: 1.5rem;">
+            <li class="tech-item">
+              <i data-lucide="file-text"></i>
+              <span><strong>스크립트명</strong>: <code>start_dev.bat</code> (루트 디렉터리 위치)</span>
+            </li>
+            <li class="tech-item">
+              <i data-lucide="zap"></i>
+              <span><strong>무설정 기동</strong>: 실행 시 <code>node_modules</code>의 유무를 스스로 감지하고 누락 시 <code>npm install</code>을 스마트하게 우선 자동 설치 수행.</span>
+            </li>
+          </ul>
+          
+          <span class="badge cyan">start_dev.bat 코드 구조</span>
+          <pre><code>@echo off
+title AI건축융합학과 NLWeb-lite 로컬 개발 서버
+echo ===================================================
+echo  [AI건축융합학과] 로컬 개발 서버를 기동합니다.
+echo ===================================================
+if not exist node_modules (
+    echo [안내] 최초 의존성 패키지를 설치 중입니다...
+    call npm install
+)
+call npm run dev
+pause</code></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <i data-lucide="github"></i>
+            CI/CD 자동 배포 및 도메인 관리
+          </div>
+          <p>
+            플랫폼이 깃허브 원격 리포지토리와 긴밀히 맞물려 동작합니다.
+          </p>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <i data-lucide="git-merge"></i>
+              <span><strong>저장소 연동 완료</strong>: <code>https://github.com/m-ill/ai-architecture-website</code> 에 안전하게 배포 준비 코드가 완벽 푸시되었습니다.</span>
+            </li>
+            <li class="tech-item">
+              <i data-lucide="arrow-up-right"></i>
+              <span><strong>실시간 갱신 시스템</strong>: 깃허브 저장소에 코드를 <code>git push</code>하는 즉시 Cloudflare Pages 빌드 파이프라인이 즉각적인 운영서버 교체 및 라이브 릴리스를 완수합니다.</span>
+            </li>
+          </ul>
+          
+          <div style="margin-top: 1.5rem; padding: 1rem; border-radius: 10px; background: rgba(0,0,0,0.2); border: 1px dashed var(--border-color);">
+            <div style="color: var(--color-primary); font-size:0.9rem; font-weight:700; margin-bottom:0.4rem;">
+              <i data-lucide="globe" style="vertical-align:middle; width:16px; height:16px; margin-right:4px;"></i>
+              공식 도메인 매핑 이후 조치사항
+            </div>
+            <p style="font-size:0.85rem; margin:0; line-height:1.5;">
+              정식 라이브 주소가 확정되면 <code>public/llms.txt</code> 등 5대 경로에 정의된 <code>https://YOUR-DOMAIN.example</code> 주소를 확정 도메인으로 일괄 교체해 주어야 검색엔진 크롤러가 정확한 경로를 인지하게 됩니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 푸터 영역 -->
+  <footer>
+    <div class="logo-area" style="justify-content: center; margin-bottom: 1.25rem;">
+      <div class="logo-icon">AI</div>
+      <div class="logo-text">AI ARCHITECTURE FUSION</div>
+    </div>
+    
+    <!-- 학과 공식 캐노니컬 메시지 고수 -->
+    <div class="canonical-phrase" style="font-size: 1.2rem; margin-bottom: 1.25rem;">
+      건축 정보를 읽고, AI와 데이터로 판단·설계·개선하는 융합형 책임기술 인재 양성
+    </div>
+    
+    <p class="footer-desc">
+      단국대학교 AI융합대학 AI건축융합학과 홍보 플랫폼 구축 및 검색엔진 정형화 파트너십<br>
+      © 2026 Department of AI Architecture Fusion. All technical systems approved.
+    </p>
+  </footer>
+
+  <script>
+    // Lucide 아이콘 라이브러리 일괄 활성화
+    lucide.createIcons();
+
+    // 프리미엄 탭 전환 인터랙티브 로직
+    function switchTab(event, tabId) {
+      // 1. 모든 탭 버튼 비활성화
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      // 2. 모든 탭 콘텐츠 비활성화
+      const panes = document.querySelectorAll('.tab-pane');
+      panes.forEach(pane => pane.classList.remove('active'));
+
+      // 3. 현재 탭 버튼 활성화
+      event.currentTarget.classList.add('active');
+
+      // 4. 현재 탭 콘텐츠 활성화
+      const activePane = document.getElementById(tabId);
+      activePane.classList.add('active');
+    }
+  </script>
+</body>
+</html>
