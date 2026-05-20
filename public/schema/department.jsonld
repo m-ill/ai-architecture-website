@@ -3,7 +3,7 @@
   "@type": "EducationalOrganization",
   "name": "AI건축융합학과",
   "alternateName": "Department of AI-Architecture Convergence",
-  "url": "https://YOUR-DOMAIN.example",
+  "url": "https://ai-architecture-website.pages.dev",
   "description": "건축 정보를 읽고, 공간과 현장을 이해하며, AI와 데이터로 설계·분석·진단·개선을 수행하는 융합형 책임기술 인재를 기르는 학과입니다.",
   "parentOrganization": {
     "@type": "CollegeOrUniversity",

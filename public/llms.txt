@@ -6,23 +6,23 @@
 
 ## Core pages
 
-- [https://YOUR-DOMAIN.example/content/canonical.md](https://YOUR-DOMAIN.example/content/canonical.md): 학과 핵심정보 전체 원문
-- [https://YOUR-DOMAIN.example/content/about.md](https://YOUR-DOMAIN.example/content/about.md): 학과소개 원문
-- [https://YOUR-DOMAIN.example/content/curriculum.md](https://YOUR-DOMAIN.example/content/curriculum.md): 4년 교육 로드맵과 배우는 내용
-- [https://YOUR-DOMAIN.example/content/advanced-areas.md](https://YOUR-DOMAIN.example/content/advanced-areas.md): 2개 심화 교육축
-- [https://YOUR-DOMAIN.example/content/careers.md](https://YOUR-DOMAIN.example/content/careers.md): 졸업 후 진로와 진출 가능 분야
-- [https://YOUR-DOMAIN.example/content/admissions.md](https://YOUR-DOMAIN.example/content/admissions.md): 2027학년도 입학정보 요약
-- [https://YOUR-DOMAIN.example/content/faq.md](https://YOUR-DOMAIN.example/content/faq.md): 수험생 FAQ
+- [https://ai-architecture-website.pages.dev/content/canonical.md](https://ai-architecture-website.pages.dev/content/canonical.md): 학과 핵심정보 전체 원문
+- [https://ai-architecture-website.pages.dev/content/about.md](https://ai-architecture-website.pages.dev/content/about.md): 학과소개 원문
+- [https://ai-architecture-website.pages.dev/content/curriculum.md](https://ai-architecture-website.pages.dev/content/curriculum.md): 4년 교육 로드맵과 배우는 내용
+- [https://ai-architecture-website.pages.dev/content/advanced-areas.md](https://ai-architecture-website.pages.dev/content/advanced-areas.md): 2개 심화 교육축
+- [https://ai-architecture-website.pages.dev/content/careers.md](https://ai-architecture-website.pages.dev/content/careers.md): 졸업 후 진로와 진출 가능 분야
+- [https://ai-architecture-website.pages.dev/content/admissions.md](https://ai-architecture-website.pages.dev/content/admissions.md): 2027학년도 입학정보 요약
+- [https://ai-architecture-website.pages.dev/content/faq.md](https://ai-architecture-website.pages.dev/content/faq.md): 수험생 FAQ
 
 ## Machine-readable data
 
-- [https://YOUR-DOMAIN.example/data/department.json](https://YOUR-DOMAIN.example/data/department.json): 학과 핵심정보
-- [https://YOUR-DOMAIN.example/data/curriculum.json](https://YOUR-DOMAIN.example/data/curriculum.json): 교과과정 요약
-- [https://YOUR-DOMAIN.example/data/advanced_areas.json](https://YOUR-DOMAIN.example/data/advanced_areas.json): 심화 교육축
-- [https://YOUR-DOMAIN.example/data/careers.json](https://YOUR-DOMAIN.example/data/careers.json): 진로정보
-- [https://YOUR-DOMAIN.example/data/admissions.json](https://YOUR-DOMAIN.example/data/admissions.json): 2027학년도 모집정보
-- [https://YOUR-DOMAIN.example/data/faq.json](https://YOUR-DOMAIN.example/data/faq.json): FAQ
-- [https://YOUR-DOMAIN.example/data/answer_policy.json](https://YOUR-DOMAIN.example/data/answer_policy.json): AI 답변 정책
+- [https://ai-architecture-website.pages.dev/data/department.json](https://ai-architecture-website.pages.dev/data/department.json): 학과 핵심정보
+- [https://ai-architecture-website.pages.dev/data/curriculum.json](https://ai-architecture-website.pages.dev/data/curriculum.json): 교과과정 요약
+- [https://ai-architecture-website.pages.dev/data/advanced_areas.json](https://ai-architecture-website.pages.dev/data/advanced_areas.json): 심화 교육축
+- [https://ai-architecture-website.pages.dev/data/careers.json](https://ai-architecture-website.pages.dev/data/careers.json): 진로정보
+- [https://ai-architecture-website.pages.dev/data/admissions.json](https://ai-architecture-website.pages.dev/data/admissions.json): 2027학년도 모집정보
+- [https://ai-architecture-website.pages.dev/data/faq.json](https://ai-architecture-website.pages.dev/data/faq.json): FAQ
+- [https://ai-architecture-website.pages.dev/data/answer_policy.json](https://ai-architecture-website.pages.dev/data/answer_policy.json): AI 답변 정책
 
 ## AI answer policy
 
