@@ -1550,7 +1550,7 @@
     <a href="#" class="nav-logo">
       <div style="display: flex; align-items: center; gap: 8px;">
         <!-- Premium Dankook University Official Logo Emblem -->
-        <img src="/assets/logo.jpg" alt="단국대학교 AI건축융합학과 로고" style="height: 38px; object-fit: contain;">
+        <img src="/assets/logo.jpg" alt="단국대학교 AI건축융합학과 로고" style="height: 38px; object-fit: contain; mix-blend-mode: multiply;">
         <div style="display: flex; flex-direction: column; align-items: flex-start; line-height: 1.1;">
           <span style="font-size: 0.7rem; font-weight: 500; color: var(--neutral-medium); letter-spacing: 0.05em; font-family: 'Noto Sans KR', sans-serif;">단국대학교</span>
           <span class="dept-title" style="font-size: 1.05rem; font-weight: 800; color: var(--primary-navy); font-family: 'Noto Sans KR', sans-serif; letter-spacing: -0.02em;">AI건축융합학과</span>
@@ -2241,7 +2241,6 @@
           `;
         }
       }
-      }
 
       // 2. Curriculum Data
       const cur = await fetchJsonSafely('/data/curriculum.json');
@@ -2368,7 +2367,6 @@
           <span class="ask-chip" data-question="${item.question.replace(/"/g, '&quot;')}" onclick="executeQuickAsk(this.getAttribute('data-question'))">${item.label}</span>
         `).join('');
       }
-    }
     }
 
     // Switch persona handler
