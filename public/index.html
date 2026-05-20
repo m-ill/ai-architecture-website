@@ -224,6 +224,7 @@
       max-width: 800px;
       margin: 0 auto 30px;
       line-height: 1.5;
+      word-break: keep-all;
     }
 
     .hero-slogan-wrapper {
@@ -1440,8 +1441,31 @@
       .nav-links {
         display: none; /* Hide simple link grid in mobile to save space */
       }
+      .nav-logo {
+        gap: 6px !important;
+        max-width: 100% !important;
+        flex-wrap: nowrap !important;
+      }
+      .nav-logo .dept-title {
+        font-size: 0.88rem !important; /* Elegant smaller font to fit smallest iPhone/Android viewports */
+      }
+      .nav-logo-badge {
+        font-size: 0.65rem !important;
+        padding: 2px 6px !important;
+        margin-left: 2px !important;
+        flex-shrink: 0 !important;
+      }
       section.hero-banner {
-        padding: 130px 15px 80px;
+        padding: 120px 15px 70px;
+      }
+      .hero-content h1 {
+        font-size: clamp(1.8rem, 5.5vw, 2.4rem) !important;
+        line-height: 1.25 !important;
+        word-break: keep-all !important;
+      }
+      .hero-univ-title {
+        font-size: 1.05rem !important;
+        letter-spacing: 0.1em !important;
       }
       .ask-bot-card {
         padding: 20px;
@@ -1519,8 +1543,8 @@
         <span class="hero-badge" style="background: rgba(8, 48, 115, 0.85); color: #ffffff;">AI융합대학 2027년 3월 신설</span>
         <span class="hero-badge" style="background: var(--accent-gold); color: var(--primary-dark); font-weight: 700;">정원내 20명</span>
       </div>
-      <h1>
-        <span style="font-size: 1.5rem; font-weight: 600; display: block; margin-bottom: 8px; color: var(--tech-blue); font-family: 'Outfit', sans-serif; letter-spacing: 0.15em; text-shadow: 0 2px 4px rgba(0,0,0,0.15);">DANKOOK UNIVERSITY</span>
+      <div class="hero-univ-title" style="font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 700; color: #9cc2ff; font-family: 'Outfit', sans-serif; letter-spacing: 0.15em; margin-bottom: 12px; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.25);">Dankook University</div>
+      <h1 style="margin-top: 0; word-break: keep-all;">
         <span class="dept-hero-title">AI건축융합학과</span>
       </h1>
       <p class="hero-tagline">건축 정보를 읽고, AI와 데이터로 판단·설계·개선하는 융합형 책임기술 인재 양성</p>
