@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://YOUR-DOMAIN.example/</loc><lastmod>2026-05-20</lastmod></url>
+  <url><loc>https://YOUR-DOMAIN.example/content/about.md</loc><lastmod>2026-05-20</lastmod></url>
+  <url><loc>https://YOUR-DOMAIN.example/content/curriculum.md</loc><lastmod>2026-05-20</lastmod></url>
+  <url><loc>https://YOUR-DOMAIN.example/content/advanced-areas.md</loc><lastmod>2026-05-20</lastmod></url>
+  <url><loc>https://YOUR-DOMAIN.example/content/careers.md</loc><lastmod>2026-05-20</lastmod></url>
+  <url><loc>https://YOUR-DOMAIN.example/content/admissions.md</loc><lastmod>2026-05-20</lastmod></url>
+  <url><loc>https://YOUR-DOMAIN.example/content/faq.md</loc><lastmod>2026-05-20</lastmod></url>
+  <url><loc>https://YOUR-DOMAIN.example/llms.txt</loc><lastmod>2026-05-20</lastmod></url>
+</urlset>

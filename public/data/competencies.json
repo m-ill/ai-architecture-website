@@ -1,0 +1,80 @@
+{
+  "integrated_competencies": {
+    "description": "AI 시대에 맞추어야 할 핵심역량 4C를 중심으로, 이해·창의·책임의 전공 실천역량을 통합합니다.",
+    "ai_era_4c": [
+      {
+        "name_en": "Critical Thinking",
+        "name_ko": "비판적 사고",
+        "description": "정보를 분석하고 본질을 판단하는 힘"
+      },
+      {
+        "name_en": "Creative Thinking",
+        "name_ko": "창의적 사고",
+        "description": "새로운 아이디어와 대안을 만드는 힘"
+      },
+      {
+        "name_en": "Communication",
+        "name_ko": "소통",
+        "description": "사람·데이터·현장을 연결해 명확히 전달하는 힘"
+      },
+      {
+        "name_en": "Collaboration",
+        "name_ko": "협업",
+        "description": "다양한 전문가와 함께 문제를 해결하는 힘"
+      }
+    ],
+    "major_3_axes": [
+      {
+        "id": "understanding",
+        "name": "이해",
+        "description": "공간과 데이터를 읽고, 문제의 본질과 가능성을 파악하는 힘"
+      },
+      {
+        "id": "creation",
+        "name": "창의",
+        "description": "디자인과 AI를 연결해, 새로운 대안과 해결을 만드는 힘"
+      },
+      {
+        "id": "responsibility",
+        "name": "책임",
+        "description": "현장의 문제를 끝까지 살피고, 근거 있게 개선 방향을 제시하는 힘"
+      }
+    ]
+  },
+  "talent_identity": [
+    {
+      "id": "understanding-space",
+      "name_ko": "공간을 이해하는 사람",
+      "name_en": "Understanding Space",
+      "summary": "도면, 건물, 도시, 현장 데이터를 함께 읽어 위험과 가능성을 발견합니다.",
+      "details": [
+        "구조 손상·하자·위험 징후 분석",
+        "건축 정보의 체계적 해석과 판단",
+        "유지관리·보강 방향 제안"
+      ]
+    },
+    {
+      "id": "realizing-architectural-ax",
+      "name_ko": "건축 AX를 실현하는 사람",
+      "name_en": "Realizing Architectural AX",
+      "summary": "AI, BIM, 디지털트윈, 각종 데이터를 연결해 설계·분석·진단 방법을 바꾸고 더 나은 건축 실무를 만들어갑니다.",
+      "details": [
+        "AI 기반 설계·분석 연계",
+        "BIM·디지털트윈 활용",
+        "데이터 기반 의사결정 지원"
+      ]
+    },
+    {
+      "id": "caring-for-site",
+      "name_ko": "현장을 책임지는 사람",
+      "name_en": "Caring for the Site",
+      "summary": "시공, 품질, 안전, 건축환경, 보고 체계를 정확히 읽고 현장의 문제를 진단하고 개선합니다.",
+      "details": [
+        "품질·안전·문서 통합 정리",
+        "AI 기반 현장업무 자동화",
+        "현장 데이터 기반 의사결정 지원"
+      ]
+    }
+  ],
+  "last_updated": "2026-05-20"
+}

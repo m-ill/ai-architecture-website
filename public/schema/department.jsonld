@@ -1,0 +1,33 @@
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "AI건축융합학과",
+  "alternateName": "Department of AI-Architecture Convergence",
+  "url": "https://YOUR-DOMAIN.example",
+  "description": "건축 정보를 읽고, 공간과 현장을 이해하며, AI와 데이터로 설계·분석·진단·개선을 수행하는 융합형 책임기술 인재를 기르는 학과입니다.",
+  "parentOrganization": {
+    "@type": "CollegeOrUniversity",
+    "name": "단국대학교 AI융합대학"
+  },
+  "foundingDate": "2027-03",
+  "keywords": [
+    "AI건축융합학과",
+    "AI건축",
+    "건축 AI",
+    "AI Architecture",
+    "BIM",
+    "CIM",
+    "디지털트윈",
+    "스마트건설",
+    "건축데이터",
+    "구조안전",
+    "시공품질",
+    "건축환경",
+    "생성형 설계",
+    "MLOps",
+    "컴퓨터비전",
+    "OSC",
+    "프리팹"
+  ],
+  "inLanguage": "ko-KR"
+}

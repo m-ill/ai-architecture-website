@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+
+# AI search / answer grounding crawlers
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# General search and Gemini-related controls
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://YOUR-DOMAIN.example/sitemap.xml

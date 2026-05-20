@@ -1,0 +1,26 @@
+{
+  "site_name": "AI건축융합학과",
+  "site_name_en": "Department of AI-Architecture Convergence",
+  "base_url": "https://YOUR-DOMAIN.example",
+  "language": "ko-KR",
+  "last_updated": "2026-05-20",
+  "owner": "AI건축융합학과 준비 페이지",
+  "deployment": {
+    "recommended_host": "Cloudflare Pages",
+    "source_control": "GitHub",
+    "static_output_directory": "public",
+    "serverless_functions_directory": "functions"
+  },
+  "contact_placeholders": {
+    "office": "신설 확정 후 공식 안내 예정",
+    "email": "공식 계정 개설 후 업데이트 예정",
+    "phone": "학과 대표 번호 개설 후 업데이트 예정"
+  },
+  "replace_before_deploy": [
+    "public/sitemap.xml의 YOUR-DOMAIN.example",
+    "public/robots.txt의 YOUR-DOMAIN.example",
+    "public/llms.txt의 YOUR-DOMAIN.example",
+    "public/data/site.json의 base_url",
+    "문의 이메일/전화/홈페이지 QR 주소"
+  ]
+}
