@@ -55,6 +55,7 @@
       --shadow-premium: 0 10px 30px -10px rgba(8, 48, 115, 0.08), 0 1px 3px rgba(8, 48, 115, 0.02);
       --shadow-hover: 0 20px 40px -15px rgba(8, 48, 115, 0.16), 0 1px 5px rgba(8, 48, 115, 0.04);
       --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      --ai-purple: hsl(265, 85%, 55%);
     }
 
     * {
@@ -1121,6 +1122,209 @@
       line-height: 1.6;
     }
 
+    /* Curriculum & Faculty Tab System Styles */
+    .curriculum-tab-btn {
+      font-family: 'Noto Sans KR', sans-serif;
+      border: none;
+      background: transparent;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--neutral-gray);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .curriculum-tab-btn:hover {
+      color: var(--primary-navy);
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .curriculum-tab-btn.active {
+      background: white;
+      color: var(--primary-navy);
+      font-weight: 700;
+      box-shadow: var(--shadow-premium);
+    }
+
+    /* Faculty Card Styles */
+    .faculty-card {
+      background: white;
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--shadow-premium);
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      text-align: left;
+    }
+
+    .faculty-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--tech-blue), var(--ai-purple));
+      opacity: 0.8;
+      transition: var(--transition-smooth);
+    }
+
+    .faculty-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(26, 84, 255, 0.15);
+    }
+
+    .faculty-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .faculty-avatar-wrapper {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(26, 84, 255, 0.08), rgba(120, 80, 255, 0.08));
+      border: 2px solid rgba(26, 84, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      flex-shrink: 0;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .faculty-title-info h4 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary-navy);
+      margin: 0 0 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .faculty-title-info h4 .fac-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: rgba(26, 84, 255, 0.08);
+      color: var(--tech-blue);
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    .faculty-title-info p {
+      font-size: 0.85rem;
+      color: var(--neutral-medium);
+      margin: 0;
+      font-weight: 500;
+    }
+
+    .faculty-domain {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--tech-blue);
+      line-height: 1.4;
+      margin: 0 0 16px 0;
+      word-break: keep-all;
+    }
+
+    .faculty-philosophy {
+      background: #f4f6fa;
+      border-left: 3px solid var(--accent-gold);
+      padding: 10px 14px;
+      border-radius: 0 10px 10px 0;
+      font-size: 0.88rem;
+      color: var(--primary-navy);
+      font-weight: 600;
+      margin-bottom: 18px;
+      line-height: 1.4;
+      word-break: keep-all;
+    }
+
+    .faculty-section-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--neutral-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .faculty-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 18px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .faculty-list li {
+      font-size: 0.85rem;
+      color: var(--neutral-gray);
+      line-height: 1.5;
+      padding-left: 14px;
+      position: relative;
+      word-break: keep-all;
+    }
+
+    .faculty-list li::before {
+      content: '•';
+      color: var(--tech-blue);
+      position: absolute;
+      left: 0;
+      font-weight: 900;
+    }
+
+    .faculty-projects-box {
+      margin-top: auto;
+      background: linear-gradient(135deg, rgba(26, 84, 255, 0.03), rgba(120, 80, 255, 0.03));
+      border: 1px solid rgba(26, 84, 255, 0.06);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .faculty-projects-box ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .faculty-projects-box li {
+      font-size: 0.82rem;
+      color: var(--primary-navy);
+      font-weight: 600;
+      line-height: 1.4;
+      padding-left: 14px;
+      position: relative;
+      word-break: keep-all;
+    }
+
+    .faculty-projects-box li::before {
+      content: '⚡';
+      position: absolute;
+      left: 0;
+      font-size: 0.78rem;
+    }
+
     /* FAQ System (Tab Filter & Accordion) */
     .faq-tabs {
       display: flex;
@@ -1497,6 +1701,127 @@
       to { transform: rotate(360deg); }
     }
 
+    /* Detailed Guides Section Styles */
+    .seo-guides-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .seo-guide-card {
+      background: white;
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      box-shadow: var(--shadow-premium);
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .seo-guide-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--tech-blue), var(--ai-purple));
+      opacity: 0.8;
+      transition: var(--transition-smooth);
+    }
+
+    .seo-guide-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(11, 94, 215, 0.25);
+    }
+
+    .seo-guide-card:hover::before {
+      height: 6px;
+    }
+
+    .seo-guide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .seo-guide-badge {
+      background: rgba(11, 94, 215, 0.08);
+      color: var(--tech-blue);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+
+    .seo-guide-icon {
+      font-size: 1.6rem;
+    }
+
+    .seo-guide-title {
+      font-size: 1.25rem;
+      color: var(--primary-navy);
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 12px;
+      word-break: keep-all;
+    }
+
+    .seo-guide-desc {
+      font-size: 0.92rem;
+      color: var(--neutral-gray);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex-grow: 1;
+      word-break: keep-all;
+    }
+
+    .seo-guide-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .seo-guide-tag {
+      font-size: 0.75rem;
+      color: var(--neutral-gray);
+      background: #f4f6fa;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .seo-guide-footer {
+      display: flex;
+      align-items: center;
+      color: var(--tech-blue);
+      font-size: 0.88rem;
+      font-weight: 700;
+      gap: 6px;
+      transition: var(--transition-smooth);
+    }
+
+    .seo-guide-footer svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+      transition: transform 0.3s ease;
+    }
+
+    .seo-guide-card:hover .seo-guide-footer svg {
+      transform: translateX(4px);
+    }
+
     /* Mobile Responsive Optimizations */
     @media (max-width: 768px) {
       header.floating-nav {
@@ -1605,6 +1930,7 @@
           <button class="persona-tab-btn active" data-persona="student" onclick="switchPersona('student')">👨‍🎓 수험생</button>
           <button class="persona-tab-btn" data-persona="parent" onclick="switchPersona('parent')">👩‍👩‍👦 학부모</button>
           <button class="persona-tab-btn" data-persona="teacher" onclick="switchPersona('teacher')">🏫 진학지도교사</button>
+          <button class="persona-tab-btn" data-persona="seo_keywords" onclick="switchPersona('seo_keywords')">🔑 기술·진로 키워드</button>
         </div>
       </div>
 
@@ -1695,60 +2021,93 @@
       </div>
     </section>
 
-    <!-- Curriculum Roadmap Section -->
+    <!-- Curriculum & Faculty Section -->
     <section class="card-section" id="curriculum">
       <div class="section-title-area">
-        <h2>교육과정 및 4년 로드맵</h2>
-        <p>기초부터 캡스톤, 산학협력, 창업 연계까지 체계적인 성장 트랙</p>
+        <h2>교과목 및 교수진 (Curriculum & Faculty)</h2>
+        <p>실무 중심의 AI·건축 융합 교육과정과 혁신을 이끄는 참여 교수진의 대표 성과</p>
       </div>
 
-      <div class="timeline-container">
-        <div class="timeline-track" id="curriculumTimeline">
+      <!-- Tab Switcher -->
+      <div class="curriculum-tabs-container" style="display: flex; justify-content: center; margin-bottom: 30px;">
+        <div class="curriculum-tabs" style="display: flex; gap: 4px; background: rgba(0, 0, 0, 0.05); padding: 4px; border-radius: 12px; backdrop-filter: blur(10px); border: 1px solid rgba(0,0,0,0.03);">
+          <button class="curriculum-tab-btn active" data-tab="roadmap" onclick="switchCurriculumTab('roadmap')">
+            <span>🏫</span> 4개년 교육과정
+          </button>
+          <button class="curriculum-tab-btn" data-tab="faculty" onclick="switchCurriculumTab('faculty')">
+            <span>👥</span> 참여 교수진 및 자문단
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab 1: Roadmap Container -->
+      <div id="curriculumRoadmapContainer" class="curriculum-tab-content active" style="transition: opacity 0.3s ease;">
+        <div class="timeline-container">
+          <div class="timeline-track" id="curriculumTimeline">
+            <!-- Dynamically Hydrated -->
+            <div class="timeline-card">
+              <div class="timeline-year">1학년</div>
+              <h3>기초 역량 구축</h3>
+              <ul class="timeline-items">
+                <li>데이터 분석</li>
+                <li>디자인 컴퓨팅·철학 기초</li>
+                <li>건축·구조·시공·환경 기초</li>
+                <li>BIM/CAD 읽기와 모델링</li>
+              </ul>
+            </div>
+            <div class="timeline-card">
+              <div class="timeline-year">2~3학년</div>
+              <h3>심화 교육축 기반 전공 심화</h3>
+              <ul class="timeline-items">
+                <li>건축디자인·디지털트윈 AI</li>
+                <li>구조안전·시공품질·건축환경 AI</li>
+                <li>생성형 설계·성능 검토</li>
+                <li>BIM·시뮬레이션·프리팹/OSC 이해</li>
+              </ul>
+            </div>
+            <div class="timeline-card">
+              <div class="timeline-year">4학년</div>
+              <h3>캡스톤·산학·창업 연계</h3>
+              <ul class="timeline-items">
+                <li>실제 현장 문제 해결형 PBL</li>
+                <li>산학 연계 프로젝트</li>
+                <li>창업 아이디어·프로토타입 기획</li>
+                <li>취·창업 포트폴리오 완성</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="learn-grid-wrapper" style="margin-top: 40px;">
+          <h3>주요 집중 교육 기술 및 과목</h3>
+          <div class="learn-chips" id="studentLearns">
+            <span class="learn-chip">프로그래밍과 건설데이터분석</span>
+            <span class="learn-chip">건축디자인 스튜디오와 디지털모델링</span>
+            <span class="learn-chip">구조해석탐구와 건축계획</span>
+            <span class="learn-chip">시공·안전·품질 데이터 입문</span>
+            <span class="learn-chip">컴퓨터비전, 머신러닝, 디지털트윈, MLOps</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Faculty Container -->
+      <div id="curriculumFacultyContainer" class="curriculum-tab-content" style="display: none; transition: opacity 0.3s ease;">
+        <div id="facultyIntro" style="text-align: center; max-width: 800px; margin: 0 auto 30px; font-size: 1.05rem; color: var(--neutral-gray); line-height: 1.7; word-break: keep-all;">
           <!-- Dynamically Hydrated -->
-          <div class="timeline-card">
-            <div class="timeline-year">1학년</div>
-            <h3>기초 역량 구축</h3>
-            <ul class="timeline-items">
-              <li>데이터 분석</li>
-              <li>디자인 컴퓨팅·철학 기초</li>
-              <li>건축·구조·시공·환경 기초</li>
-              <li>BIM/CAD 읽기와 모델링</li>
-            </ul>
-          </div>
-          <div class="timeline-card">
-            <div class="timeline-year">2~3학년</div>
-            <h3>심화 교육축 기반 전공 심화</h3>
-            <ul class="timeline-items">
-              <li>건축디자인·디지털트윈 AI</li>
-              <li>구조안전·시공품질·건축환경 AI</li>
-              <li>생성형 설계·성능 검토</li>
-              <li>BIM·시뮬레이션·프리팹/OSC 이해</li>
-            </ul>
-          </div>
-          <div class="timeline-card">
-            <div class="timeline-year">4학년</div>
-            <h3>캡스톤·산학·창업 연계</h3>
-            <ul class="timeline-items">
-              <li>실제 현장 문제 해결형 PBL</li>
-              <li>산학 연계 프로젝트</li>
-              <li>창업 아이디어·프로토타입 기획</li>
-              <li>취·창업 포트폴리오 완성</li>
-            </ul>
-          </div>
+        </div>
+        
+        <h3 class="faculty-group-title" style="font-size: 1.35rem; color: var(--primary-navy); font-weight: 800; text-align: left; margin: 40px 0 20px; padding-left: 12px; border-left: 4px solid var(--tech-blue); font-family: 'Noto Sans KR', sans-serif;">👨‍🏫 학과 설립 주도 전임 교수진</h3>
+        <div class="faculty-grid" id="fulltimeFacultyGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 50px;">
+          <!-- Dynamically Hydrated -->
+        </div>
+
+        <h3 class="faculty-group-title" style="font-size: 1.35rem; color: var(--primary-navy); font-weight: 800; text-align: left; margin: 40px 0 20px; padding-left: 12px; border-left: 4px solid var(--ai-purple); font-family: 'Noto Sans KR', sans-serif;">🤝 산학협력 및 설계·엔지니어링 멘토단</h3>
+        <div class="faculty-grid" id="industryMentorsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 30px;">
+          <!-- Dynamically Hydrated -->
         </div>
       </div>
 
-      <div class="learn-grid-wrapper">
-        <h3>주요 집중 교육 기술 및 과목</h3>
-        <div class="learn-chips" id="studentLearns">
-          <span class="learn-chip">프로그래밍과 건설데이터분석</span>
-          <span class="learn-chip">건축디자인 스튜디오와 디지털모델링</span>
-          <span class="learn-chip">구조해석탐구와 건축계획</span>
-          <span class="learn-chip">시공·안전·품질 데이터 입문</span>
-          <span class="learn-chip">컴퓨터비전, 머신러닝, 디지털트윈, MLOps</span>
-        </div>
-      </div>
-      <p class="timeline-disclaimer">※ 세부 교과목명, 학점, 담당교수는 대학 공식 교육과정 최종 심의 확정 후 업데이트됩니다.</p>
+      <p class="timeline-disclaimer" id="curriculumDisclaimer" style="margin-top: 35px; text-align: center; font-size: 0.88rem; color: var(--neutral-medium); line-height: 1.6; word-break: keep-all;">※ 세부 교과목명, 학점, 담당교수는 대학 공식 교육과정 최종 심의 확정 후 업데이트됩니다.</p>
     </section>
 
     <!-- Two Pillars Section (Advanced Areas) -->
@@ -1967,6 +2326,226 @@
       </div>
     </section>
 
+    <!-- Detailed Guides Grid Section -->
+    <section class="card-section" id="seo-guides">
+      <div class="section-title-area">
+        <h2>주제별 상세 안내</h2>
+        <p>건축학, 건축공학, 스마트건설, 진로, FAQ 등 학과의 10가지 주제별 깊이 있는 공식 가이드를 제공합니다.</p>
+      </div>
+
+      <div class="seo-guides-grid">
+        <!-- Card 1 -->
+        <a href="/architecture-vs-ai-architecture" class="seo-guide-card">
+          <div>
+            <div class="seo-guide-header">
+              <span class="seo-guide-badge">학과 비교</span>
+              <span class="seo-guide-icon">⚖️</span>
+            </div>
+            <h3 class="seo-guide-title">건축학과와 AI건축융합학과의 차이</h3>
+            <p class="seo-guide-desc">설계, AI, BIM, 디지털트윈, 진로 관점에서 두 학과의 명확한 차이점과 지향점을 쉽게 설명합니다.</p>
+            <div class="seo-guide-tags">
+              <span class="seo-guide-tag">#건축설계</span>
+              <span class="seo-guide-tag">#AI건축</span>
+              <span class="seo-guide-tag">#BIM</span>
+            </div>
+          </div>
+          <div class="seo-guide-footer">
+            <span>자세히 보기</span>
+            <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a href="/architectural-engineering-vs-ai-architecture" class="seo-guide-card">
+          <div>
+            <div class="seo-guide-header">
+              <span class="seo-guide-badge">학과 비교</span>
+              <span class="seo-guide-icon">🏗️</span>
+            </div>
+            <h3 class="seo-guide-title">건축공학과와 AI건축융합학과의 차이</h3>
+            <p class="seo-guide-desc">구조, 시공, 안전, 품질, 환경 기반을 초일류 AI와 데이터 기술로 확장하는 학과의 융합 방향을 비교 분석합니다.</p>
+            <div class="seo-guide-tags">
+              <span class="seo-guide-tag">#구조안전</span>
+              <span class="seo-guide-tag">#스마트시공</span>
+              <span class="seo-guide-tag">#스마트건설</span>
+            </div>
+          </div>
+          <div class="seo-guide-footer">
+            <span>자세히 보기</span>
+            <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </div>
+        </a>
+
+        <!-- Card 3 -->
+        <a href="/ai-architecture-careers" class="seo-guide-card">
+          <div>
+            <div class="seo-guide-header">
+              <span class="seo-guide-badge">진로</span>
+              <span class="seo-guide-icon">💼</span>
+            </div>
+            <h3 class="seo-guide-title">AI건축융합학과 졸업 후 진로</h3>
+            <p class="seo-guide-desc">BIM·디지털트윈, 건설 데이터 분석가, 스마트건설 IT 개발자 등 미래 건축 산업에서의 다채로운 진로 가능성을 다룹니다.</p>
+            <div class="seo-guide-tags">
+              <span class="seo-guide-tag">#BIM진로</span>
+              <span class="seo-guide-tag">#데이터분석가</span>
+              <span class="seo-guide-tag">#스마트건설</span>
+            </div>
+          </div>
+          <div class="seo-guide-footer">
+            <span>자세히 보기</span>
+            <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </div>
+        </a>
+
+        <!-- Card 4 -->
+        <a href="/bim-digital-twin" class="seo-guide-card">
+          <div>
+            <div class="seo-guide-header">
+              <span class="seo-guide-badge">기술 키워드</span>
+              <span class="seo-guide-icon">🌐</span>
+            </div>
+            <h3 class="seo-guide-title">BIM·디지털트윈과 AI건축</h3>
+            <p class="seo-guide-desc">건축 정보를 정교하게 다루는 BIM과 현실을 가상에 복제하는 디지털트윈 기술이 미래 건축에서 차지하는 위상을 소개합니다.</p>
+            <div class="seo-guide-tags">
+              <span class="seo-guide-tag">#BIM</span>
+              <span class="seo-guide-tag">#디지털트윈</span>
+              <span class="seo-guide-tag">#공간정보</span>
+            </div>
+          </div>
+          <div class="seo-guide-footer">
+            <span>자세히 보기</span>
+            <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </div>
+        </a>
+
+        <!-- Card 5 -->
+        <a href="/smart-construction-ai" class="seo-guide-card">
+          <div>
+            <div class="seo-guide-header">
+              <span class="seo-guide-badge">기술 키워드</span>
+              <span class="seo-guide-icon">⚙️</span>
+            </div>
+            <h3 class="seo-guide-title">스마트건설과 AI건축</h3>
+            <p class="seo-guide-desc">건설 현장 자동화, 시공 품질 검증 AI, 안전 모니터링 시스템 등 데이터 분석을 통한 차세대 시공 기술을 안내합니다.</p>
+            <div class="seo-guide-tags">
+              <span class="seo-guide-tag">#현장자동화</span>
+              <span class="seo-guide-tag">#시공품질</span>
+              <span class="seo-guide-tag">#안전모니터링</span>
+            </div>
+          </div>
+          <div class="seo-guide-footer">
+            <span>자세히 보기</span>
+            <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </div>
+        </a>
+
+        <!-- Card 6 -->
+        <a href="/student-preparation-guide" class="seo-guide-card">
+          <div>
+            <div class="seo-guide-header">
+              <span class="seo-guide-badge">수험생 안내</span>
+              <span class="seo-guide-icon">📝</span>
+            </div>
+            <h3 class="seo-guide-title">고등학생 준비 가이드</h3>
+            <p class="seo-guide-desc">AI건축융합학과 입학을 꿈꾸는 고교생을 위해 권장 교과목, 학생부(생기부) 작성 팁 및 자기주도적 활동 방향을 제안합니다.</p>
+            <div class="seo-guide-tags">
+              <span class="seo-guide-tag">#학생부</span>
+              <span class="seo-guide-tag">#생기부</span>
+              <span class="seo-guide-tag">#수학과학</span>
+            </div>
+          </div>
+          <div class="seo-guide-footer">
+            <span>자세히 보기</span>
+            <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </div>
+        </a>
+
+        <!-- Card 7 -->
+        <a href="/parent-guide" class="seo-guide-card">
+          <div>
+            <div class="seo-guide-header">
+              <span class="seo-guide-badge">학부모 안내</span>
+              <span class="seo-guide-icon">👪</span>
+            </div>
+            <h3 class="seo-guide-title">학부모를 위한 학과 가이드</h3>
+            <p class="seo-guide-desc">학부모가 느끼실 수 있는 신설학과에 대한 우려를 해소하고, 학과의 높은 미래 가치와 진로 안전성을 쉽게 설명해 드립니다.</p>
+            <div class="seo-guide-tags">
+              <span class="seo-guide-tag">#신설학과안심</span>
+              <span class="seo-guide-tag">#미래가치</span>
+              <span class="seo-guide-tag">#교육전망</span>
+            </div>
+          </div>
+          <div class="seo-guide-footer">
+            <span>자세히 보기</span>
+            <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </div>
+        </a>
+
+        <!-- Card 8 -->
+        <a href="/teacher-guide" class="seo-guide-card">
+          <div>
+            <div class="seo-guide-header">
+              <span class="seo-guide-badge">진학지도교사 안내</span>
+              <span class="seo-guide-icon">🏫</span>
+            </div>
+            <h3 class="seo-guide-title">진학지도교사 상담 가이드</h3>
+            <p class="seo-guide-desc">진학 선생님들께서 학생들을 효과적으로 지도·상담하실 수 있도록 추천 학생 유형 및 세부 상담 포인트를 정리했습니다.</p>
+            <div class="seo-guide-tags">
+              <span class="seo-guide-tag">#진학지도</span>
+              <span class="seo-guide-tag">#상담가이드</span>
+              <span class="seo-guide-tag">#학생추천</span>
+            </div>
+          </div>
+          <div class="seo-guide-footer">
+            <span>자세히 보기</span>
+            <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </div>
+        </a>
+
+        <!-- Card 9 -->
+        <a href="/ai-changes-architecture" class="seo-guide-card">
+          <div>
+            <div class="seo-guide-header">
+              <span class="seo-guide-badge">미래 전망</span>
+              <span class="seo-guide-icon">🔮</span>
+            </div>
+            <h3 class="seo-guide-title">AI는 건축 직업을 어떻게 바꿀까?</h3>
+            <p class="seo-guide-desc">인공지능이 실제 건축가의 창의적 판단을 대체하는 것이 아니라 더 유능하게 돕는 동반자로서의 미래상을 흥미롭게 조명합니다.</p>
+            <div class="seo-guide-tags">
+              <span class="seo-guide-tag">#AI건축가</span>
+              <span class="seo-guide-tag">#창의적도구</span>
+              <span class="seo-guide-tag">#직업의미래</span>
+            </div>
+          </div>
+          <div class="seo-guide-footer">
+            <span>자세히 보기</span>
+            <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </div>
+        </a>
+
+        <!-- Card 10 -->
+        <a href="/architecture-ai-faq-hub" class="seo-guide-card">
+          <div>
+            <div class="seo-guide-header">
+              <span class="seo-guide-badge">FAQ</span>
+              <span class="seo-guide-icon">❓</span>
+            </div>
+            <h3 class="seo-guide-title">자주 묻는 질문 FAQ 허브</h3>
+            <p class="seo-guide-desc">학과 정체성, 타 학과와의 상세 비교, 입학 정원 및 준비 방법 등 모든 핵심 의문점들을 일목요연하게 찾아볼 수 있는 허브입니다.</p>
+            <div class="seo-guide-tags">
+              <span class="seo-guide-tag">#핵심FAQ</span>
+              <span class="seo-guide-tag">#질문답변</span>
+              <span class="seo-guide-tag">#통합안내</span>
+            </div>
+          </div>
+          <div class="seo-guide-footer">
+            <span>자세히 보기</span>
+            <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </div>
+        </a>
+      </div>
+    </section>
+
     <!-- Brochure Gallery Section -->
     <section class="card-section">
       <div class="section-title-area">
@@ -2062,6 +2641,7 @@
   <script>
     // State management
     let rawFaqData = [];
+    let seoPagesData = [];
     let activeFaqCategory = '전체';
     let departmentPolicy = {};
     let currentPersona = 'student';
@@ -2088,6 +2668,13 @@
         { "label": "📝 학생부 세특 작성에 도움될 융합 팁은?", "question": "학생부에는 어떤 관심이 드러나면 좋나요?" },
         { "label": "🔍 건축학과/건축공학과와의 차이점은?", "question": "건축학과와 무엇이 다른가요?" },
         { "label": "🎯 전형별 수능최저학력기준 유무는?", "question": "수능최저학력기준이 있나요?" }
+      ],
+      "seo_keywords": [
+        { "label": "💻 BIM과 디지털트윈은 왜 배우나요?", "question": "BIM과 디지털트윈을 왜 배우나요?" },
+        { "label": "🏗️ 스마트건설과 AI건축의 시너지는?", "question": "스마트건설과 AI건축은 어떤 관련이 있나요?" },
+        { "label": "💼 졸업 후 진로와 직업 전망은?", "question": "졸업 후 진로와 가능성" },
+        { "label": "🏫 건축학과와 AI융합학과의 차이는?", "question": "건축학과와 AI건축융합학과는 무엇이 다른가요?" },
+        { "label": "⚙️ 건축공학과와 AI융합학과의 차이는?", "question": "건축공학과와 AI건축융합학과는 무엇이 다른가요?" }
       ]
     };
 
@@ -2267,6 +2854,83 @@
         }
       }
 
+      // 2a. Faculty Data Hydration
+      const fac = await fetchJsonSafely('/data/faculty.json');
+      if (fac) {
+        const intro = document.getElementById('facultyIntro');
+        if (intro) intro.textContent = fac.summary;
+
+        // Fulltime Faculty Grid
+        const fulltimeGrid = document.getElementById('fulltimeFacultyGrid');
+        if (fulltimeGrid && fac.faculty) {
+          fulltimeGrid.innerHTML = fac.faculty.map(f => `
+            <div class="faculty-card">
+              <div class="faculty-header">
+                <div class="faculty-avatar-wrapper">${f.icon || '👨‍🏫'}</div>
+                <div class="faculty-title-info">
+                  <h4>${f.name} <span class="fac-badge">${f.title}</span></h4>
+                  <p>${f.domain}</p>
+                </div>
+              </div>
+              <div class="faculty-philosophy">"${f.philosophy}"</div>
+              
+              <div class="faculty-section-title">🎓 약력 및 경력</div>
+              <ul class="faculty-list">
+                ${f.education_career.map(c => `<li>${c}</li>`).join('')}
+              </ul>
+
+              <div class="faculty-section-title">🔬 핵심 연구 분야</div>
+              <ul class="faculty-list">
+                ${f.research_areas.map(r => `<li>${r}</li>`).join('')}
+              </ul>
+
+              <div class="faculty-projects-box">
+                <div class="faculty-section-title" style="color: var(--primary-navy); margin-bottom: 8px;">⚡ 대표 실적 및 프로젝트</div>
+                <ul>
+                  ${f.achievements.map(a => `<li>${a}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        // Industry Mentors Grid
+        const industryGrid = document.getElementById('industryMentorsGrid');
+        if (industryGrid && fac.industry_experts) {
+          industryGrid.innerHTML = fac.industry_experts.map(f => `
+            <div class="faculty-card">
+              <div class="faculty-header">
+                <div class="faculty-avatar-wrapper" style="background: linear-gradient(135deg, rgba(120, 80, 255, 0.08), rgba(26, 84, 255, 0.08)); border-color: rgba(120, 80, 255, 0.15);">${f.icon || '🤝'}</div>
+                <div class="faculty-title-info">
+                  <h4>${f.name} <span class="fac-badge" style="background: rgba(120, 80, 255, 0.08); color: var(--ai-purple);">${f.title}</span></h4>
+                  <p style="color: var(--ai-purple); font-weight: 700;">${f.company}</p>
+                </div>
+              </div>
+              <div class="faculty-philosophy" style="border-left-color: var(--ai-purple);">"${f.philosophy}"</div>
+              
+              <div class="faculty-domain" style="color: var(--ai-purple);">${f.domain}</div>
+
+              <div class="faculty-section-title">🎓 주요 약력 및 자격</div>
+              <ul class="faculty-list">
+                ${f.education_career.map(c => `<li>${c}</li>`).join('')}
+              </ul>
+
+              <div class="faculty-section-title">🔬 실무 자문 영역</div>
+              <ul class="faculty-list">
+                ${f.research_areas.map(r => `<li>${r}</li>`).join('')}
+              </ul>
+
+              <div class="faculty-projects-box" style="background: linear-gradient(135deg, rgba(120, 80, 255, 0.03), rgba(26, 84, 255, 0.03)); border-color: rgba(120, 80, 255, 0.06);">
+                <div class="faculty-section-title" style="color: var(--primary-navy); margin-bottom: 8px;">⚡ 대표 실무 및 대표작</div>
+                <ul>
+                  ${f.achievements.map(a => `<li>${a}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+
       // 3. Two Pillars (Advanced Areas)
       const pillars = await fetchJsonSafely('/data/advanced_areas.json');
       if (pillars && pillars.areas) {
@@ -2395,10 +3059,16 @@
 
     // Hydrate FAQ Accordion and manage state
     async function hydrateFaqAccordion() {
-      const faq = await fetchJsonSafely('/data/faq.json');
+      const [faq, seoPages] = await Promise.all([
+        fetchJsonSafely('/data/faq.json'),
+        fetchJsonSafely('/data/seo_pages.json')
+      ]);
       if (faq) {
         rawFaqData = faq;
         renderFaqItems();
+      }
+      if (seoPages) {
+        seoPagesData = seoPages;
       }
     }
 
@@ -2549,6 +3219,83 @@
       const hasTrack = normQuery.includes("트랙");
       const hasGrade = normQuery.includes("내신") || normQuery.includes("수능") || normQuery.includes("합격선") || normQuery.includes("경쟁률") || normQuery.includes("등급");
 
+      // Intent routing & related URL resolution
+      const intentRouting = [
+        {
+          intent: "건축학 비교",
+          triggers: ["건축학", "건축학과", "건축설계", "건축사", "설계 중심"],
+          preferred_faq_id: "seo-diff-architecture-001",
+          preferred_url: "/architecture-vs-ai-architecture"
+        },
+        {
+          intent: "건축공학 비교",
+          triggers: ["건축공학", "건축공학과", "구조", "시공", "건축환경", "구조안전", "시공품질"],
+          preferred_faq_id: "seo-diff-engineering-001",
+          preferred_url: "/architectural-engineering-vs-ai-architecture"
+        },
+        {
+          intent: "BIM 디지털트윈",
+          triggers: ["bim", "cim", "디지털트윈", "디지털 모델", "모델링"],
+          preferred_faq_id: "seo-tech-bim-001",
+          preferred_url: "/bim-digital-twin"
+        },
+        {
+          intent: "스마트건설",
+          triggers: ["스마트건설", "현장 자동화", "건설 데이터", "시공품질", "안전관리", "센서"],
+          preferred_faq_id: "seo-tech-smartconstruction-001",
+          preferred_url: "/smart-construction-ai"
+        },
+        {
+          intent: "수험생 준비",
+          triggers: ["준비", "학생부", "생기부", "고등학생", "고교생", "수험생"],
+          preferred_faq_id: "seo-student-001",
+          preferred_url: "/student-preparation-guide"
+        },
+        {
+          intent: "직업 변화",
+          triggers: ["사라질까", "대체", "직업 변화", "바꿔", "일자리", "사라지"],
+          preferred_faq_id: "hope-007",
+          preferred_url: "/ai-changes-architecture"
+        },
+        {
+          intent: "진로",
+          triggers: ["진로", "취업", "직업", "회사", "졸업 후", "bim 엔지니어", "데이터 분석가"],
+          preferred_faq_id: "seo-career-001",
+          preferred_url: "/ai-architecture-careers"
+        },
+        {
+          intent: "신설학과 불안",
+          triggers: ["신설", "불안", "괜찮을까", "학부모", "안정성"],
+          preferred_faq_id: "seo-parent-001",
+          preferred_url: "/parent-guide"
+        }
+      ];
+
+      const categoryBoosts = {
+        "학과소개": 2500,
+        "학과 비교": 3000,
+        "입학": 3000,
+        "진로": 2500,
+        "교육과정": 2000,
+        "심화 교육축": 2000,
+        "기술 키워드": 2000,
+        "수험생 안내": 2500,
+        "학부모 안내": 2000,
+        "진학지도교사 안내": 2000,
+        "미래 전망": 1500
+      };
+
+      // Determine active intent from query
+      let activePreferredFaqId = null;
+      let activePreferredUrl = null;
+      for (const route of intentRouting) {
+        if (route.triggers.some(t => normQuery.includes(t))) {
+          activePreferredFaqId = route.preferred_faq_id;
+          activePreferredUrl = route.preferred_url;
+          break;
+        }
+      }
+
       const matches = rawFaqData.map(item => {
         const normQ = normalizeString(item.question);
         const normAns = normalizeString(item.answer);
@@ -2572,9 +3319,9 @@
         let aliasScore = 0;
         for (const alias of normAliases) {
           if (normQuery === alias) {
-            aliasScore = Math.max(aliasScore, 5000);
+            aliasScore = Math.max(aliasScore, 8000);
           } else if (alias.includes(normQuery) || normQuery.includes(alias)) {
-            aliasScore = Math.max(aliasScore, 3000);
+            aliasScore = Math.max(aliasScore, 5000);
           } else {
             const aTokens = alias.split(" ").filter(t => t.length > 0);
             const overlap = queryTokens.filter(t => aTokens.includes(t)).length;
@@ -2587,14 +3334,14 @@
         let keywordScore = 0;
         for (const keyword of normKeywords) {
           if (normQuery.includes(keyword) || keyword.includes(normQuery)) {
-            keywordScore += 1000;
+            keywordScore += 5000;
           }
         }
         score += keywordScore;
 
         // Rule 4: answer 포함
         if (normAns.includes(normQuery)) {
-          score += 500;
+          score += 1000;
         } else {
           const ansTokens = normAns.split(" ").filter(t => t.length > 0);
           const overlap = queryTokens.filter(t => ansTokens.includes(t)).length;
@@ -2620,13 +3367,62 @@
           }
         }
 
-        // 5-3. 카테고리 명칭 보정
+        // 5-3. 카테고리 명칭 보정 & Boost
         if (normQuery.includes(item.category)) {
-          score += 1000;
+          score += 1500;
+        }
+        if (categoryBoosts[item.category]) {
+          score += categoryBoosts[item.category];
         }
 
         // Rule 6: priority 점수 반영 (타이브레이커)
-        score += (item.priority || 0) * 0.1;
+        score += (item.priority || 0) * 10;
+
+        // Rule 7: Intent Routing Boost!
+        if (activePreferredFaqId && item.id === activePreferredFaqId) {
+          score += 25000;
+        }
+
+        // Cross-match with seoPagesData
+        let seoPageScore = 0;
+        if (typeof seoPagesData !== 'undefined' && seoPagesData && seoPagesData.length > 0) {
+          for (const page of seoPagesData) {
+            const isLinked = (item.related_url && item.related_url.includes(page.slug)) || 
+                             (activePreferredUrl && activePreferredUrl.includes(page.slug) && item.id === activePreferredFaqId);
+            
+            if (isLinked) {
+              const normTitle = normalizeString(page.title);
+              const normH1 = normalizeString(page.h1);
+              const normSummary = normalizeString(page.summary);
+              const normPageKeywords = (page.keywords || []).map(normalizeString);
+
+              if (normQuery === normTitle) {
+                seoPageScore = Math.max(seoPageScore, 4500);
+              } else if (normTitle.includes(normQuery) || normQuery.includes(normTitle)) {
+                seoPageScore = Math.max(seoPageScore, 3000);
+              }
+
+              if (normQuery === normH1) {
+                seoPageScore = Math.max(seoPageScore, 4500);
+              } else if (normH1.includes(normQuery) || normQuery.includes(normH1)) {
+                seoPageScore = Math.max(seoPageScore, 3000);
+              }
+
+              if (normSummary.includes(normQuery)) {
+                seoPageScore = Math.max(seoPageScore, 1500);
+              }
+
+              let kwMatch = 0;
+              for (const kw of normPageKeywords) {
+                if (normQuery.includes(kw) || kw.includes(normQuery)) {
+                  kwMatch += 1000;
+                }
+              }
+              seoPageScore += kwMatch;
+            }
+          }
+        }
+        score += seoPageScore;
 
         return { item, score };
       }).sort((a, b) => b.score - a.score);
@@ -2647,15 +3443,36 @@
 
       let answer = best.item.answer;
       
-      // Automatic Disclaimer Rules
-      const admissionKeywords = ["정원", "수시", "정시", "논술", "수능", "최저", "dku", "지역균형", "모집"];
-      const normQ = question.toLowerCase();
-      const isAdmissionQuery = admissionKeywords.some(k => normQ.includes(k)) || best.item.category === "입학";
+      // Automatic Multi-Disclaimer Rules
+      const automaticDisclaimers = {
+        admissions: "입학 관련 세부사항은 최종 지원 전 단국대학교 입학안내 홈페이지의 모집요강을 반드시 확인해야 합니다.",
+        career: "진로 분야는 가능성 예시이며, 특정 취업이나 직무 진출을 보장하는 표현은 아닙니다.",
+        license: "건축사 등 자격·면허 관련 사항은 관련 법령, 인증, 학사 요건을 공식적으로 확인해야 합니다."
+      };
 
-      if (isAdmissionQuery && !answer.includes("모집요강")) {
-        const disclaimer = departmentPolicy.admission_disclaimer || "입학 관련 세부사항은 2027학년도 시행계획 기준 안내이며, 최종 지원 전 단국대학교 입학안내 홈페이지의 모집요강을 반드시 확인해야 합니다.";
-        answer += "\n\n" + disclaimer;
+      const appliedDisclaimers = [];
+      const normAnsText = answer.toLowerCase();
+
+      const hasAdmissions = ["정원", "수시", "정시", "논술", "수능", "최저", "dku", "지역균형", "모집", "입학", "전형", "모집단위"].some(k => normQuery.includes(k) || normAnsText.includes(k)) || best.item.category === "입학";
+      if (hasAdmissions && !answer.includes("모집요강")) {
+        appliedDisclaimers.push(automaticDisclaimers.admissions);
       }
+
+      const hasCareer = ["취업", "진로", "직업", "회사", "대기업", "초봉", "연봉", "BIM 엔지니어", "데이터 분석가"].some(k => normQuery.includes(k) || normAnsText.includes(k)) || best.item.category === "진로";
+      if (hasCareer) {
+        appliedDisclaimers.push(automaticDisclaimers.career);
+      }
+
+      const hasLicense = ["건축사", "기사", "자격증", "면허", "자격", "기술사"].some(k => normQuery.includes(k) || normAnsText.includes(k));
+      if (hasLicense) {
+        appliedDisclaimers.push(automaticDisclaimers.license);
+      }
+
+      if (appliedDisclaimers.length > 0) {
+        answer += "\n\n" + appliedDisclaimers.join("\n");
+      }
+
+      const matchedUrl = best.item.related_url || activePreferredUrl || null;
 
       return {
         ok: true,
@@ -2663,6 +3480,7 @@
         question,
         answer,
         confidence,
+        related_url: matchedUrl,
         match: {
           id: best.item.id,
           question: best.item.question,
@@ -2777,6 +3595,29 @@
           </div>
         ` : ''}
 
+        ${data.related_url ? `
+          <div class="related-page-card" style="margin-top: 18px; padding: 14px 18px; background: linear-gradient(135deg, rgba(26, 84, 255, 0.08), rgba(120, 80, 255, 0.08)); border-radius: 12px; border: 1px solid rgba(26, 84, 255, 0.15); display: flex; align-items: center; justify-content: space-between; gap: 12px; transition: all 0.3s ease;">
+            <div style="text-align: left;">
+              <span style="font-size: 0.75rem; font-weight: 700; color: var(--primary-color); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px;">💡 연관 추천 가이드</span>
+              <strong style="font-size: 0.95rem; color: var(--primary-dark); font-weight: 700;">${
+                data.related_url.includes('architecture-vs-ai-architecture') ? '건축학과와 AI건축융합학과의 차이' :
+                data.related_url.includes('architectural-engineering-vs-ai-architecture') ? '건축공학과와 AI건축융합학과의 차이' :
+                data.related_url.includes('bim-digital-twin') ? 'BIM·디지털트윈과 AI건축' :
+                data.related_url.includes('smart-construction-ai') ? '스마트건설과 AI건축' :
+                data.related_url.includes('ai-architecture-careers') ? 'AI건축융합학과 졸업 후 진로' :
+                data.related_url.includes('student-preparation-guide') ? '고등학생을 위한 학과 준비 가이드' :
+                data.related_url.includes('parent-guide') ? '학부모를 위한 학과 안내' :
+                data.related_url.includes('teacher-guide') ? '진학지도교사를 위한 학과 안내' :
+                data.related_url.includes('ai-changes-architecture') ? 'AI는 건축 직업을 어떻게 바꿀까?' :
+                data.related_url.includes('architecture-ai-faq-hub') ? '자주 묻는 질문 FAQ 허브' : '상세 안내 페이지 보기'
+              }</strong>
+            </div>
+            <a href="${data.related_url}" class="explore-link-btn" style="padding: 8px 16px; background: var(--primary-color); color: #fff; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(26, 84, 255, 0.2); transition: all 0.2s ease; white-space: nowrap;">
+              바로가기 <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
+            </a>
+          </div>
+        ` : ''}
+
         ${data.related && data.related.length > 0 ? `
           <div class="answer-related" style="margin-top: 18px; border-top: 1px solid var(--neutral-light-gray); padding-top: 14px;">
             <strong style="font-size: 0.85rem; color: var(--neutral-gray); display: block; margin-bottom: 8px;">연관 질문:</strong>
@@ -2822,6 +3663,50 @@
       }
     }
 
+    function switchCurriculumTab(tabName) {
+      // Find all tab buttons
+      const tabBtns = document.querySelectorAll('.curriculum-tab-btn');
+      tabBtns.forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabName) {
+          btn.classList.add('active');
+          btn.style.background = 'white';
+          btn.style.color = 'var(--primary-navy)';
+          btn.style.fontWeight = '700';
+          btn.style.boxShadow = 'var(--shadow-premium)';
+        } else {
+          btn.classList.remove('active');
+          btn.style.background = 'transparent';
+          btn.style.color = 'var(--neutral-gray)';
+          btn.style.fontWeight = '600';
+          btn.style.boxShadow = 'none';
+        }
+      });
+
+      // Toggle content containers
+      const roadmapContainer = document.getElementById('curriculumRoadmapContainer');
+      const facultyContainer = document.getElementById('curriculumFacultyContainer');
+
+      if (tabName === 'roadmap') {
+        if (facultyContainer) facultyContainer.style.display = 'none';
+        if (roadmapContainer) {
+          roadmapContainer.style.display = 'block';
+          roadmapContainer.style.opacity = '0';
+          setTimeout(() => {
+            roadmapContainer.style.opacity = '1';
+          }, 50);
+        }
+      } else if (tabName === 'faculty') {
+        if (roadmapContainer) roadmapContainer.style.display = 'none';
+        if (facultyContainer) {
+          facultyContainer.style.display = 'block';
+          facultyContainer.style.opacity = '0';
+          setTimeout(() => {
+            facultyContainer.style.opacity = '1';
+          }, 50);
+        }
+      }
+    }
+
     // Expose interactive controller functions to global window object
     window.switchPersona = switchPersona;
     window.filterFaq = filterFaq;
@@ -2830,6 +3715,7 @@
     window.openLightbox = openLightbox;
     window.closeLightbox = closeLightbox;
     window.executeAskSearch = executeAskSearch;
+    window.switchCurriculumTab = switchCurriculumTab;
   </script>
 </body>
 </html>

@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <title>BIM·디지털트윈과 AI건축 | 단국대학교 AI건축융합학과</title>
+  <meta name="description" content="BIM과 디지털트윈이 건축 설계, 시공, 유지관리에서 왜 중요한지와 AI건축융합학과에서의 학습 방향을 설명합니다." />
+  <link rel="canonical" href="https://ai-architecture-website.pages.dev/bim-digital-twin" />
+  <meta name="robots" content="index, follow" />
+  
+  <meta property="og:title" content="BIM·디지털트윈과 AI건축 | 단국대학교 AI건축융합학과" />
+  <meta property="og:description" content="BIM과 디지털트윈이 건축 설계, 시공, 유지관리에서 왜 중요한지와 AI건축융합학과에서의 학습 방향을 설명합니다." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://ai-architecture-website.pages.dev/bim-digital-twin" />
+  <meta property="og:site_name" content="단국대학교 AI건축융합학과" />
+  
+  <!-- Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "BIM·디지털트윈과 AI건축",
+          "description": "BIM과 디지털트윈이 건축 설계, 시공, 유지관리에서 왜 중요한지와 AI건축융합학과에서의 학습 방향을 설명합니다.",
+          "url": "https://ai-architecture-website.pages.dev/bim-digital-twin",
+          "inLanguage": "ko-KR",
+          "datePublished": "2026-05-21",
+          "dateModified": "2026-05-21",
+          "author": {
+            "@type": "Organization",
+            "name": "단국대학교 AI건축융합학과"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "단국대학교 AI건축융합학과"
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://ai-architecture-website.pages.dev/bim-digital-twin"
+          }
+        }
+      </script>
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "홈",
+              "item": "https://ai-architecture-website.pages.dev/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "BIM·디지털트윈과 AI건축",
+              "item": "https://ai-architecture-website.pages.dev/bim-digital-twin"
+            }
+          ]
+        }
+      </script>
+    
+
+  <style>
+    :root {
+      --primary-navy: hsl(217, 85%, 15%);
+      --primary-color: hsl(211, 100%, 45%);
+      --tech-blue: hsl(211, 100%, 45%);
+      --neutral-dark: hsl(224, 71%, 4%);
+      --neutral-gray: hsl(220, 15%, 45%);
+      --neutral-light-gray: hsl(220, 20%, 90%);
+      --bg-gradient: linear-gradient(135deg, hsl(210, 100%, 98%) 0%, hsl(215, 100%, 96%) 100%);
+      --glass-bg: rgba(255, 255, 255, 0.75);
+      --glass-border: rgba(219, 231, 255, 0.5);
+      --shadow-premium: 0 10px 30px -10px rgba(8, 48, 115, 0.08), 0 1px 3px rgba(8, 48, 115, 0.02);
+      --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', 'Inter', sans-serif;
+      color: var(--neutral-dark);
+      background: var(--bg-gradient);
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* Floating Premium Navigation Bar */
+    header.floating-nav {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 40px);
+      max-width: 1100px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      padding: 12px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 12px 36px rgba(8, 48, 115, 0.06);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary-navy);
+      text-decoration: none;
+    }
+
+    .nav-logo-badge {
+      background: var(--tech-blue);
+      color: white;
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--neutral-gray);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-links a:hover {
+      color: var(--tech-blue);
+    }
+
+    /* Main Container */
+    main {
+      padding: 140px 20px 80px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Premium Article Card Wrapper */
+    article.premium-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 50px 60px;
+      box-shadow: var(--shadow-premium);
+    }
+
+    @media (max-width: 768px) {
+      article.premium-card {
+        padding: 30px 24px;
+      }
+      header.floating-nav {
+        padding: 10px 20px;
+      }
+      .nav-links {
+        display: none; /* Hide links on mobile for simplicity */
+      }
+    }
+
+    /* Article Content Typography Styling */
+    .meta-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(26, 84, 255, 0.08);
+      color: var(--tech-blue);
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+
+    .content-h1 {
+      font-size: 2.3rem;
+      font-weight: 800;
+      color: var(--primary-navy);
+      line-height: 1.35;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, var(--primary-navy), var(--tech-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .content-h2 {
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--primary-navy);
+      margin: 45px 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid rgba(26, 84, 255, 0.08);
+    }
+
+    .content-h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary-navy);
+      margin: 30px 0 15px;
+    }
+
+    .content-p {
+      font-size: 1.05rem;
+      color: var(--neutral-dark);
+      margin-bottom: 24px;
+      text-align: justify;
+      opacity: 0.95;
+    }
+
+    .content-ul {
+      margin: 20px 0 30px 24px;
+      list-style-type: none;
+    }
+
+    .content-li {
+      position: relative;
+      font-size: 1.02rem;
+      color: var(--neutral-dark);
+      margin-bottom: 12px;
+      padding-left: 18px;
+    }
+
+    .content-li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--tech-blue);
+      font-weight: 900;
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    .inline-link {
+      color: var(--tech-blue);
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(26, 84, 255, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .inline-link:hover {
+      border-bottom-color: var(--tech-blue);
+    }
+
+    /* Accordion hover & active */
+    .faq-acc-item:hover {
+      border-color: rgba(26, 84, 255, 0.3) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(8, 48, 115, 0.04) !important;
+    }
+
+    .faq-acc-trigger:hover {
+      color: var(--tech-blue) !important;
+    }
+
+    /* Related Grid Hover effects */
+    .related-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(26, 84, 255, 0.3) !important;
+      box-shadow: 0 12px 30px rgba(8, 48, 115, 0.08) !important;
+      background: rgba(255, 255, 255, 0.85) !important;
+    }
+
+    /* Footer styling */
+    footer.page-footer {
+      background: #0f131a;
+      color: #707e94;
+      padding: 50px 20px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      margin-top: 80px;
+    }
+
+    .footer-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .footer-brand h4 {
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand p {
+      font-size: 0.88rem;
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .footer-col h5 {
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer-col ul li a {
+      color: #707e94;
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: all 0.2s ease;
+    }
+
+    .footer-col ul li a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 40px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Navigation -->
+  <header class="floating-nav">
+    <a href="/" class="nav-logo">
+      <span>Dankook</span>
+      <span class="nav-logo-badge">AI건축융합</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#intro">학과소개</a></li>
+      <li><a href="/#curriculum">교육과정</a></li>
+      <li><a href="/#careers">진로안내</a></li>
+      <li><a href="/#admissions">입학안내</a></li>
+      <li><a href="/#faq">자주묻는질문</a></li>
+    </ul>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main>
+    <article class="premium-card">
+      <span class="meta-tag">기술 키워드</span>
+      <h1 class="content-h1">BIM과 디지털트윈은 왜 AI건축에서 중요할까?</h1>
+<p class="content-p">건축은 더 이상 도면 한 장만으로 설명되지 않습니다. 건물의 형태, 구조, 재료, 설비, 시공 과정, 유지관리 정보가 모두 연결되는 정보 체계가 되고 있습니다. 이때 중요한 기술이 BIM과 디지털트윈입니다.</p>
+<p class="content-p">BIM은 건축물을 디지털 정보 모델로 다루는 방식입니다. 단순한 3D 모델이 아니라, 건물의 부재, 성능, 물량, 공정, 유지관리 정보를 함께 담을 수 있습니다. 디지털트윈은 실제 건물이나 현장의 상태를 디지털 공간에 연결해 시뮬레이션하고, 모니터링하고, 예측하는 개념입니다.</p>
+<p class="content-p">AI건축융합학과에서 BIM과 디지털트윈은 단순히 소프트웨어를 다루는 기술이 아닙니다. 건축 정보를 읽고 판단하는 언어입니다. 예를 들어 설계 대안을 비교하거나, 구조 안전을 모니터링하거나, 시공 품질을 검토하거나, 건축환경 성능을 분석할 때 BIM과 디지털트윈은 AI와 데이터 분석의 기반이 됩니다.</p>
+<p class="content-p">학생들은 이 분야를 통해 “건축을 보는 눈”을 넓힐 수 있습니다. 건물을 형태로만 보는 것이 아니라, 데이터가 흐르는 시스템으로 이해하게 됩니다. 그리고 그 정보를 바탕으로 더 안전하고, 더 효율적이고, 더 지속가능한 건축을 고민할 수 있습니다.</p>
+<p class="content-p">처음부터 전문 소프트웨어를 완벽하게 다룰 필요는 없습니다. 중요한 것은 모델과 데이터가 어떤 의미를 갖는지 이해하고, 그것을 실제 건축 문제 해결에 연결하려는 태도입니다.</p>
+<h2 class="content-h2">배울 수 있는 방향</h2>
+<ul class="content-ul">
+<li class="content-li">BIM/CIM 모델 읽기와 건축 정보 이해</li>
+<li class="content-li">디지털모델 기반 설계안 탐색</li>
+<li class="content-li">디지털트윈 기반 성능 검토</li>
+<li class="content-li">센서·현장 데이터와 건축 모델 연결</li>
+<li class="content-li">AI 기반 설계·시공·운영 의사결정 지원</li>
+</ul>
+<h2 class="content-h2">관련 질문</h2>
+<ul class="content-ul">
+<li class="content-li">BIM을 배우나요?</li>
+<li class="content-li">디지털트윈은 무엇인가요?</li>
+<li class="content-li">생성형 AI로 설계도 하나요?</li>
+<li class="content-li">스마트건설과 어떤 관련이 있나요?</li>
+</ul>
+      
+      
+        <div class="page-faq-section" style="margin-top: 50px; padding-top: 40px; border-top: 1px solid var(--neutral-light-gray);">
+          <h2 class="section-sub-h2" style="font-size: 1.6rem; font-weight: 700; color: var(--primary-navy); margin-bottom: 24px; display: flex; align-items: center; gap: 8px;">
+            🙋‍♂️ BIM·디지털트윈과 AI건축 관련 Q&A
+          </h2>
+          <div class="faq-accordion-container" style="display: flex; flex-direction: column; gap: 16px;">
+            
+              <div class="faq-acc-item" style="background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(26, 84, 255, 0.1); border-radius: 14px; overflow: hidden; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(8, 48, 115, 0.02);">
+                <button class="faq-acc-trigger" onclick="toggleFaqAccordion(this)" style="width: 100%; text-align: left; padding: 18px 24px; background: transparent; border: none; outline: none; font-size: 1.05rem; font-weight: 600; color: var(--primary-navy); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s ease;">
+                  <span>Q. 디지털트윈은 어떻게 배우나요?</span>
+                  <span class="faq-acc-icon" style="font-size: 1.2rem; transition: transform 0.3s ease; transform: rotate(0deg); color: var(--primary-color);">▼</span>
+                </button>
+                <div class="faq-acc-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1); background: rgba(255, 255, 255, 0.55); border-top: 0 solid rgba(26, 84, 255, 0.05);">
+                  <div style="padding: 20px 24px; font-size: 0.98rem; color: var(--neutral-dark); line-height: 1.75;">
+                    디지털트윈은 건축물과 현장의 정보를 디지털 모델과 데이터로 연결해 이해하는 방식으로 다룹니다. 
+공간 데이터, BIM/CIM, 건축정보 분석, 시뮬레이션, 성능 검토, 현장 데이터 모니터링과 연결해 배웁니다.
+                  </div>
+                </div>
+              </div>
+            
+              <div class="faq-acc-item" style="background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(26, 84, 255, 0.1); border-radius: 14px; overflow: hidden; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(8, 48, 115, 0.02);">
+                <button class="faq-acc-trigger" onclick="toggleFaqAccordion(this)" style="width: 100%; text-align: left; padding: 18px 24px; background: transparent; border: none; outline: none; font-size: 1.05rem; font-weight: 600; color: var(--primary-navy); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s ease;">
+                  <span>Q. 졸업 후 어떤 진로로 갈 수 있나요?</span>
+                  <span class="faq-acc-icon" style="font-size: 1.2rem; transition: transform 0.3s ease; transform: rotate(0deg); color: var(--primary-color);">▼</span>
+                </button>
+                <div class="faq-acc-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1); background: rgba(255, 255, 255, 0.55); border-top: 0 solid rgba(26, 84, 255, 0.05);">
+                  <div style="padding: 20px 24px; font-size: 0.98rem; color: var(--neutral-dark); line-height: 1.75;">
+                    졸업 후에는 BIM·디지털트윈 엔지니어, 건설·건축 데이터 분석가, 구조·안전·품질 진단 실무자, 스마트건설·현장 데이터 기반 실무자, 건설 IT·플랫폼 및 융합기술 분야, 대학원 진학 및 연구개발(R&D) 분야로 진출할 수 있습니다.
+                  </div>
+                </div>
+              </div>
+            
+              <div class="faq-acc-item" style="background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(26, 84, 255, 0.1); border-radius: 14px; overflow: hidden; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(8, 48, 115, 0.02);">
+                <button class="faq-acc-trigger" onclick="toggleFaqAccordion(this)" style="width: 100%; text-align: left; padding: 18px 24px; background: transparent; border: none; outline: none; font-size: 1.05rem; font-weight: 600; color: var(--primary-navy); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s ease;">
+                  <span>Q. 건축학과와 AI건축융합학과는 무엇이 다른가요?</span>
+                  <span class="faq-acc-icon" style="font-size: 1.2rem; transition: transform 0.3s ease; transform: rotate(0deg); color: var(--primary-color);">▼</span>
+                </button>
+                <div class="faq-acc-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1); background: rgba(255, 255, 255, 0.55); border-top: 0 solid rgba(26, 84, 255, 0.05);">
+                  <div style="padding: 20px 24px; font-size: 0.98rem; color: var(--neutral-dark); line-height: 1.75;">
+                    건축학과가 주로 건축 설계, 공간 구성, 건축문화와 설계 역량을 중심으로 성장하는 흐름이라면, AI건축융합학과는 건축 정보를 읽고 AI와 데이터로 판단·설계·개선하는 융합형 역량에 초점을 둡니다. 설계와 공간 이해도 중요하지만, BIM, 디지털트윈, 데이터 분석, 구조·시공·환경 정보까지 함께 연결해 책임 있는 건축 판단을 배우는 것이 특징입니다.
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+      
+      
+      
+          <div class="page-related-section" style="margin-top: 50px; padding-top: 40px; border-top: 1px solid var(--neutral-light-gray);">
+            <h2 class="section-sub-h2" style="font-size: 1.5rem; font-weight: 700; color: var(--primary-navy); margin-bottom: 20px;">
+              🔗 연관 추천 가이드
+            </h2>
+            <div class="related-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+              
+                <a href="/architecture-vs-ai-architecture" class="related-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 22px; background: rgba(255, 255, 255, 0.6); border: 1px solid var(--glass-border); border-radius: 16px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(8, 48, 115, 0.03);">
+                  <div>
+                    <span style="font-size: 0.75rem; font-weight: 700; color: var(--tech-blue); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;">학과 비교</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--primary-navy); margin-bottom: 8px; line-height: 1.45;">건축학과와 AI건축융합학과의 차이</h3>
+                    <p style="font-size: 0.9rem; color: var(--neutral-gray); line-height: 1.5; margin-bottom: 16px;">건축학과와 AI건축융합학과의 차이를 설계, AI, BIM, 디지털트윈, 책임 있는 판단 관점에서 설명합니다.</p>
+                  </div>
+                  <span style="font-size: 0.85rem; font-weight: 600; color: var(--primary-color); display: flex; align-items: center; gap: 4px;">
+                    자세히 보기 <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                  </span>
+                </a>
+              
+                <a href="/ai-architecture-careers" class="related-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 22px; background: rgba(255, 255, 255, 0.6); border: 1px solid var(--glass-border); border-radius: 16px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(8, 48, 115, 0.03);">
+                  <div>
+                    <span style="font-size: 0.75rem; font-weight: 700; color: var(--tech-blue); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;">진로</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--primary-navy); margin-bottom: 8px; line-height: 1.45;">AI건축융합학과 졸업 후 진로</h3>
+                    <p style="font-size: 0.9rem; color: var(--neutral-gray); line-height: 1.5; margin-bottom: 16px;">BIM·디지털트윈, 건설 데이터, 스마트건설, 연구개발 등 진출 가능 분야를 과장 없이 설명합니다.</p>
+                  </div>
+                  <span style="font-size: 0.85rem; font-weight: 600; color: var(--primary-color); display: flex; align-items: center; gap: 4px;">
+                    자세히 보기 <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                  </span>
+                </a>
+              
+                <a href="/smart-construction-ai" class="related-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 22px; background: rgba(255, 255, 255, 0.6); border: 1px solid var(--glass-border); border-radius: 16px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(8, 48, 115, 0.03);">
+                  <div>
+                    <span style="font-size: 0.75rem; font-weight: 700; color: var(--tech-blue); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;">기술 키워드</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--primary-navy); margin-bottom: 8px; line-height: 1.45;">스마트건설과 AI건축</h3>
+                    <p style="font-size: 0.9rem; color: var(--neutral-gray); line-height: 1.5; margin-bottom: 16px;">현장 데이터, 센서, 이미지, 품질·안전 정보를 AI로 해석하는 스마트건설 학습 방향을 설명합니다.</p>
+                  </div>
+                  <span style="font-size: 0.85rem; font-weight: 600; color: var(--primary-color); display: flex; align-items: center; gap: 4px;">
+                    자세히 보기 <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                  </span>
+                </a>
+              
+            </div>
+          </div>
+        
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h4>단국대학교 AI융합대학 AI건축융합학과</h4>
+        <p style="margin-top: 6px; font-weight: 500; color: #a0aec0;">건축 정보를 읽고, AI와 데이터로 판단·설계·개선하는 융합형 책임기술 인재 양성</p>
+        <p style="margin-top: 12px; font-size: 0.8rem; opacity: 0.7;">본 사이트는 AI융합대학 AI건축융합학과 홍보용 NLWeb-lite 공식 플랫폼입니다. 입학 지원 전 반드시 단국대학교 입학처 모집요강을 확정 확인하시기 바랍니다.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h5>바로가기</h5>
+          <ul>
+            <li><a href="/#intro">학과소개</a></li>
+            <li><a href="/#curriculum">교육과정</a></li>
+            <li><a href="/#faq">질문과답변</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>공식 정보처</h5>
+          <ul>
+            <li><a href="https://www.dankook.ac.kr" target="_blank">단국대학교 홈페이지</a></li>
+            <li><a href="https://ipsi.dankook.ac.kr" target="_blank">단국대학교 입학처</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Dankook University Department of AI-Architecture Convergence. All Rights Reserved.</span>
+      <div style="display: flex; gap: 12px;">
+        <a href="/robots.txt" style="color: #707e94; text-decoration: none;">robots.txt</a>
+        <a href="/sitemap.xml" style="color: #707e94; text-decoration: none;">sitemap.xml</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Accordion Toggle JavaScript -->
+  <script>
+    function toggleFaqAccordion(btn) {
+      const panel = btn.nextElementSibling;
+      const icon = btn.querySelector('.faq-acc-icon');
+      
+      // Close all other panels
+      document.querySelectorAll('.faq-acc-panel').forEach(p => {
+        if (p !== panel && p.style.maxHeight !== '0px' && p.style.maxHeight !== '') {
+          p.style.maxHeight = '0px';
+          p.previousElementSibling.querySelector('.faq-acc-icon').style.transform = 'rotate(0deg)';
+          p.style.borderTopWidth = '0px';
+        }
+      });
+
+      // Toggle this panel
+      if (panel.style.maxHeight === '0px' || panel.style.maxHeight === '') {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+        icon.style.transform = 'rotate(180deg)';
+        panel.style.borderTop = '1px solid rgba(26, 84, 255, 0.08)';
+      } else {
+        panel.style.maxHeight = '0px';
+        icon.style.transform = 'rotate(0deg)';
+        panel.style.borderTopWidth = '0px';
+      }
+    }
+  </script>
+</body>
+</html>
