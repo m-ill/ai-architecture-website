@@ -46,7 +46,7 @@ export async function onRequest(context) {
       { intent: "건축학 비교", triggers: ["건축학", "건축학과", "건축설계", "건축사", "설계 중심"], preferred_url: "/architecture-vs-ai-architecture" },
       { intent: "건축공학 비교", triggers: ["건축공학", "건축공학과", "구조", "시공", "건축환경", "구조안전", "시공품질"], preferred_url: "/architectural-engineering-vs-ai-architecture" },
       { intent: "BIM 디지털트윈", triggers: ["bim", "cim", "디지털트윈", "디지털 모델", "모델링"], preferred_url: "/bim-digital-twin" },
-      { intent: "스마트건설", triggers: ["스마트건설", "현장 자동화", "건설 데이터", "시공품질", "안전관리", "센서"], preferred_url: "/smart-construction-ai" },
+      { intent: "스마트건축", triggers: ["스마트건축", "스마트건설", "현장 자동화", "건축 데이터", "건설 데이터", "시공품질", "안전관리", "센서"], preferred_url: "/smart-construction-ai" },
       { intent: "수험생 준비", triggers: ["준비", "학생부", "생기부", "고등학생", "고교생", "수험생"], preferred_url: "/student-preparation-guide" },
       { intent: "직업 변화", triggers: ["사라질까", "대체", "직업 변화", "바꿔", "일자리", "사라지"], preferred_url: "/ai-changes-architecture" },
       { intent: "진로", triggers: ["진로", "취업", "직업", "회사", "졸업 후", "bim 엔지니어", "데이터 분석가"], preferred_url: "/ai-architecture-careers" },
@@ -377,8 +377,8 @@ function scoreFaq(query, faq, seoPages = []) {
       preferred_url: "/bim-digital-twin"
     },
     {
-      intent: "스마트건설",
-      triggers: ["스마트건설", "현장 자동화", "건설 데이터", "시공품질", "안전관리", "센서"],
+      intent: "스마트건축",
+      triggers: ["스마트건축", "스마트건설", "현장 자동화", "건축 데이터", "건설 데이터", "시공품질", "안전관리", "센서"],
       preferred_faq_id: "seo-tech-smartconstruction-001",
       preferred_url: "/smart-construction-ai"
     },
