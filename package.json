@@ -5,9 +5,11 @@
   "description": "AI건축융합학과 홍보용 NLWeb-lite content pack for GitHub + Cloudflare Pages",
   "scripts": {
     "dev": "wrangler pages dev public --ip 0.0.0.0",
-    "check:json": "node -e \"for (const f of ['public/data/department.json','public/data/faq.json','public/data/curriculum.json','public/data/admissions.json','public/data/suggested_questions.json','public/data/answer_policy.json']) JSON.parse(require('fs').readFileSync(f,'utf8')); console.log('JSON OK')\""
+    "check:json": "node -e \"for (const f of ['public/data/department.json','public/data/faq.json','public/data/curriculum.json','public/data/admissions.json','public/data/suggested_questions.json','public/data/answer_policy.json']) JSON.parse(require('fs').readFileSync(f,'utf8')); console.log('JSON OK')\"",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "devDependencies": {
-    "wrangler": "latest"
+    "wrangler": "^4.93.0"
   }
 }
