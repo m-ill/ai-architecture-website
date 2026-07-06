@@ -1,0 +1,202 @@
+{
+  "status": "draft",
+  "note": "대표 프로젝트 이미지와 역할 표기 검토용 초안입니다. public UI에 반영하기 전 출처와 사용권을 확인해야 합니다.",
+  "people": [
+    {
+      "id": "kim-jongho",
+      "name": "김종호",
+      "title": "대표",
+      "organization": "창민우구조컨설턴트",
+      "field": "초고층 구조엔지니어링",
+      "summary": "초고층 건축물의 구조설계와 성능검토를 수행해 온 구조엔지니어링 전문가",
+      "projects": [
+        {
+          "name": "롯데월드타워",
+          "role": "초고층 구조 엔지니어링 / 구조 검토",
+          "imageCandidate": "/assets/projects/source-candidates/롯데월드타워__commons-candidate.jpg",
+          "imageStatus": "candidate_check_license"
+        },
+        {
+          "name": "서울 IFC",
+          "role": "고층 복합업무시설 구조엔지니어링",
+          "imageCandidate": "/assets/projects/source-candidates/서울-ifc__commons-candidate.jpg",
+          "imageStatus": "candidate_check_license"
+        },
+        {
+          "name": "송도 더 퍼스트월드",
+          "role": "고층 주거단지 구조설계",
+          "imageCandidate": "/assets/projects/source-candidates/송도-더-퍼스트월드__commons-candidate.jpg",
+          "imageStatus": "candidate_check_license"
+        }
+      ]
+    },
+    {
+      "id": "wi-jinbok",
+      "name": "위진복",
+      "title": "건축사",
+      "organization": "UIA",
+      "field": "엔지니어링 기반 건축설계",
+      "summary": "구조, 재료, 환경을 통합해 공공성과 도시 맥락을 설계하는 건축가",
+      "projects": [
+        {
+          "name": "신흥시장 아케이드 Cloud",
+          "role": "시장 재생 아케이드 건축설계",
+          "imageCandidate": "",
+          "imageStatus": "needs_official_or_permission"
+        },
+        {
+          "name": "고려대학교 Pi-ville 99",
+          "role": "업사이클링 기반 창업 인큐베이터 공간 설계",
+          "imageCandidate": "",
+          "imageStatus": "needs_official_or_permission"
+        },
+        {
+          "name": "2025 오사카 엑스포 한국관",
+          "role": "임시전시 건축 설계",
+          "imageCandidate": "",
+          "imageStatus": "needs_official_or_permission"
+        }
+      ]
+    },
+    {
+      "id": "lee-sanghyun",
+      "name": "이상현",
+      "title": "교수",
+      "organization": "단국대학교",
+      "field": "구조동역학·진동제어",
+      "summary": "건축물의 동적 거동을 계측, 해석, 제어해 구조안전과 사용성을 검증하는 전문가",
+      "projects": [
+        {
+          "name": "아크로서울포레스트 D타워",
+          "role": "이상진동 원인 규명, 계측, 해석, 개선",
+          "imageCandidate": "",
+          "imageStatus": "needs_official_or_permission"
+        },
+        {
+          "name": "강남구민회관",
+          "role": "내진보강을 위한 TMD 설계·설치",
+          "imageCandidate": "",
+          "imageStatus": "needs_official_or_permission"
+        },
+        {
+          "name": "테크노마트",
+          "role": "진동 모니터링 및 보강 관련 프로젝트",
+          "imageCandidate": "",
+          "imageStatus": "needs_official_or_permission"
+        }
+      ]
+    },
+    {
+      "id": "jeong-gwangryang",
+      "name": "정광량",
+      "title": "대표",
+      "organization": "CNP동양",
+      "field": "초고층 구조설계·구조안전",
+      "summary": "초고층 구조설계와 구조안전진단을 연결해 고층건축의 구조 안정성을 구현해 온 실무형 구조기술 리더",
+      "projects": [
+        {
+          "name": "해운대 LCT The Sharp",
+          "role": "초고층 복합개발 구조설계·구조해석",
+          "imageCandidate": "/assets/projects/source-candidates/해운대-lct__commons-candidate.jpg",
+          "imageStatus": "candidate_check_license"
+        },
+        {
+          "name": "Northeast Asia Trade Tower",
+          "role": "초고층 구조설계",
+          "imageCandidate": "/assets/projects/source-candidates/northeast-asia-trade-tower__commons-candidate.jpg",
+          "imageStatus": "candidate_check_license"
+        },
+        {
+          "name": "Parc1 Tower",
+          "role": "초고층 업무시설 구조설계",
+          "imageCandidate": "/assets/projects/source-candidates/parc1-tower__commons-candidate.jpg",
+          "imageStatus": "candidate_check_license"
+        },
+        {
+          "name": "Keangnam Hanoi Landmark Tower",
+          "role": "해외 초고층 구조엔지니어링",
+          "imageCandidate": "/assets/projects/source-candidates/keangnam-hanoi-landmark-tower__commons-candidate.jpg",
+          "imageStatus": "candidate_check_license"
+        }
+      ]
+    },
+    {
+      "id": "jeong-ran",
+      "name": "정란",
+      "title": "교수",
+      "organization": "단국대학교",
+      "field": "내진·리모델링·풍진동제어",
+      "summary": "내진성능 향상과 초고층 진동제어 기술을 통해 건축물의 구조안전을 고도화해 온 연구 리더",
+      "projects": [
+        {
+          "name": "테크노마트 진동사고 조사·제진장치 적용",
+          "role": "진동사고 원인조사와 제진장치 적용",
+          "imageCandidate": "",
+          "imageStatus": "needs_official_or_illustration"
+        },
+        {
+          "name": "초고층빌딩 풍진동 제진장치 개발",
+          "role": "초고층 건축물 풍진동 제어 기술개발",
+          "imageCandidate": "",
+          "imageStatus": "needs_illustration"
+        },
+        {
+          "name": "노후 공동주택 내진리모델링 연구",
+          "role": "기존 공동주택 내진성능 향상·보수보강 기술개발",
+          "imageCandidate": "",
+          "imageStatus": "needs_official_or_illustration"
+        }
+      ]
+    },
+    {
+      "id": "kang-taewoong",
+      "name": "강태웅",
+      "title": "교수",
+      "organization": "단국대학교",
+      "field": "목조건축·Design-Build",
+      "summary": "목조건축의 설계, 시공, 공업화를 연결해 저에너지 목조건축 교육과 산업화 모델을 제시하는 건축교육 전문가",
+      "projects": [
+        {
+          "name": "메이플빌리지 / 옵티말하우스",
+          "role": "목조건축 설계·시공 및 저에너지 주택 모델",
+          "imageCandidate": "",
+          "imageStatus": "needs_official_or_permission"
+        },
+        {
+          "name": "단국대 목조워크숍 실증 목조건물",
+          "role": "Design-Build 교육 실증 프로젝트",
+          "imageCandidate": "",
+          "imageStatus": "needs_official_or_self_provided"
+        }
+      ]
+    },
+    {
+      "id": "kim-jongsu",
+      "name": "김종수",
+      "title": "대표",
+      "organization": "CS구조엔지니어링",
+      "field": "대공간·특수구조",
+      "summary": "대공간 지붕구조와 특수구조 시스템을 설계해 경기장과 아레나의 무주공간을 구현해 온 구조엔지니어링 전문가",
+      "projects": [
+        {
+          "name": "Philippine Arena",
+          "role": "대공간 아레나 구조설계 관련 실적",
+          "imageCandidate": "",
+          "imageStatus": "commons_candidate_download_retry"
+        },
+        {
+          "name": "전주월드컵경기장",
+          "role": "케이블 스테이드 트러스 지붕 구조설계",
+          "imageCandidate": "",
+          "imageStatus": "commons_candidate_download_retry"
+        },
+        {
+          "name": "CJ LiveCity Arena",
+          "role": "대공간 공연장 구조설계",
+          "imageCandidate": "",
+          "imageStatus": "needs_official_or_permission"
+        }
+      ]
+    }
+  ]
+}
