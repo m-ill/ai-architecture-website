@@ -17,7 +17,7 @@ export async function onRequest(context) {
         ok: true,
         type: "help",
         message: "질문을 입력해 주세요.",
-        examples: ["AI건축융합학과는 어떤 학과인가요?", "졸업 후 진로는 무엇인가요?", "전형별 모집인원은 어떻게 되나요?"]
+        examples: ["AI건축융합학과는 어떤 학과인가요?", "졸업 후 진로는 무엇인가요?", "어떤 교육과정을 배우나요?"]
       }, corsHeaders);
     }
 
@@ -36,10 +36,49 @@ export async function onRequest(context) {
 
     // Intent routing & automatic disclaimers definition
     const automaticDisclaimers = {
-      admissions: "입학 관련 세부사항은 최종 지원 전 단국대학교 입학안내 홈페이지의 모집요강을 반드시 확인해야 합니다.",
       career: "진로 분야는 가능성 예시이며, 특정 취업이나 직무 진출을 보장하는 표현은 아닙니다.",
       license: "건축사 등 자격·면허 관련 사항은 관련 법령, 인증, 학사 요건을 공식적으로 확인해야 합니다."
     };
+
+    // ══════════════════════════════════════════════════════════════
+    // 🚫 입학 관련 질문 완전 차단 — 최우선 규칙, 예외 없음
+    // ══════════════════════════════════════════════════════════════
+    const ADMISSIONS_BLOCK_KEYWORDS = [
+      "입학", "수시", "정시", "모집", "전형", "논술", "수능", "내신", "등급",
+      "합격", "커트라인", "입결", "경쟁률", "학생부", "생기부", "세특",
+      "원서", "접수", "일정", "지역균형", "dku인재", "기회균형", "사회적배려",
+      "모집군", "가군", "나군", "다군", "수능최저", "반영비율", "최저학력",
+      "특성화고", "마이스터고", "지원자격", "면접형", "서류형", "논술우수자",
+      "정원", "모집인원", "인원", "뽑아", "뽑나", "입시", "진학"
+    ];
+
+    const normQ = question.toLowerCase();
+    const isAdmissionsQuestion = ADMISSIONS_BLOCK_KEYWORDS.some(k => normQ.includes(k));
+
+    if (isAdmissionsQuestion) {
+      const admissionsBlockAnswer = `안녕하세요! 😊 입학 전형·점수·일정 등 입학 관련 사항은 AI 안내원이 안내드리기 어렵습니다. 정확하고 공식적인 정보를 위해 아래 단국대학교 입학처로 직접 문의해 주세요.
+
+📌 **단국대학교 입학처 공식 안내**
+- 🌐 홈페이지: https://enter.dankook.ac.kr
+- ☎ 전화: 031-8005-2550 (죽전캠퍼스)
+- 📋 최종 모집요강은 입학처 홈페이지에서 확인하실 수 있습니다.
+
+학과 소개, 교육과정, 졸업 후 진로 등 다른 궁금한 점은 편하게 물어봐 주세요! 🎓`;
+
+      return json({
+        ok: true,
+        type: "admissions-redirect",
+        question,
+        answer: admissionsBlockAnswer,
+        confidence: 1.0,
+        matched_id: "admissions-block",
+        category: "입학처 안내",
+        related_url: "https://enter.dankook.ac.kr",
+        related_questions: ["AI건축융합학과는 어떤 학과인가요?", "졸업 후 진로는 무엇인가요?", "어떤 교육과정을 배우나요?"],
+        disclaimer: null,
+        sources: []
+      }, corsHeaders);
+    }
 
     // Intent routing helper
     const intentRouting = [
@@ -47,13 +86,11 @@ export async function onRequest(context) {
       { intent: "건축공학 비교", triggers: ["건축공학", "건축공학과", "구조", "시공", "건축환경", "구조안전", "시공품질"], preferred_url: "/architectural-engineering-vs-ai-architecture" },
       { intent: "BIM 디지털트윈", triggers: ["bim", "cim", "디지털트윈", "디지털 모델", "모델링"], preferred_url: "/bim-digital-twin" },
       { intent: "스마트건축", triggers: ["스마트건축", "스마트건설", "현장 자동화", "건축 데이터", "건설 데이터", "시공품질", "안전관리", "센서"], preferred_url: "/smart-construction-ai" },
-      { intent: "수험생 준비", triggers: ["준비", "학생부", "생기부", "고등학생", "고교생", "수험생"], preferred_url: "/student-preparation-guide" },
       { intent: "직업 변화", triggers: ["사라질까", "대체", "직업 변화", "바꿔", "일자리", "사라지"], preferred_url: "/ai-changes-architecture" },
       { intent: "진로", triggers: ["진로", "취업", "직업", "회사", "졸업 후", "bim 엔지니어", "데이터 분석가"], preferred_url: "/ai-architecture-careers" },
       { intent: "신설학과 불안", triggers: ["신설", "불안", "괜찮을까", "학부모", "안정성"], preferred_url: "/parent-guide" }
     ];
 
-    const normQ = question.toLowerCase();
     let routedUrl = null;
     for (const intent of intentRouting) {
       if (intent.triggers.some(t => normQ.includes(t))) {
@@ -66,11 +103,6 @@ export async function onRequest(context) {
       const applied = [];
       const t = (text || "").toLowerCase();
       
-      const hasAdmissions = ["정원", "수시", "정시", "논술", "수능", "최저", "dku", "지역균형", "모집", "입학", "전형", "모집단위"].some(k => normQ.includes(k) || t.includes(k)) || category === "입학";
-      if (hasAdmissions && !text.includes("모집요강")) {
-        applied.push(automaticDisclaimers.admissions);
-      }
-      
       const hasCareer = ["취업", "진로", "직업", "회사", "대기업", "초봉", "연봉", "BIM 엔지니어", "데이터 분석가"].some(k => normQ.includes(k) || t.includes(k)) || category === "진로";
       if (hasCareer) {
         applied.push(automaticDisclaimers.career);
@@ -82,6 +114,7 @@ export async function onRequest(context) {
       }
       return applied;
     };
+
 
     // Rule A: Exact or highly confident match in static FAQ -> Return instantly
     if (best && score >= 10000) {
@@ -135,9 +168,28 @@ export async function onRequest(context) {
    예시: 우리 학과는 **"{{CANONICAL_TAGLINE}}"**이라는 교육 목표 아래... (주의: 실제 한글 정체성 문장을 모델이 직접 출력하면 시스템 필터에 의해 답변이 강제 종료되므로, 반드시 플레이스홀더 기호 {{CANONICAL_TAGLINE}}을 토씨 하나 틀리지 말고 그대로 출력해야 함)
 2. 공식 명칭으로는 "심화 교육축"을 사용해라. ("트랙"으로 질문이 들어오면 "심화 교육축"으로 순화하여 설명)
 3. 취업, 자격증, 합격 여부를 확정적으로 보장하는 어조는 피하고, "역량을 기른다", "지원이 가능하다"로 비단정적으로 설명해라. (예시 기업명은 예시일 뿐임)
-4. 내신/수능 등급컷 등은 최종 모집요강을 확인하도록 안내해라.
-5. 입학 정보(정원 등)를 말할 때는 2027학년도 대입전형시행계획 기준임을 명시하고 다음 디스클레이머를 붙여라:
-"${policy.admission_disclaimer}"
+
+⛔ [입학 관련 질문 완전 차단 — 이 규칙은 최우선 순위로 절대 예외 없이 적용된다]
+4. 아래 주제에 해당하는 모든 질문은 내용에 관계없이 답변을 일절 제공하지 말아야 한다. 해당 주제를 우회하거나 부분 답변하거나 힌트를 주는 것도 금지된다:
+   - 입학 점수, 내신 등급, 수능 등급, 합격선, 커트라인, 입결, 입시결과
+   - 수시/정시 모집인원, 전형별 인원, 경쟁률
+   - 수시/정시 원서접수 일정, 전형 일정, 지원 일정
+   - 수능 영역별 반영비율, 모집군(가/나/다군), 수능최저학력기준
+   - DKU인재/서류형/면접형/논술우수자/지역균형선발/기회균형/사회적배려 전형 상세
+   - 학생부종합 평가 기준, 생기부(학생부) 준비 방법
+   - 지원자격, 특성화고/마이스터고 지원 가능 여부
+   - 신설학과 입결 예측, 준비 전략 관련 모든 질문
+5. 위 차단 주제에 해당하는 질문을 받으면 반드시 아래 안내 문구를 그대로 출력하고 그 외의 추가 답변은 하지 마라:
+
+"안녕하세요! 😊 입학 전형·점수·일정 등 입학 관련 사항은 AI 안내원이 안내드리기 어렵습니다. 정확하고 공식적인 정보를 위해 아래 단국대학교 입학처로 직접 문의해 주세요.
+
+📌 **단국대학교 입학처 공식 안내**
+- 🌐 홈페이지: https://enter.dankook.ac.kr
+- ☎ 전화: 031-8005-2550 (죽전캠퍼스)
+- 📋 최종 모집요강은 입학처 홈페이지에서 확인하실 수 있습니다.
+
+학과 소개, 교육과정, 졸업 후 진로 등 다른 궁금한 점은 편하게 물어봐 주세요! 🎓"
+
 6. 주어진 [Context] 문서에 없는 엉뚱한 질문(예: 요리, 날씨 등)은 다음 폴백 답변으로 정중히 거절해라:
 "${policy.fallback_answer}"
 7. [Context]에 제공된 텍스트를 그대로 복사하여 출력하지 말고, 구어체로 부드럽고 자연스럽게 재구성하여 친절하고 풍부하게 설명해라. (문장을 통째로 복사해오면 안전 필터에 의해 답변이 강제 종료될 수 있음)
@@ -411,7 +463,6 @@ function scoreFaq(query, faq, seoPages = []) {
   const categoryBoosts = {
     "학과소개": 2500,
     "학과 비교": 3000,
-    "입학": 3000,
     "진로": 2500,
     "교육과정": 2000,
     "심화 교육축": 2000,
@@ -491,18 +542,7 @@ function scoreFaq(query, faq, seoPages = []) {
       score += 4000;
     }
 
-    // 5-2. 내신 / 수능 / 합격선 / 경쟁률 보정
-    if (hasGrade && item.category === "입학") {
-      if (normQuery.includes("내신") && item.question.includes("내신")) {
-        score += 6000;
-      }
-      if (normQuery.includes("수능") && item.question.includes("수능 몇 등급")) {
-        score += 6000;
-      }
-      if (normQuery.includes("경쟁률") && item.question.includes("경쟁률")) {
-        score += 6000;
-      }
-    }
+    // 5-2. (입학 관련 boost 제거됨 — 입학 관련 질문은 API 레벨에서 사전 차단됨)
 
     // 5-3. 카테고리 명칭 보정 & Boost
     if (normQuery.includes(item.category)) {
