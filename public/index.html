@@ -770,37 +770,7 @@
       color: var(--ai-purple);
     }
 
-    /* Tab Switcher & Timeline (Curriculum) */
-    .curriculum-tabs {
-      background: rgba(3, 15, 38, 0.03);
-      padding: 6px;
-      border-radius: 14px;
-      display: inline-flex;
-      border: 1px solid rgba(3, 15, 38, 0.05);
-    }
-
-    .curriculum-tab-btn {
-      padding: 10px 24px;
-      border-radius: 10px;
-      font-size: 0.92rem;
-      font-weight: 600;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      color: var(--neutral-gray);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: var(--transition-smooth);
-    }
-
-    .curriculum-tab-btn.active {
-      background: white;
-      color: var(--primary-navy);
-      font-weight: 700;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-    }
-
+    /* Timeline (Curriculum) */
     .timeline-container {
       position: relative;
       margin-top: 20px;
@@ -915,34 +885,78 @@
       border-color: rgba(0, 82, 204, 0.2);
     }
 
-    .faculty-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 18px;
+    .faculty-brochure-card {
+      padding: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      min-height: 100%;
     }
 
-    .faculty-avatar-wrapper {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, rgba(0, 82, 204, 0.08), rgba(120, 80, 255, 0.08));
-      border: 1px solid rgba(0, 82, 204, 0.15);
+    .faculty-brochure-open {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .faculty-brochure-open:focus-visible {
+      outline: 3px solid rgba(26, 84, 255, 0.45);
+      outline-offset: -3px;
+    }
+
+    .faculty-brochure-preview {
+      aspect-ratio: 4 / 5;
+      width: 100%;
+      background: #f5f7fb;
+      border-bottom: 1px solid rgba(220, 230, 250, 0.9);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.6rem;
-      flex-shrink: 0;
+      overflow: hidden;
     }
 
-    .faculty-title-info h4 {
-      font-size: 1.15rem;
+    .faculty-brochure-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: top center;
+      background: white;
+      transition: transform 0.25s ease;
+    }
+
+    .faculty-brochure-card:hover .faculty-brochure-thumb {
+      transform: scale(1.015);
+    }
+
+    .faculty-card-meta {
+      padding: 16px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .faculty-card-title-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .faculty-card-title-row strong {
+      font-size: 1.08rem;
       color: var(--primary-navy);
       font-weight: 800;
-      margin-bottom: 2px;
     }
 
-    .faculty-title-info .fac-badge {
+    .faculty-card-title-row .fac-badge {
       display: inline-block;
       background: rgba(0, 82, 204, 0.06);
       color: var(--tech-blue);
@@ -950,110 +964,29 @@
       padding: 2px 8px;
       border-radius: 4px;
       font-weight: 700;
-      margin-left: 6px;
     }
 
-    .faculty-title-info p {
+    .faculty-brochure-card.industry .faculty-card-title-row .fac-badge {
+      background: rgba(120, 80, 255, 0.08);
+      color: var(--ai-purple);
+    }
+
+    .faculty-card-role {
       font-size: 0.88rem;
       color: var(--neutral-gray);
-      font-weight: 500;
+      line-height: 1.45;
+      word-break: keep-all;
     }
 
-    .faculty-philosophy {
-      font-style: italic;
-      color: var(--neutral-dark);
-      font-size: 0.9rem;
-      line-height: 1.5;
-      padding-left: 12px;
-      border-left: 3px solid var(--tech-blue);
-      margin-bottom: 20px;
-    }
-
-    .faculty-section-title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--primary-navy-light);
-      margin-top: 14px;
-      margin-bottom: 8px;
-    }
-
-    .faculty-list {
-      list-style: none;
-      margin-bottom: 10px;
-    }
-
-    .faculty-list li {
-      font-size: 0.85rem;
-      color: var(--neutral-dark);
-      margin-bottom: 4px;
-      padding-left: 12px;
-      position: relative;
-    }
-
-    .faculty-list li::before {
-      content: '·';
-      position: absolute;
-      left: 0;
-      font-weight: bold;
-    }
-
-    .faculty-projects-box {
+    .faculty-card-link {
       margin-top: auto;
-      background: linear-gradient(135deg, rgba(0, 82, 204, 0.03) 0%, rgba(120, 80, 255, 0.03) 100%);
-      border: 1px solid rgba(0, 82, 204, 0.06);
-      border-radius: 12px;
-      padding: 16px;
-    }
-
-    .faculty-projects-box ul {
-      list-style: none;
-    }
-
-    .faculty-projects-box li {
-      font-size: 0.82rem;
-      color: var(--neutral-dark);
-      margin-bottom: 6px;
-      padding-left: 12px;
-      position: relative;
-    }
-
-    .faculty-projects-box li::before {
-      content: '✓';
-      position: absolute;
-      left: 0;
       color: var(--tech-blue);
-      font-size: 0.75rem;
+      font-size: 0.88rem;
+      font-weight: 800;
     }
 
-    /* Faculty Brochure Button */
-    .faculty-brochure-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 16px;
-      padding: 9px 18px;
-      background: linear-gradient(135deg, var(--tech-blue), var(--primary-navy));
-      color: white;
-      border: none;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      font-family: 'Noto Sans KR', sans-serif;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 3px 12px rgba(26, 84, 255, 0.25);
-      letter-spacing: 0.02em;
-    }
-    .faculty-brochure-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(26, 84, 255, 0.35);
-    }
-    .faculty-brochure-btn-industry {
-      background: linear-gradient(135deg, var(--ai-purple), #5b2be0);
-      box-shadow: 0 3px 12px rgba(120, 80, 255, 0.25);
-    }
-    .faculty-brochure-btn-industry:hover {
-      box-shadow: 0 6px 20px rgba(120, 80, 255, 0.35);
+    .faculty-brochure-card.industry .faculty-card-link {
+      color: var(--ai-purple);
     }
 
     /* Brochure Modal */
@@ -2259,13 +2192,13 @@
 
     <ul class="nav-links">
       <li><a href="#about" onclick="closeMobileMenu()">학과소개</a></li>
-      <li><a href="#talents" onclick="closeMobileMenu()">인재상</a></li>
-      <li><a href="#competencies" onclick="closeMobileMenu()">통합역량</a></li>
-      <li><a href="#curriculum" onclick="switchCurriculumTab('roadmap'); closeMobileMenu();">교육과정</a></li>
-      <li><a href="#pillars" onclick="closeMobileMenu()">심화과정</a></li>
-      <li><a href="#curriculum" onclick="switchCurriculumTab('faculty'); closeMobileMenu();">대표 프로젝트</a></li>
+      <li><a href="#faculty" onclick="closeMobileMenu()">교수진/대표프로젝트</a></li>
+      <li><a href="#curriculum" onclick="closeMobileMenu()">교육과정</a></li>
+      <li><a href="#pillars" onclick="closeMobileMenu()">심화 교육축</a></li>
       <li><a href="#careers" onclick="closeMobileMenu()">진로</a></li>
       <li><a href="#admissions" onclick="closeMobileMenu()">입학안내</a></li>
+      <li><a href="#talents" onclick="closeMobileMenu()">인재상</a></li>
+      <li><a href="#competencies" onclick="closeMobileMenu()">통합역량</a></li>
       <li><a href="#faq" onclick="closeMobileMenu()">FAQ</a></li>
     </ul>
   </header>
@@ -2380,105 +2313,31 @@
       </div>
     </section>
 
-    <!-- Competencies Section -->
-    <section class="card-section" id="competencies">
+    <!-- Faculty Section -->
+    <section class="card-section" id="faculty">
       <div class="section-title-area">
-        <h2>통합 핵심역량 (Core Competencies)</h2>
-        <p>AI 시대 리더가 갖추어야 할 4C 핵심소양과 전공 실천 역량을 입체적으로 조화시킵니다.</p>
+        <h2>참여 교수진 및 대표 프로젝트</h2>
+        <p>참여 교수진과 산학 전문가의 브로셔를 중심으로 대표 프로젝트 소개를 연결합니다.</p>
       </div>
 
-      <div class="competency-grid">
-        <div class="competency-card">
-          <h3>비판적 사고</h3>
-          <div class="eng-name">Critical Thinking</div>
-          <p>정보의 홍수 속에서 데이터를 입체적으로 교차 검증하고, 구조적 안전과 문제의 본질을 명확히 판단하는 역량</p>
+        <h3 class="faculty-group-title" style="font-size: 1.35rem; color: var(--primary-navy); font-weight: 800; text-align: left; margin: 40px 0 20px; padding-left: 12px; border-left: 4px solid var(--tech-blue); font-family: 'Noto Sans KR', sans-serif;">참여교수진</h3>
+        <div class="faculty-grid" id="fulltimeFacultyGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 44px;">
+          <!-- Dynamically Hydrated -->
         </div>
-        <div class="competency-card">
-          <h3>창의적 사고</h3>
-          <div class="eng-name">Creative Thinking</div>
-          <p>엔지니어링의 정밀성 위에 AI 생성 모델과 디지털트윈 기술을 융합하여 혁신적인 건축 대안을 찾아내는 역량</p>
-        </div>
-        <div class="competency-card">
-          <h3>소통</h3>
-          <div class="eng-name">Communication</div>
-          <p>도면의 기하학 정보와 텍스트, 센서 데이터를 종합적으로 분석하여 팀과 현장에 한 치의 오차 없이 전달하는 역량</p>
-        </div>
-        <div class="competency-card">
-          <h3>협업</h3>
-          <div class="eng-name">Collaboration</div>
-          <p>건축 엔지니어링, 인공지능 개발, 현장 안전 전문가 등 다양한 융합 도메인의 주체들과 원활히 협업하는 역량</p>
-        </div>
-      </div>
 
-      <div class="pillars-3-axes">
-        <h3 class="pillars-3-axes-title">전공 적용 핵심역량 3대 축</h3>
-        <div class="axes-grid">
-          <div class="axis-card">
-            <div class="axis-num">01</div>
-            <h4>이해 (Understanding)</h4>
-            <p>설계 정보와 도심지 공간 데이터를 철저하게 파악하여, 현장 문제의 내재적 원인과 가능성을 조기에 규명하는 힘</p>
-          </div>
-          <div class="axis-card">
-            <div class="axis-num">02</div>
-            <h4>창의 (Creation)</h4>
-            <p>공학적 물리 법칙과 BIM 데이터를 주도적으로 제어하며, Generative AI를 연계해 고효율 설계 대안을 구축하는 힘</p>
-          </div>
-          <div class="axis-card">
-            <div class="axis-num">03</div>
-            <h4>책임 (Responsibility)</h4>
-            <p>현장의 하중, 풍환경, 품질 데이터를 전주기적으로 모니터링하여 사람의 생명과 안전을 책임지고 시공을 지휘하는 힘</p>
-          </div>
+        <h3 class="faculty-group-title" style="font-size: 1.35rem; color: var(--primary-navy); font-weight: 800; text-align: left; margin: 40px 0 20px; padding-left: 12px; border-left: 4px solid var(--ai-purple); font-family: 'Noto Sans KR', sans-serif;">산학 협력 전문가</h3>
+        <div class="faculty-grid" id="industryMentorsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 0;">
+          <!-- Dynamically Hydrated -->
         </div>
-      </div>
-    </section>
-
-    <!-- Talent Identity Section -->
-    <section class="card-section" id="talents">
-      <div class="section-title-area">
-        <h2>3대 대표 인재상</h2>
-        <p>글로벌 디지털 건설을 주도하고 현장의 가치와 생명을 최우선으로 여기는 인재를 기릅니다.</p>
-      </div>
-
-      <div class="talent-grid">
-        <div class="talent-card">
-          <div class="talent-num">01</div>
-          <h3>공간을 이해하는 사람</h3>
-          <p>도면과 실제 시공 품질, 건물 에너지 및 도시 인프라 데이터를 함께 통합하여 읽어냄으로써 공간이 가진 본질적 가치와 개선책을 발견합니다.</p>
-        </div>
-        <div class="talent-card">
-          <div class="talent-num">02</div>
-          <h3>건축 AI를 실현하는 사람</h3>
-          <p>BIM, 디지털트윈, 컴퓨터 비전 AI, 머신러닝 등을 결합하여 정밀 설계 및 엔지니어링 성능 검증 시스템을 고도화하고 자동화하는 방법을 구현합니다.</p>
-        </div>
-        <div class="talent-card">
-          <div class="talent-num">03</div>
-          <h3>현장을 책임지는 사람</h3>
-          <p>현장의 다차원 센서 정보와 품질 문서를 바탕으로 시공 단계를 실시간으로 컨트롤하며, 완벽한 구조 안전과 친환경적 쾌적성을 능동적으로 다룹니다.</p>
-        </div>
-      </div>
     </section>
 
     <!-- Curriculum Section -->
     <section class="card-section" id="curriculum">
       <div class="section-title-area">
-        <h2>교육과정 및 대표 프로젝트</h2>
-        <p>기초 건축 지식부터 정밀 AI 역량까지 연계된 최적의 4개년 실무형 커리큘럼</p>
+        <h2>교육과정 4개년 로드맵</h2>
+        <p>기초 건축 지식부터 정밀 AI 역량까지 연계된 4개년 실무형 커리큘럼</p>
       </div>
 
-      <!-- Tab Switcher -->
-      <div style="display: flex; justify-content: center; margin-bottom: 35px;">
-        <div class="curriculum-tabs">
-          <button class="curriculum-tab-btn active" data-tab="roadmap" onclick="switchCurriculumTab('roadmap')">
-            <span>🏫</span> 4개년 교육과정 로드맵
-          </button>
-          <button class="curriculum-tab-btn" data-tab="faculty" onclick="switchCurriculumTab('faculty')">
-            <span>👥</span> 대표 수행 프로젝트 & 교수진
-          </button>
-        </div>
-      </div>
-
-      <!-- Tab 1: Roadmap Container -->
-      <div id="curriculumRoadmapContainer" class="curriculum-tab-content active" style="transition: opacity 0.3s ease;">
         <div class="timeline-container">
           <div class="timeline-track" id="curriculumTimeline">
             <!-- Dynamically Hydrated from curriculum.json -->
@@ -2491,24 +2350,6 @@
             <!-- Dynamically Hydrated from curriculum.json -->
           </div>
         </div>
-      </div>
-
-      <!-- Tab 2: Faculty Container -->
-      <div id="curriculumFacultyContainer" class="curriculum-tab-content" style="display: none; transition: opacity 0.3s ease;">
-        <div id="facultyIntro" style="text-align: center; max-width: 800px; margin: 0 auto 30px; font-size: 1.05rem; color: var(--neutral-gray); line-height: 1.7; word-break: keep-all;">
-          <!-- Dynamically Hydrated -->
-        </div>
-        
-        <h3 class="faculty-group-title" style="font-size: 1.35rem; color: var(--primary-navy); font-weight: 800; text-align: left; margin: 40px 0 20px; padding-left: 12px; border-left: 4px solid var(--tech-blue); font-family: 'Noto Sans KR', sans-serif;">👨‍🏫 참여교수진 주요 수행 프로젝트</h3>
-        <div class="faculty-grid" id="fulltimeFacultyGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 50px;">
-          <!-- Dynamically Hydrated -->
-        </div>
-
-        <h3 class="faculty-group-title" style="font-size: 1.35rem; color: var(--primary-navy); font-weight: 800; text-align: left; margin: 40px 0 20px; padding-left: 12px; border-left: 4px solid var(--ai-purple); font-family: 'Noto Sans KR', sans-serif;">🤝 산학 협력 및 디지털 설계·구조 멘토진</h3>
-        <div class="faculty-grid" id="industryMentorsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 30px;">
-          <!-- Dynamically Hydrated -->
-        </div>
-      </div>
 
       <p class="timeline-disclaimer" id="curriculumDisclaimer">※ 세부 교과목명, 학점, 담당교수는 대학 공식 교육과정 최종 심의 확정 후 업데이트됩니다.</p>
     </section>
@@ -2524,6 +2365,7 @@
         <!-- Dynamically Hydrated from advanced_areas.json -->
       </div>
     </section>
+
 
     <!-- Careers Section -->
     <section class="card-section" id="careers">
@@ -2545,6 +2387,7 @@
         <p class="careers-disclaimer">※ 제시된 회사명은 졸업생이 진출 가능한 대표적인 산업군 예시이며, 취업을 완전히 보장하는 표현이 아닙니다.<br>※ 건축사 및 공학 기술사 등 공인 자격·면허 관련 기준은 관련 국가 기관과 학교 공식 학사 기준의 요건을 준수해야 합니다.</p>
       </div>
     </section>
+
 
     <!-- Admissions Section -->
     <section class="card-section" id="admissions">
@@ -2664,6 +2507,87 @@
         </div>
       </div>
     </section>
+
+
+    <!-- Talent Identity Section -->
+    <section class="card-section" id="talents">
+      <div class="section-title-area">
+        <h2>3대 대표 인재상</h2>
+        <p>글로벌 디지털 건설을 주도하고 현장의 가치와 생명을 최우선으로 여기는 인재를 기릅니다.</p>
+      </div>
+
+      <div class="talent-grid">
+        <div class="talent-card">
+          <div class="talent-num">01</div>
+          <h3>공간을 이해하는 사람</h3>
+          <p>도면과 실제 시공 품질, 건물 에너지 및 도시 인프라 데이터를 함께 통합하여 읽어냄으로써 공간이 가진 본질적 가치와 개선책을 발견합니다.</p>
+        </div>
+        <div class="talent-card">
+          <div class="talent-num">02</div>
+          <h3>건축 AI를 실현하는 사람</h3>
+          <p>BIM, 디지털트윈, 컴퓨터 비전 AI, 머신러닝 등을 결합하여 정밀 설계 및 엔지니어링 성능 검증 시스템을 고도화하고 자동화하는 방법을 구현합니다.</p>
+        </div>
+        <div class="talent-card">
+          <div class="talent-num">03</div>
+          <h3>현장을 책임지는 사람</h3>
+          <p>현장의 다차원 센서 정보와 품질 문서를 바탕으로 시공 단계를 실시간으로 컨트롤하며, 완벽한 구조 안전과 친환경적 쾌적성을 능동적으로 다룹니다.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Competencies Section -->
+    <section class="card-section" id="competencies">
+      <div class="section-title-area">
+        <h2>통합 핵심역량 (Core Competencies)</h2>
+        <p>AI 시대 리더가 갖추어야 할 4C 핵심소양과 전공 실천 역량을 입체적으로 조화시킵니다.</p>
+      </div>
+
+      <div class="competency-grid">
+        <div class="competency-card">
+          <h3>비판적 사고</h3>
+          <div class="eng-name">Critical Thinking</div>
+          <p>정보의 홍수 속에서 데이터를 입체적으로 교차 검증하고, 구조적 안전과 문제의 본질을 명확히 판단하는 역량</p>
+        </div>
+        <div class="competency-card">
+          <h3>창의적 사고</h3>
+          <div class="eng-name">Creative Thinking</div>
+          <p>엔지니어링의 정밀성 위에 AI 생성 모델과 디지털트윈 기술을 융합하여 혁신적인 건축 대안을 찾아내는 역량</p>
+        </div>
+        <div class="competency-card">
+          <h3>소통</h3>
+          <div class="eng-name">Communication</div>
+          <p>도면의 기하학 정보와 텍스트, 센서 데이터를 종합적으로 분석하여 팀과 현장에 한 치의 오차 없이 전달하는 역량</p>
+        </div>
+        <div class="competency-card">
+          <h3>협업</h3>
+          <div class="eng-name">Collaboration</div>
+          <p>건축 엔지니어링, 인공지능 개발, 현장 안전 전문가 등 다양한 융합 도메인의 주체들과 원활히 협업하는 역량</p>
+        </div>
+      </div>
+
+      <div class="pillars-3-axes">
+        <h3 class="pillars-3-axes-title">전공 적용 핵심역량 3대 축</h3>
+        <div class="axes-grid">
+          <div class="axis-card">
+            <div class="axis-num">01</div>
+            <h4>이해 (Understanding)</h4>
+            <p>설계 정보와 도심지 공간 데이터를 철저하게 파악하여, 현장 문제의 내재적 원인과 가능성을 조기에 규명하는 힘</p>
+          </div>
+          <div class="axis-card">
+            <div class="axis-num">02</div>
+            <h4>창의 (Creation)</h4>
+            <p>공학적 물리 법칙과 BIM 데이터를 주도적으로 제어하며, Generative AI를 연계해 고효율 설계 대안을 구축하는 힘</p>
+          </div>
+          <div class="axis-card">
+            <div class="axis-num">03</div>
+            <h4>책임 (Responsibility)</h4>
+            <p>현장의 하중, 풍환경, 품질 데이터를 전주기적으로 모니터링하여 사람의 생명과 안전을 책임지고 시공을 지휘하는 힘</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
 
     <!-- FAQ Section -->
     <section class="card-section" id="faq">
@@ -2970,12 +2894,14 @@
       <div class="footer-links-col">
         <h4>학과 네비게이션</h4>
         <ul>
-          <li><a href="#about">학과개요</a></li>
-          <li><a href="#curriculum" onclick="switchCurriculumTab('roadmap')">교육과정 로드맵</a></li>
-          <li><a href="#curriculum" onclick="switchCurriculumTab('faculty')">참여 교수진 & 프로젝트</a></li>
+          <li><a href="#about">학과소개</a></li>
+          <li><a href="#faculty">교수진/대표프로젝트</a></li>
+          <li><a href="#curriculum">교육과정 로드맵</a></li>
           <li><a href="#pillars">2개 심화 과정 (심화 교육축)</a></li>
           <li><a href="#careers">진로 및 취업</a></li>
           <li><a href="#admissions">신입학 정보</a></li>
+          <li><a href="#talents">인재상</a></li>
+          <li><a href="#competencies">통합역량</a></li>
         </ul>
       </div>
 
@@ -3219,85 +3145,57 @@
       // 2a. Faculty Data Hydration
       const fac = await fetchJsonSafely('/data/faculty.json');
       if (fac) {
-        const intro = document.getElementById('facultyIntro');
-        if (intro) intro.textContent = fac.summary;
+        const renderFacultyBrochureCard = (f, variant = 'faculty') => {
+          const isIndustry = variant === 'industry';
+          const affiliation = isIndustry && f.company ? `<span class="faculty-card-role">${f.company}</span>` : '';
+          const cardClass = isIndustry ? 'faculty-card faculty-brochure-card industry' : 'faculty-card faculty-brochure-card';
+          const fallbackTitle = isIndustry ? '산학 협력 전문가' : '참여교수';
 
-        // Fulltime Faculty Grid
+          if (!f.brochure_image) {
+            return `
+              <div class="${cardClass}">
+                <div class="faculty-card-meta">
+                  <span class="faculty-card-title-row">
+                    <strong>${f.name}</strong>
+                    <span class="fac-badge">${f.title || fallbackTitle}</span>
+                  </span>
+                  ${affiliation}
+                </div>
+                <div class="faculty-projects-placeholder" id="projects-${f.id}"></div>
+              </div>
+            `;
+          }
+
+          return `
+            <div class="${cardClass}">
+              <button type="button" class="faculty-brochure-open" onclick="openFacultyBrochure('${f.brochure_image}', '${f.name}')" aria-label="${f.name} 브로셔 보기">
+                <span class="faculty-brochure-preview">
+                  <img class="faculty-brochure-thumb" src="${f.brochure_image}" alt="${f.name} 브로셔 미리보기" loading="lazy" />
+                </span>
+                <span class="faculty-card-meta">
+                  <span class="faculty-card-title-row">
+                    <strong>${f.name}</strong>
+                    <span class="fac-badge">${f.title || fallbackTitle}</span>
+                  </span>
+                  ${affiliation}
+                  <span class="faculty-card-link">브로셔 보기</span>
+                </span>
+              </button>
+              <div class="faculty-projects-placeholder" id="projects-${f.id}"></div>
+            </div>
+          `;
+        };
+
+        // Fulltime Faculty Grid — 심플 카드 (브로셔 중심)
         const fulltimeGrid = document.getElementById('fulltimeFacultyGrid');
         if (fulltimeGrid && fac.faculty) {
-          fulltimeGrid.innerHTML = fac.faculty.map(f => `
-            <div class="faculty-card">
-              <div class="faculty-header">
-                <div class="faculty-avatar-wrapper">${f.icon || '👨‍🏫'}</div>
-                <div class="faculty-title-info">
-                  <h4>${f.name} <span class="fac-badge">${f.title}</span></h4>
-                  <p>${f.domain}</p>
-                </div>
-              </div>
-              <div class="faculty-philosophy">"${f.philosophy}"</div>
-              
-              <div class="faculty-section-title">🎓 약력 및 경력</div>
-              <ul class="faculty-list">
-                ${f.education_career.map(c => `<li>${c}</li>`).join('')}
-              </ul>
-
-              <div class="faculty-section-title">🔬 핵심 연구 분야</div>
-              <ul class="faculty-list">
-                ${f.research_areas.map(r => `<li>${r}</li>`).join('')}
-              </ul>
-
-              <div class="faculty-projects-box">
-                <div class="faculty-section-title" style="color: var(--primary-navy); margin-bottom: 8px;">⚡ 대표 실적 및 프로젝트</div>
-                <ul>
-                  ${f.achievements.map(a => `<li>${a}</li>`).join('')}
-                </ul>
-              </div>
-              ${f.brochure_image ? `
-              <button class="faculty-brochure-btn" onclick="openFacultyBrochure('${f.brochure_image}', '${f.name}')">
-                📄 교수 소개 브로셔 보기
-              </button>` : ''}
-            </div>
-          `).join('');
+          fulltimeGrid.innerHTML = fac.faculty.map(f => renderFacultyBrochureCard(f)).join('');
         }
 
-        // Industry Mentors Grid
+        // Industry Mentors Grid — 심플 카드 (브로셔 중심)
         const industryGrid = document.getElementById('industryMentorsGrid');
         if (industryGrid && fac.industry_experts) {
-          industryGrid.innerHTML = fac.industry_experts.map(f => `
-            <div class="faculty-card">
-              <div class="faculty-header">
-                <div class="faculty-avatar-wrapper" style="background: linear-gradient(135deg, rgba(120, 80, 255, 0.08), rgba(26, 84, 255, 0.08)); border-color: rgba(120, 80, 255, 0.15);">${f.icon || '🤝'}</div>
-                <div class="faculty-title-info">
-                  <h4>${f.name} <span class="fac-badge" style="background: rgba(120, 80, 255, 0.08); color: var(--ai-purple);">${f.title}</span></h4>
-                  <p style="color: var(--ai-purple); font-weight: 700;">${f.company}</p>
-                </div>
-              </div>
-              <div class="faculty-philosophy" style="border-left-color: var(--ai-purple);">"${f.philosophy}"</div>
-              
-              <div class="faculty-domain" style="color: var(--ai-purple);">${f.domain}</div>
-
-              <div class="faculty-section-title">🎓 주요 약력 및 자격</div>
-              <ul class="faculty-list">
-                ${f.education_career.map(c => `<li>${c}</li>`).join('')}
-              </ul>
-
-              <div class="faculty-section-title">🔬 실무 자문 영역</div>
-              <ul class="faculty-list">
-                ${f.research_areas.map(r => `<li>${r}</li>`).join('')}
-              </ul>
-
-              <div class="faculty-projects-box" style="background: linear-gradient(135deg, rgba(120, 80, 255, 0.03), rgba(26, 84, 255, 0.03)); border-color: rgba(120, 80, 255, 0.06);">
-                <div class="faculty-section-title" style="color: var(--primary-navy); margin-bottom: 8px;">⚡ 대표 실무 및 대표작</div>
-                <ul>
-                  ${f.achievements.map(a => `<li>${a}</li>`).join('')}
-                </ul>
-              </div>
-              ${f.brochure_image ? `
-              <button class="faculty-brochure-btn faculty-brochure-btn-industry" onclick="openFacultyBrochure('${f.brochure_image}', '${f.name}')">
-                📄 전문가 소개 브로셔 보기
-              </button>` : ''}
-            </div>
-          `).join('');
+          industryGrid.innerHTML = fac.industry_experts.map(f => renderFacultyBrochureCard(f, 'industry')).join('');
         }
       }
 
@@ -3997,40 +3895,6 @@
       }
     }
 
-    function switchCurriculumTab(tabName) {
-      const tabBtns = document.querySelectorAll('.curriculum-tab-btn');
-      tabBtns.forEach(btn => {
-        if (btn.getAttribute('data-tab') === tabName) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
-
-      const roadmapContainer = document.getElementById('curriculumRoadmapContainer');
-      const facultyContainer = document.getElementById('curriculumFacultyContainer');
-
-      if (tabName === 'roadmap') {
-        if (facultyContainer) facultyContainer.style.display = 'none';
-        if (roadmapContainer) {
-          roadmapContainer.style.display = 'block';
-          roadmapContainer.style.opacity = '0';
-          setTimeout(() => {
-            roadmapContainer.style.opacity = '1';
-          }, 50);
-        }
-      } else if (tabName === 'faculty') {
-        if (roadmapContainer) roadmapContainer.style.display = 'none';
-        if (facultyContainer) {
-          facultyContainer.style.display = 'block';
-          facultyContainer.style.opacity = '0';
-          setTimeout(() => {
-            facultyContainer.style.opacity = '1';
-          }, 50);
-        }
-      }
-    }
-
     // Collapsible Accordion toggler for admissions
     function toggleCollapsible(accordionId) {
       const panel = document.getElementById(accordionId);
@@ -4087,7 +3951,6 @@
     window.openLightbox = openLightbox;
     window.closeLightbox = closeLightbox;
     window.executeAskSearch = executeAskSearch;
-    window.switchCurriculumTab = switchCurriculumTab;
     window.toggleCollapsible = toggleCollapsible;
     window.scrollToChatbot = scrollToChatbot;
     window.toggleMobileMenu = toggleMobileMenu;
