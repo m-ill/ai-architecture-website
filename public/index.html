@@ -2569,7 +2569,7 @@
     <!-- Specialization Section -->
     <section class="card-section" id="pillars">
       <div class="section-title-area">
-        <h2>2개 심화 과정 (심화 교육축)</h2>
+        <h2>2개 심화 교육축</h2>
         <p>전공 분야별 최고 수준의 전문성을 구축하기 위해 면밀히 특화 설계된 2대 심화 교육체계</p>
       </div>
 
@@ -2881,7 +2881,7 @@
               <span class="seo-guide-icon">💼</span>
             </div>
             <h3 class="seo-guide-title">AI건축융합학과 졸업 후 진로</h3>
-            <p class="seo-guide-desc">BIM 코디네이터, 건설 데이터 사이언티스트, 대기업 시공 정보 지휘관 등 다변화되는 초일류 커리어 패스 완벽 가이드</p>
+            <p class="seo-guide-desc">BIM 코디네이터, 건설 데이터 사이언티스트, 시공 정보관리 직무 등으로 확장되는 융합 진로 가이드</p>
             <div class="seo-guide-tags">
               <span class="seo-guide-tag">#BIM전문가</span>
               <span class="seo-guide-tag">#데이터엔지니어</span>
@@ -3062,7 +3062,7 @@
           <div class="brochure-image-wrapper">
             <img src="/assets/brochure-page-2.png" alt="브로셔 2페이지" loading="lazy" />
           </div>
-          <div class="brochure-caption">공식 홍보 브로셔 2면 (2개 심화 과정 및 졸업 후 진로)</div>
+          <div class="brochure-caption">공식 홍보 브로셔 2면 (2개 심화 교육축 및 졸업 후 진로)</div>
         </div>
       </div>
     </section>
@@ -3109,7 +3109,7 @@
           <li><a href="#about">학과소개</a></li>
           <li><a href="#faculty">교수진/대표프로젝트</a></li>
           <li><a href="#curriculum">교육과정 로드맵</a></li>
-          <li><a href="#pillars">2개 심화 과정 (심화 교육축)</a></li>
+          <li><a href="#pillars">2개 심화 교육축</a></li>
           <li><a href="#careers">진로 및 취업</a></li>
           <li><a href="#admissions">신입학 정보</a></li>
           <li><a href="#talents">인재상</a></li>
@@ -3762,292 +3762,215 @@
 
     // Client-side offline fallback search matching logic
     function performLocalOfflineSearch(question) {
+      const fallbackAnswer = departmentPolicy.fallback_answer ||
+        '죄송합니다. 이 안내는 AI건축융합학과의 학과소개, 교육과정, 심화 교육축, 교수진 및 진로를 중심으로 답변합니다. 해당 범위에서 궁금한 내용을 다시 질문해 주세요.';
+
       if (!rawFaqData || rawFaqData.length === 0) {
         return {
           ok: true,
-          type: "fallback",
-          answer: "학과 데이터를 읽어오는 도중 통신 오류가 발생했습니다. 잠시 후 다시 질문해 주세요.",
+          type: 'fallback',
+          answer: '학과 데이터를 읽어오는 도중 통신 오류가 발생했습니다. 잠시 후 다시 질문해 주세요.',
           confidence: 0,
+          category: '안내',
           sources: []
         };
       }
 
-      const normQuery = normalizeString(question);
-      const queryTokens = normQuery.split(" ").filter(t => t.length > 0);
-
-      if (queryTokens.length === 0) {
+      const normalizedQuestion = normalizeString(question);
+      if (!normalizedQuestion) {
         return {
           ok: true,
-          type: "fallback",
-          answer: departmentPolicy.fallback_answer || "죄송합니다. 이 안내는 AI건축융합학과의 학과소개, 교육과정, 심화 과정 (심화 교육축), 진로, 입학정보를 중심으로 답변합니다. 궁금한 내용을 다시 질문해 주세요.",
+          type: 'fallback',
+          answer: fallbackAnswer,
           confidence: 0,
-          sources: ["/data/faq.json"]
+          category: '안내',
+          sources: ['/data/answer_policy.json']
         };
       }
 
-      const hasTrack = normQuery.includes("트랙");
-      const hasGrade = normQuery.includes("내신") || normQuery.includes("수능") || normQuery.includes("합격선") || normQuery.includes("경쟁률") || normQuery.includes("등급");
-
-      const intentRouting = [
-        {
-          intent: "건축학 비교",
-          triggers: ["건축학", "건축학과", "건축설계", "건축사", "설계 중심"],
-          preferred_faq_id: "seo-diff-architecture-001",
-          preferred_url: "/architecture-vs-ai-architecture"
-        },
-        {
-          intent: "건축공학 비교",
-          triggers: ["건축공학", "건축공학과", "구조", "시공", "건축환경", "구조안전", "시공품질"],
-          preferred_faq_id: "seo-diff-engineering-001",
-          preferred_url: "/architectural-engineering-vs-ai-architecture"
-        },
-        {
-          intent: "BIM 디지털트윈",
-          triggers: ["bim", "cim", "디지털트윈", "디지털 모델", "모델링"],
-          preferred_faq_id: "seo-tech-bim-001",
-          preferred_url: "/bim-digital-twin"
-        },
-        {
-          intent: "스마트건축",
-          triggers: ["스마트건축", "현장 자동화", "건축 데이터", "시공품질", "안전관리", "센서"],
-          preferred_faq_id: "seo-tech-smartconstruction-001",
-          preferred_url: "/smart-construction-ai"
-        },
-        {
-          intent: "수험생 준비",
-          triggers: ["준비", "학생부", "생기부", "고등학생", "고교생", "수험생"],
-          preferred_faq_id: "seo-student-001",
-          preferred_url: "/student-preparation-guide"
-        },
-        {
-          intent: "직업 변화",
-          triggers: ["사라질까", "대체", "직업 변화", "바꿔", "일자리", "사라지"],
-          preferred_faq_id: "hope-007",
-          preferred_url: "/ai-changes-architecture"
-        },
-        {
-          intent: "진로",
-          triggers: ["진로", "취업", "직업", "회사", "졸업 후", "bim 엔지니어", "데이터 분석가"],
-          preferred_faq_id: "seo-career-001",
-          preferred_url: "/ai-architecture-careers"
-        },
-        {
-          intent: "신설학과 불안",
-          triggers: ["신설", "불안", "괜찮을까", "학부모", "안정성"],
-          preferred_faq_id: "seo-parent-001",
-          preferred_url: "/parent-guide"
-        }
+      const admissionsPatterns = [
+        /입학/u, /입시/u, /수시/u, /정시/u, /수능/u, /내신/u, /입결/u,
+        /커트\s*라인/u, /합격\s*(선|점수|등급|가능성)/u, /경쟁률/u,
+        /학생부/u, /생기부/u, /세특/u, /원서\s*접수/u, /지원\s*자격/u,
+        /최저\s*학력/u, /반영\s*비율/u, /모집\s*(요강|인원|정원|단위|군|일정)/u,
+        /정원\s*(내|외)/u, /가군|나군|다군/u, /dku\s*인재/iu,
+        /지역\s*균형/u, /기회\s*균형/u, /사회적\s*배려/u, /논술/u,
+        /특성화고/u, /마이스터고/u, /몇\s*명.{0,8}뽑/u, /뽑.{0,8}몇\s*명/u
       ];
 
-      const categoryBoosts = {
-        "학과소개": 2500,
-        "학과 비교": 3000,
-        "입학": 3000,
-        "진로": 2500,
-        "교육과정": 2000,
-        "심화 과정 (심화 교육축)": 2000,
-        "기술 키워드": 2000,
-        "수험생 안내": 2500,
-        "학부모 안내": 2000,
-        "진학지도교사 안내": 2000,
-        "미래 전망": 1500
-      };
-
-      let activePreferredFaqId = null;
-      let activePreferredUrl = null;
-      for (const route of intentRouting) {
-        if (route.triggers.some(t => normQuery.includes(t))) {
-          activePreferredFaqId = route.preferred_faq_id;
-          activePreferredUrl = route.preferred_url;
-          break;
-        }
+      if (admissionsPatterns.some(pattern => pattern.test(normalizedQuestion))) {
+        return {
+          ok: true,
+          type: 'admissions-redirect',
+          question,
+          answer: '입학 전형·점수·일정 등 입학 관련 사항은 AI 안내원이 세부 내용을 안내하지 않습니다. 정확한 정보는 단국대학교 입학처(https://enter.dankook.ac.kr)와 최종 모집요강을 확인해 주세요.',
+          confidence: 1,
+          category: '입학처 안내',
+          related_url: 'https://enter.dankook.ac.kr',
+          sources: []
+        };
       }
 
-      const matches = rawFaqData.map(item => {
-        const normQ = normalizeString(item.question);
-        const normAns = normalizeString(item.answer);
-        const normAliases = (item.aliases || []).map(normalizeString);
-        const normKeywords = (item.keywords || []).map(normalizeString);
-
-        let score = 0;
-
-        if (normQuery === normQ) {
-          score += 10000;
-        } else if (normQ.includes(normQuery) || normQuery.includes(normQ)) {
-          score += 8000;
-        } else {
-          const qTokens = normQ.split(" ").filter(t => t.length > 0);
-          const overlap = queryTokens.filter(t => qTokens.includes(t)).length;
-          score += overlap * 1000;
-        }
-
-        let aliasScore = 0;
-        for (const alias of normAliases) {
-          if (normQuery === alias) {
-            aliasScore = Math.max(aliasScore, 8000);
-          } else if (alias.includes(normQuery) || normQuery.includes(alias)) {
-            aliasScore = Math.max(aliasScore, 5000);
-          } else {
-            const aTokens = alias.split(" ").filter(t => t.length > 0);
-            const overlap = queryTokens.filter(t => aTokens.includes(t)).length;
-            aliasScore = Math.max(aliasScore, overlap * 500);
-          }
-        }
-        score += aliasScore;
-
-        let keywordScore = 0;
-        for (const keyword of normKeywords) {
-          if (normQuery.includes(keyword) || keyword.includes(normQuery)) {
-            keywordScore += 5000;
-          }
-        }
-        score += keywordScore;
-
-        if (normAns.includes(normQuery)) {
-          score += 1000;
-        } else {
-          const ansTokens = normAns.split(" ").filter(t => t.length > 0);
-          const overlap = queryTokens.filter(t => ansTokens.includes(t)).length;
-          score += overlap * 100;
-        }
-
-        if (hasTrack && item.category === "심화 과정 (심화 교육축)") {
-          score += 4000;
-        }
-
-        if (hasGrade && item.category === "입학") {
-          if (normQuery.includes("내신") && item.question.includes("내신")) {
-            score += 6000;
-          }
-          if (normQuery.includes("수능") && item.question.includes("수능 몇 등급")) {
-            score += 6000;
-          }
-          if (normQuery.includes("경쟁률") && item.question.includes("경쟁률")) {
-            score += 6000;
-          }
-        }
-
-        if (normQuery.includes(item.category)) {
-          score += 1500;
-        }
-        if (categoryBoosts[item.category]) {
-          score += categoryBoosts[item.category];
-        }
-
-        score += (item.priority || 0) * 10;
-
-        if (activePreferredFaqId && item.id === activePreferredFaqId) {
-          score += 25000;
-        }
-
-        let seoPageScore = 0;
-        if (typeof seoPagesData !== 'undefined' && seoPagesData && seoPagesData.length > 0) {
-          for (const page of seoPagesData) {
-            const isLinked = (item.related_url && item.related_url.includes(page.slug)) || 
-                             (activePreferredUrl && activePreferredUrl.includes(page.slug) && item.id === activePreferredFaqId);
-            
-            if (isLinked) {
-              const normTitle = normalizeString(page.title);
-              const normH1 = normalizeString(page.h1);
-              const normSummary = normalizeString(page.summary);
-              const normPageKeywords = (page.keywords || []).map(normalizeString);
-
-              if (normQuery === normTitle) {
-                seoPageScore = Math.max(seoPageScore, 4500);
-              } else if (normTitle.includes(normQuery) || normQuery.includes(normTitle)) {
-                seoPageScore = Math.max(seoPageScore, 3000);
-              }
-
-              if (normQuery === normH1) {
-                seoPageScore = Math.max(seoPageScore, 4500);
-              } else if (normH1.includes(normQuery) || normQuery.includes(normH1)) {
-                seoPageScore = Math.max(seoPageScore, 3000);
-              }
-
-              if (normSummary.includes(normQuery)) {
-                seoPageScore = Math.max(seoPageScore, 1500);
-              }
-
-              let kwMatch = 0;
-              for (const kw of normPageKeywords) {
-                if (normQuery.includes(kw) || kw.includes(normQuery)) {
-                  kwMatch += 1000;
-                }
-              }
-              seoPageScore += kwMatch;
+      const stopWords = new Set([
+        '무엇', '어떤', '어떻게', '왜', '관련', '대해', '정도', '조금', '가능',
+        '설명', '문의', '알려줘', '알려주세요', '해주세요', '해줘', '있나요', '인가요', '몇', '명'
+      ]);
+      const suffixes = [
+        '알려주세요', '알려줘', '해주세요', '해줘', '인가요', '일까요', '있나요', '입니다',
+        '이에요', '예요', '에서', '에게', '부터', '까지', '처럼', '으로', '하고', '이며',
+        '은', '는', '이', '가', '을', '를', '의', '에', '와', '과', '도', '만', '로'
+      ];
+      const tokenizeLocal = text => normalizeString(text)
+        .split(' ')
+        .map(token => {
+          for (const suffix of suffixes) {
+            if (token.endsWith(suffix) && token.length - suffix.length >= 2) {
+              return token.slice(0, -suffix.length);
             }
           }
-        }
-        score += seoPageScore;
+          return token;
+        })
+        .filter(token => token.length >= 2 && !stopWords.has(token));
 
-        return { item, score };
-      }).sort((a, b) => b.score - a.score);
+      const textMatchScore = (target, exact, contains, tokenWeight) => {
+        const normalizedTarget = normalizeString(target);
+        if (!normalizedTarget) return 0;
+        if (normalizedQuestion === normalizedTarget) return exact;
+
+        let result = 0;
+        const shorterLength = Math.min(normalizedQuestion.length, normalizedTarget.length);
+        if (
+          shorterLength >= 4 &&
+          (normalizedQuestion.includes(normalizedTarget) || normalizedTarget.includes(normalizedQuestion))
+        ) {
+          const ratio = shorterLength / Math.max(normalizedQuestion.length, normalizedTarget.length);
+          result = Math.max(result, contains * Math.max(0.55, ratio));
+        }
+
+        const queryTokens = [...new Set(tokenizeLocal(normalizedQuestion))];
+        const targetTokens = [...new Set(tokenizeLocal(normalizedTarget))];
+        if (queryTokens.length && targetTokens.length) {
+          const targetSet = new Set(targetTokens);
+          const overlap = queryTokens.filter(token => targetSet.has(token)).length;
+          if (overlap > 0) {
+            const queryCoverage = overlap / queryTokens.length;
+            const targetCoverage = overlap / targetTokens.length;
+            result = Math.max(result, tokenWeight * ((queryCoverage * 0.75) + (targetCoverage * 0.25)));
+          }
+        }
+        return result;
+      };
+
+      const intentRoutes = [
+        { triggers: ['교수', '참여교수', '전문가', '멘토'], id: 'ops-002a', url: '/#faculty' },
+        { triggers: ['건축사 자격', '건축사 면허', '건축사 시험'], id: 'diff-006', url: '/architecture-vs-ai-architecture' },
+        { triggers: ['건축학', '건축학과', '건축설계'], id: 'seo-diff-architecture-001', url: '/architecture-vs-ai-architecture' },
+        { triggers: ['건축공학', '건축공학과', '구조안전', '시공품질'], id: 'seo-diff-engineering-001', url: '/architectural-engineering-vs-ai-architecture' },
+        { triggers: ['bim', 'cim', '디지털트윈', '디지털 모델'], id: 'seo-tech-bim-001', url: '/bim-digital-twin' },
+        { triggers: ['스마트건축', '스마트건설', '현장 자동화', '안전관리', '센서'], id: 'seo-tech-smartconstruction-001', url: '/smart-construction-ai' },
+        { triggers: ['진로', '취업', '직업', '회사', '졸업 후', '대학원', '연구개발'], id: 'seo-career-001', url: '/ai-architecture-careers' },
+        { triggers: ['신설', '불안', '학부모', '안정성'], id: 'seo-parent-001', url: '/parent-guide' }
+      ];
+      const activeRoute = intentRoutes.find(route =>
+        route.triggers.some(trigger => normalizedQuestion.includes(normalizeString(trigger)))
+      ) || null;
+
+      const matches = rawFaqData.map(item => {
+        let score = textMatchScore(item.question, 100, 72, 55);
+
+        let aliasScore = 0;
+        for (const alias of item.aliases || []) {
+          aliasScore = Math.max(aliasScore, textMatchScore(alias, 94, 66, 48));
+        }
+        score = Math.max(score, aliasScore);
+
+        let keywordScore = 0;
+        for (const keyword of item.keywords || []) {
+          const normalizedKeyword = normalizeString(keyword);
+          if (normalizedKeyword.length >= 2 && normalizedQuestion.includes(normalizedKeyword)) {
+            keywordScore += normalizedKeyword.length >= 4 ? 24 : 18;
+          }
+        }
+        score += Math.min(keywordScore, 44);
+
+        if (normalizedQuestion.includes('트랙') && item.category === '심화 교육축') {
+          score += 28;
+        }
+        if (activeRoute && item.id === activeRoute.id) {
+          score += 48;
+        }
+        if (score > 0) {
+          score += Math.min(1, (item.priority || 0) / 100);
+        }
+
+        return { item, score: Math.round(score * 100) / 100 };
+      }).sort((left, right) => right.score - left.score);
 
       const best = matches[0];
       const score = best ? best.score : 0;
-      const confidence = Math.min(1.0, score / 10000.0);
+      const domainTerms = [
+        'ai건축', '건축', '학과', '교수', '교육', '교과', '배우', '수업', '심화', '트랙',
+        '진로', '취업', '대학원', 'bim', 'cim', '디지털트윈', '구조', '시공', '안전',
+        '환경', '프로젝트', '포트폴리오', '코딩', '수학', '물리', '디자인', '캠퍼스',
+        '연구', '자격증', '건축사', '정란', '이상현', '강태웅', '위진복', '정광량', '김종호', '김종수'
+      ];
+      const isDepartmentQuestion = domainTerms.some(term => normalizedQuestion.includes(term));
 
-      if (!best || score < 1000) {
+      if (!best || score < 24 || (!isDepartmentQuestion && score < 68)) {
         return {
           ok: true,
-          type: "fallback",
-          answer: departmentPolicy.fallback_answer || "죄송합니다. 이 안내는 AI건축융합학과의 학과소개, 교육과정, 심화 과정 (심화 교육축), 진로, 입학정보를 중심으로 답변합니다. 궁금한 내용을 다시 질문해 주세요.",
+          type: 'fallback',
+          question,
+          answer: fallbackAnswer,
           confidence: 0,
-          sources: ["/data/faq.json"]
+          category: '안내',
+          related_url: null,
+          related: [],
+          sources: ['/data/answer_policy.json']
         };
       }
 
       let answer = best.item.answer;
-      
-      const automaticDisclaimers = {
-        admissions: "입학 관련 세부사항은 최종 지원 전 단국대학교 입학안내 홈페이지의 모집요강을 반드시 확인해야 합니다.",
-        career: "진로 분야는 가능성 예시이며, 특정 취업이나 직무 진출을 보장하는 표현은 아닙니다.",
-        license: "건축사 등 자격·면허 관련 사항은 관련 법령, 인증, 학사 요건을 공식적으로 확인해야 합니다."
-      };
-
-      const appliedDisclaimers = [];
-      const normAnsText = answer.toLowerCase();
-
-      const hasAdmissions = ["정원", "수시", "정시", "논술", "수능", "최저", "dku", "지역균형", "모집", "입학", "전형", "모집단위"].some(k => normQuery.includes(k) || normAnsText.includes(k)) || best.item.category === "입학";
-      if (hasAdmissions && !answer.includes("모집요강")) {
-        appliedDisclaimers.push(automaticDisclaimers.admissions);
+      const isCareerQuestion = ['취업', '진로', '직업', '회사', '졸업 후'].some(term =>
+        normalizedQuestion.includes(term)
+      );
+      if (isCareerQuestion && !/취업.{0,20}보장.{0,20}(아니|않)/u.test(answer)) {
+        answer += '\n\n진로 분야는 가능성 예시이며, 특정 취업이나 직무 진출을 보장하는 표현은 아닙니다.';
       }
 
-      const hasCareer = ["취업", "진로", "직업", "회사", "대기업", "초봉", "연봉", "BIM 엔지니어", "데이터 분석가"].some(k => normQuery.includes(k) || normAnsText.includes(k)) || best.item.category === "진로";
-      if (hasCareer) {
-        appliedDisclaimers.push(automaticDisclaimers.career);
+      const isLicenseQuestion = ['건축사', '기사', '자격증', '면허', '자격', '기술사'].some(term =>
+        normalizedQuestion.includes(term)
+      );
+      if (isLicenseQuestion && !/자격.{0,20}(확인|요건|법령)/u.test(answer)) {
+        answer += '\n\n건축사 등 자격·면허 관련 사항은 관련 법령, 인증, 학사 요건을 공식적으로 확인해야 합니다.';
       }
 
-      const hasLicense = ["건축사", "기사", "자격증", "면허", "자격", "기술사"].some(k => normQuery.includes(k) || normAnsText.includes(k));
-      if (hasLicense) {
-        appliedDisclaimers.push(automaticDisclaimers.license);
-      }
-
-      if (appliedDisclaimers.length > 0) {
-        answer += "\n\n" + appliedDisclaimers.join("\n");
-      }
-
-      const matchedUrl = best.item.related_url || activePreferredUrl || null;
+      const related = matches
+        .filter(match => match.item.id !== best.item.id && match.score >= 24)
+        .slice(0, 3)
+        .map(match => ({
+          id: match.item.id,
+          question: match.item.question,
+          category: match.item.category,
+          score: match.score
+        }));
 
       return {
         ok: true,
-        type: "answer",
+        type: 'answer',
         question,
         answer,
-        confidence,
-        related_url: matchedUrl,
+        confidence: Math.min(1, score / 100),
+        matched_id: best.item.id,
+        category: best.item.category,
+        related_url: best.item.related_url || activeRoute?.url || null,
         match: {
           id: best.item.id,
           question: best.item.question,
           category: best.item.category
         },
-        related: matches.slice(1, 4).filter(m => m.score >= 1000).map(m => ({
-          id: m.item.id,
-          question: m.item.question,
-          category: m.item.category,
-          score: m.score
-        })),
-        sources: ["/data/faq.json"]
+        related,
+        sources: ['/data/faq.json']
       };
     }
 
@@ -4111,9 +4034,13 @@
         return;
       }
 
-      const category = data.match ? data.match.category : (data.type === 'fallback' ? '안내' : '공식답변');
-      let mainAnswer = data.answer;
+      const category = data.match?.category || data.category || (data.type === 'fallback' ? '안내' : '공식답변');
+      let mainAnswer = data.answer || data.message || '답변 내용을 확인할 수 없습니다.';
       let disclaimerText = "";
+      const numericConfidence = Number(data.confidence);
+      const confidenceText = data.type === 'fallback'
+        ? '범위 외 질문'
+        : (Number.isFinite(numericConfidence) ? `자료 일치도: ${Math.round(numericConfidence * 100)}%` : '공식 자료 기반');
       
       const disclaimerDelimiter = "입학 관련 세부사항은";
       if (mainAnswer.includes(disclaimerDelimiter)) {
@@ -4127,7 +4054,7 @@
       answerBox.innerHTML = `
         <div class="answer-header">
           <span class="answer-badge">${category}</span>
-          <span class="answer-confidence">공식 신뢰도: ${data.confidence ? Math.round(data.confidence * 100) : 100}%</span>
+          <span class="answer-confidence">${confidenceText}</span>
         </div>
         <div class="answer-body">${formattedAnswer}</div>
         
