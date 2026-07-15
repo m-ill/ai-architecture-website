@@ -72,6 +72,10 @@
       scroll-behavior: smooth;
     }
 
+    section[id] {
+      scroll-margin-top: 112px;
+    }
+
     body {
       font-family: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
       color: var(--neutral-dark);
@@ -1485,21 +1489,29 @@
     .faq-tabs {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin-bottom: 30px;
+      gap: 4px;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto 22px;
+      padding: 4px;
+      background: #f4f7fb;
+      border: 1px solid var(--neutral-light-gray);
+      border-radius: 8px;
       flex-wrap: wrap;
     }
 
     .faq-tab-btn {
-      padding: 8px 20px;
-      border-radius: 999px;
+      min-height: 40px;
+      padding: 8px 16px;
+      border-radius: 6px;
       font-size: 0.88rem;
       font-weight: 600;
-      border: 1px solid var(--neutral-light-gray);
-      background: white;
+      border: 1px solid transparent;
+      background: transparent;
       cursor: pointer;
       color: var(--neutral-gray);
       transition: var(--transition-smooth);
+      white-space: nowrap;
     }
 
     .faq-tab-btn:hover {
@@ -1509,18 +1521,36 @@
     }
 
     .faq-tab-btn.active {
-      background: var(--tech-blue);
-      color: white;
-      border-color: var(--tech-blue);
-      box-shadow: 0 4px 12px rgba(0, 82, 204, 0.2);
+      background: white;
+      color: var(--tech-blue);
+      border-color: rgba(0, 82, 204, 0.16);
+      box-shadow: 0 2px 8px rgba(8, 48, 115, 0.08);
+    }
+
+    .faq-accordion {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .faq-columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      align-items: start;
+    }
+
+    .faq-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 0;
     }
 
     .faq-item {
       background: white;
       border: 1px solid rgba(220, 230, 250, 0.8);
-      border-radius: 16px;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow-premium);
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(8, 48, 115, 0.05);
       overflow: hidden;
       transition: var(--transition-smooth);
     }
@@ -1531,24 +1561,28 @@
 
     .faq-trigger {
       width: 100%;
+      min-height: 68px;
       background: transparent;
       border: none;
-      padding: 20px 24px;
+      padding: 16px 18px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
+      gap: 12px;
       cursor: pointer;
       text-align: left;
       font-family: inherit;
     }
 
     .faq-trigger-text {
-      font-size: 1rem;
+      min-width: 0;
+      font-size: 0.95rem;
       font-weight: 700;
       color: var(--primary-navy);
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr);
+      align-items: start;
+      gap: 8px;
       word-break: keep-all;
     }
 
@@ -1566,6 +1600,8 @@
       font-size: 0.8rem;
       color: var(--neutral-gray);
       transition: transform 0.3s ease;
+      flex-shrink: 0;
+      margin-top: 4px;
     }
 
     .faq-item.active .faq-icon {
@@ -1579,13 +1615,37 @@
     }
 
     .faq-panel-content {
-      padding: 0 24px 24px;
-      font-size: 0.95rem;
+      padding: 16px 18px 18px;
+      font-size: 0.9rem;
       color: var(--neutral-dark);
-      line-height: 1.7;
+      line-height: 1.65;
       word-break: keep-all;
       border-top: 1px solid var(--neutral-light-gray);
-      padding-top: 20px;
+    }
+
+    .faq-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .faq-more-btn {
+      min-height: 42px;
+      padding: 9px 16px;
+      border: 1px solid rgba(0, 82, 204, 0.2);
+      border-radius: 6px;
+      background: white;
+      color: var(--tech-blue);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .faq-more-btn:hover {
+      background: rgba(0, 82, 204, 0.04);
+      border-color: rgba(0, 82, 204, 0.35);
     }
 
     /* Ask Bot Container Card (Premium Glassmorphism Glow) */
@@ -2359,6 +2419,37 @@
         gap: 12px;
       }
 
+      .faq-tabs {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .faq-tab-btn {
+        min-width: 0;
+        padding: 8px 5px;
+        font-size: 0.8rem;
+        white-space: normal;
+      }
+
+      .faq-columns {
+        grid-template-columns: 1fr;
+      }
+
+      .faq-trigger {
+        min-height: 64px;
+        padding: 14px 15px;
+      }
+
+      .faq-trigger-text {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+
+      .faq-panel-content {
+        padding: 15px;
+      }
+
       .footer-content {
         grid-template-columns: 1fr;
         gap: 40px;
@@ -2805,20 +2896,20 @@
     <section class="card-section" id="faq">
       <div class="section-title-area">
         <h2>자주 묻는 질문 (FAQ)</h2>
-        <p>학과 정체성, 수능 최저, 준비 방법 등 수험생과 부모님들께서 가장 많이 물으시는 공통 의문점 답변</p>
+        <p>학과·교수진·교육과정·심화 교육축·진로 정보를 주제별 핵심 질문으로 확인합니다.</p>
       </div>
 
       <!-- Filter tabs -->
-      <div class="faq-tabs" id="faqTabs">
-        <button class="faq-tab-btn active" data-category="전체" onclick="filterFaq('전체')">전체보기</button>
-        <button class="faq-tab-btn" data-category="학과소개" onclick="filterFaq('학과소개')">학과소개</button>
-        <button class="faq-tab-btn" data-category="교육과정" onclick="filterFaq('교육과정')">교육과정</button>
-        <button class="faq-tab-btn" data-category="진로" onclick="filterFaq('진로')">진로/취업</button>
-        <button class="faq-tab-btn" data-category="입학" onclick="filterFaq('입학')">입학안내</button>
+      <div class="faq-tabs" id="faqTabs" role="tablist" aria-label="FAQ 주제">
+        <button class="faq-tab-btn active" data-group="core" role="tab" aria-selected="true">핵심 질문</button>
+        <button class="faq-tab-btn" data-group="overview" role="tab" aria-selected="false">학과·비교</button>
+        <button class="faq-tab-btn" data-group="learning" role="tab" aria-selected="false">교육·심화</button>
+        <button class="faq-tab-btn" data-group="career" role="tab" aria-selected="false">진로·준비</button>
+        <button class="faq-tab-btn" data-group="faculty" role="tab" aria-selected="false">교수·운영</button>
       </div>
 
       <!-- FAQ Accordion -->
-      <div class="faq-accordion" id="faqAccordion">
+      <div class="faq-accordion" id="faqAccordion" aria-live="polite">
         <!-- Dynamically hydrated from faq.json -->
       </div>
     </section>
@@ -3142,11 +3233,39 @@
     // State management
     let rawFaqData = [];
     let seoPagesData = [];
-    let activeFaqCategory = '전체';
+    let activeFaqGroup = 'core';
+    let faqExpanded = false;
     let departmentPolicy = {};
     let currentPersona = 'student';
     let suggestedQuestionsData = null;
     let peopleProjectData = null;
+
+    const FAQ_PREVIEW_LIMIT = 8;
+    const FAQ_CORE_IDS = [
+      'identity-001',
+      'ops-002a',
+      'cur-001',
+      'area-001',
+      'seo-diff-architecture-001',
+      'seo-diff-engineering-001',
+      'seo-career-001',
+      'fit-005'
+    ];
+    const FAQ_GROUPS = {
+      overview: {
+        categories: ['학과소개', '학과 비교', '학부모 안내']
+      },
+      learning: {
+        categories: ['교육과정', '심화 교육축', '학습 예시', '기술 키워드']
+      },
+      career: {
+        categories: ['졸업 후 진로', '진로', '지원자 적합성', '수험생 안내', '진학지도교사 안내', '미래 전망']
+      },
+      faculty: {
+        categories: ['운영 안내', '답변 정책'],
+        ids: ['ops-002a']
+      }
+    };
 
     const DEFAULT_SUGGESTED_QUESTIONS = {
       "student": [
@@ -3216,15 +3335,15 @@
         console.error("Failed to bind persona tabs delegation", err);
       }
 
-      // 3. Parent Event Delegation for FAQ category buttons
+      // 3. Parent Event Delegation for FAQ group buttons
       try {
         const faqTabs = document.getElementById('faqTabs');
         if (faqTabs) {
           faqTabs.addEventListener('click', (e) => {
             const btn = e.target.closest('.faq-tab-btn');
             if (btn) {
-              const category = btn.getAttribute('data-category') || btn.textContent.trim();
-              filterFaq(category);
+              const group = btn.getAttribute('data-group');
+              if (group) filterFaq(group);
             }
           });
         }
@@ -3649,48 +3768,76 @@
       const container = document.getElementById('faqAccordion');
       if (!container) return;
 
-      const filtered = rawFaqData.filter(item => {
-        if (activeFaqCategory === '전체') return true;
-        return item.category === activeFaqCategory;
-      });
+      const byId = new Map(rawFaqData.map(item => [item.id, item]));
+      let filtered;
+
+      if (activeFaqGroup === 'core') {
+        filtered = FAQ_CORE_IDS.map(id => byId.get(id)).filter(Boolean);
+      } else {
+        const group = FAQ_GROUPS[activeFaqGroup] || FAQ_GROUPS.overview;
+        const groupItems = rawFaqData.filter(item => group.categories.includes(item.category));
+        const pinnedItems = (group.ids || []).map(id => byId.get(id)).filter(Boolean);
+        filtered = [...new Map([...pinnedItems, ...groupItems].map(item => [item.id, item])).values()]
+          .sort((left, right) => (right.priority || 0) - (left.priority || 0));
+      }
 
       if (filtered.length === 0) {
         container.innerHTML = `<p style="text-align: center; color: var(--neutral-gray); padding: 40px 0;">등록된 자주 묻는 질문이 없습니다.</p>`;
         return;
       }
 
-      container.innerHTML = filtered.map(item => `
+      const visibleItems = faqExpanded ? filtered : filtered.slice(0, FAQ_PREVIEW_LIMIT);
+      const splitIndex = Math.ceil(visibleItems.length / 2);
+      const columns = [visibleItems.slice(0, splitIndex), visibleItems.slice(splitIndex)];
+      const renderItem = item => `
         <div class="faq-item" id="faq-item-${item.id}">
-          <button class="faq-trigger" onclick="toggleAccordion('faq-item-${item.id}')">
+          <button class="faq-trigger" onclick="toggleAccordion('faq-item-${item.id}')" aria-expanded="false" aria-controls="faq-panel-${item.id}">
             <span class="faq-trigger-text">
               <span class="faq-trigger-badge">${item.category}</span>
-              ${item.question}
+              <span>${item.question}</span>
             </span>
-            <span class="faq-icon">▼</span>
+            <span class="faq-icon" aria-hidden="true">▼</span>
           </button>
-          <div class="faq-panel">
+          <div class="faq-panel" id="faq-panel-${item.id}" aria-hidden="true">
             <div class="faq-panel-content">
               ${item.answer.replace(/\n/g, '<br>')}
             </div>
           </div>
         </div>
-      `).join('');
+      `;
+
+      const remainingCount = Math.max(0, filtered.length - FAQ_PREVIEW_LIMIT);
+      container.innerHTML = `
+        <div class="faq-columns">
+          ${columns.map(items => `<div class="faq-column">${items.map(renderItem).join('')}</div>`).join('')}
+        </div>
+        ${remainingCount > 0 ? `
+          <div class="faq-actions">
+            <button class="faq-more-btn" type="button" onclick="toggleFaqExpanded()" aria-expanded="${faqExpanded}">
+              ${faqExpanded ? '간단히 보기 −' : `질문 ${remainingCount}개 더 보기 ＋`}
+            </button>
+          </div>
+        ` : ''}
+      `;
     }
 
-    // Filter FAQ Category
-    function filterFaq(category) {
-      activeFaqCategory = category;
+    // Filter FAQ Group
+    function filterFaq(group) {
+      activeFaqGroup = group;
+      faqExpanded = false;
       
       const buttons = document.querySelectorAll('.faq-tab-btn');
       buttons.forEach(btn => {
-        const btnCategory = btn.getAttribute('data-category') || btn.textContent.trim();
-        if (btnCategory === category || (category === '전체' && btnCategory === '전체보기')) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
+        const isActive = btn.getAttribute('data-group') === group;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', String(isActive));
       });
 
+      renderFaqItems();
+    }
+
+    function toggleFaqExpanded() {
+      faqExpanded = !faqExpanded;
       renderFaqItems();
     }
 
@@ -3704,12 +3851,18 @@
 
       document.querySelectorAll('.faq-item').forEach(item => {
         item.classList.remove('active');
-        item.querySelector('.faq-panel').style.maxHeight = null;
+        const itemPanel = item.querySelector('.faq-panel');
+        const itemTrigger = item.querySelector('.faq-trigger');
+        itemPanel.style.maxHeight = null;
+        itemPanel.setAttribute('aria-hidden', 'true');
+        itemTrigger.setAttribute('aria-expanded', 'false');
       });
 
       if (!isAlreadyActive) {
         targetItem.classList.add('active');
         panel.style.maxHeight = panel.scrollHeight + "px";
+        panel.setAttribute('aria-hidden', 'false');
+        targetItem.querySelector('.faq-trigger').setAttribute('aria-expanded', 'true');
       }
     }
 
