@@ -8,7 +8,7 @@
       "title": "석좌교수",
       "domain": "초고층 구조 및 진동제어 · 내진성능 연구 전문가",
       "profile_image": "/assets/jeong-ran.png",
-      "brochure_image": "/assets/brochure-jeong-ran.png",
+      "brochure_image": "/assets/faculty-brochure-v2/jeong-ran.png",
       "icon": "🏛️",
       "philosophy": "구조안전은 실험·해석·제어·정책으로 검증된다",
       "education_career": [
@@ -36,7 +36,7 @@
       "title": "교수",
       "domain": "구조동역학 · 스마트 내진리모델링 · AI 안전진단",
       "profile_image": "/assets/lee-sanghyun.png",
-      "brochure_image": "/assets/brochure-lee-sanghyun.png",
+      "brochure_image": "/assets/faculty-brochure-v2/lee-sanghyun.png",
       "icon": "🧠",
       "philosophy": "구조안전은 계측·모델링·해석·제어로 검증된다",
       "education_career": [
@@ -65,7 +65,7 @@
       "title": "교수",
       "domain": "Design-Build 기반 건축교육 · 목조 BIM 및 공업화 건축",
       "profile_image": "/assets/kang-taewoong.png",
-      "brochure_image": "/assets/brochure-kang-taewoong.png",
+      "brochure_image": "/assets/faculty-brochure-v2/kang-taewoong.png",
       "icon": "📐",
       "philosophy": "건축은 설계에서 시작하여 시공으로 완성되고, 성능으로 검증된다",
       "education_career": [
@@ -95,10 +95,10 @@
     {
       "id": "wi-jinbok",
       "name": "위진복",
-      "title": "초빙/겸임 건축사",
+      "title": "건축사",
       "company": "UIA 건축사사무소 대표",
       "domain": "디자인-엔지니어링 통합 설계 · 2025 오사카 엑스포 한국관 설계자",
-      "brochure_image": "/assets/brochure-wi-jinbok.png",
+      "brochure_image": "/assets/faculty-brochure-v2/wi-jinbok.png",
       "icon": "🎨",
       "philosophy": "Design is Engineering - 디자인과 엔지니어링은 연속적인 흐름이다",
       "education_career": [
@@ -117,7 +117,7 @@
       "achievements": [
         "2025 오사카 엑스포 한국관 설계 공모 당선 및 수행",
         "충주시립미술관 국제지명공모 당선",
-        "서울대 해동학술관 Pi-ville 99: 해상 컨테이너 38개 활용 창업 인큐베이터 설계",
+        "고려대학교 Pi-ville 99: 중고 해상 컨테이너 38개를 재활용한 창업 인큐베이터 설계",
         "대한민국 공간문화대상 장관상 수훈 (2020)"
       ]
     },
@@ -127,7 +127,7 @@
       "title": "산학협력 대표기술사",
       "company": "(주)동양구조안전기술 대표이사 회장",
       "domain": "초고층 구조설계 · 구조안전진단 · BIM 스마트 구조엔지니어링 전문가",
-      "brochure_image": "/assets/brochure-jeong-gwangryang.png",
+      "brochure_image": "/assets/faculty-brochure-v2/jeong-gwangryang.png",
       "icon": "🏗️",
       "philosophy": "안전은 구조기술의 출발점이며, 설계기술의 발전이 곧 건축의 발전이다",
       "education_career": [
@@ -156,7 +156,7 @@
       "title": "산학협력 대표기술사",
       "company": "(주)창민우구조컨설턴트 대표이사 회장",
       "domain": "초고층·비정형 구조설계 · 성능기반 내진엔지니어링 전문가",
-      "brochure_image": "/assets/brochure-kim-jongho.png",
+      "brochure_image": "/assets/faculty-brochure-v2/kim-jongho.png",
       "icon": "⚡",
       "philosophy": "설계를 가능하게 하고, 성능으로 검증된다",
       "education_career": [
@@ -184,7 +184,7 @@
       "title": "산학협력 대표기술사",
       "company": "(주)CS구조엔지니어링 대표이사",
       "domain": "대공간 구조설계 · 케이블 및 스페이스 프레임 특수구조 전문가",
-      "brochure_image": "/assets/brochure-kim-jongsu.png",
+      "brochure_image": "/assets/faculty-brochure-v2/kim-jongsu.png",
       "icon": "🎪",
       "philosophy": "구조는 힘의 흐름을 지배하는 예술이다",
       "education_career": [
