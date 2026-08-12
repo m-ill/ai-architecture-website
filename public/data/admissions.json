@@ -1,5 +1,8 @@
 {
-  "source": "2027학년도 대학입학전형시행계획 기준 (반드시 최종 모집요강 확인 필요)",
+  "source": "2027학년도 수시 신입생 모집요강(배포용 2026-07-20) 및 2027학년도 대학입학전형시행계획 기준",
+  "official_susi_guide_url": "https://ipsi.dankook.ac.kr/jukjeon/doumi/mojip.html?bbsid=juk_paper&ctg_cd=01",
+  "official_admissions_url": "https://ipsi.dankook.ac.kr/jukjeon/main.html",
+  "admissions_phone": "031-8005-2550~3",
   "admission_year": "2027학년도",
   "department": "AI건축융합학과",
   "college": "AI융합대학",
@@ -12,47 +15,47 @@
       "type": "학생부교과",
       "name": "지역균형선발",
       "count": 3,
-      "note": "공식 모집요강 필수 확인"
+      "note": "2027학년도 수시 모집요강 기준"
     },
     {
       "period": "수시",
       "type": "논술위주",
       "name": "논술우수자",
       "count": 2,
-      "note": "공식 모집요강 필수 확인"
+      "note": "2027학년도 수시 모집요강 기준"
     },
     {
       "period": "수시",
       "type": "학생부종합",
       "name": "DKU인재(서류형)",
       "count": 3,
-      "note": "공식 모집요강 필수 확인"
+      "note": "2027학년도 수시 모집요강 기준"
     },
     {
       "period": "수시",
       "type": "학생부종합",
       "name": "기회균형선발",
       "count": 2,
-      "note": "공식 모집요강 필수 확인"
+      "note": "2027학년도 수시 모집요강 기준"
     },
     {
       "period": "수시",
       "type": "학생부종합",
       "name": "사회적배려대상자",
       "count": 2,
-      "note": "공식 모집요강 필수 확인"
+      "note": "2027학년도 수시 모집요강 기준"
     },
     {
       "period": "정시",
       "type": "수능위주",
       "name": "일반학생",
       "count": 8,
-      "note": "공식 모집요강 필수 확인"
+      "note": "시행계획 기준 · 최종 정시 모집요강 확인"
     }
   ],
   "not_selected_in_2027": [
     "DKU인재(면접형)"
   ],
-  "important_notice": "AI건축융합학과는 2027학년도 신설 예정 학과로, 정원 20명 규모로 운영됩니다. 세부 모집전형, 전형별 인원, 지원자격, 수능최저, 반영방법은 반드시 단국대학교 입학안내 홈페이지의 최종 모집요강을 확인해야 합니다.",
-  "last_updated": "2026-06-02"
+  "important_notice": "AI건축융합학과는 2027학년도 신설 확정 학과이며 정원내 총 20명입니다. 수시 12명은 2027학년도 수시 모집요강, 정시 8명은 대학입학전형시행계획 기준입니다. 정시 인원은 수시 이월 등에 따라 달라질 수 있으므로 원서 접수 전 단국대학교 입학처의 최종 정시 모집요강을 확인해야 합니다.",
+  "last_updated": "2026-08-12"
 }

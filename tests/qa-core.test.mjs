@@ -62,7 +62,7 @@ test("FAQ identifiers are unique", () => {
   assert.equal(new Set(faq.map(item => item.id)).size, faq.length);
 });
 
-test("admissions detection blocks admissions only", () => {
+test("admissions detection identifies admissions questions only", () => {
   for (const question of [
     "2027 수시 모집인원은 몇 명인가요?",
     "내신 몇 등급이면 되나요?",
@@ -177,9 +177,19 @@ test("worker returns safe static and fallback answers without Gemini", async () 
   }
 
   const admissions = await ask("2027 수시 모집인원은 몇 명인가요?");
-  assert.equal(admissions.type, "admissions-redirect");
-  assert.match(admissions.answer, /2027학년도 최종 모집요강/);
+  assert.equal(admissions.type, "admissions-answer");
+  assert.match(admissions.answer, /수시 모집인원은 12명/);
+  assert.match(admissions.answer, /지역균형선발: 3명/);
+  assert.match(admissions.answer, /DKU인재\(서류형\): 3명/);
+  assert.equal(admissions.related_url, "https://ipsi.dankook.ac.kr/jukjeon/doumi/mojip.html?bbsid=juk_paper&ctg_cd=01");
+  assert.ok(admissions.sources.length >= 2);
   assert.doesNotMatch(admissions.answer, /[😊📌🌐☎📋🎓]/u);
+
+  const admissionsGuidance = await ask("내신 몇 등급이면 되나요?");
+  assert.equal(admissionsGuidance.type, "admissions-guidance");
+  assert.match(admissionsGuidance.answer, /단정할 수 없습니다/);
+  assert.match(admissionsGuidance.answer, /031-8005-2550~3/);
+  assert.ok(admissionsGuidance.sources.length >= 2);
 
   const facultyProject = await ask("김종호 대표 프로젝트는 무엇인가요?");
   assert.equal(facultyProject.type, "answer");
