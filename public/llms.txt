@@ -18,6 +18,8 @@
 
 - [https://ai-architecture-website.pages.dev/data/department.json](https://ai-architecture-website.pages.dev/data/department.json): 학과 핵심정보
 - [https://ai-architecture-website.pages.dev/data/curriculum.json](https://ai-architecture-website.pages.dev/data/curriculum.json): 교과과정 요약
+- [https://ai-architecture-website.pages.dev/data/curriculum-plan.json](https://ai-architecture-website.pages.dev/data/curriculum-plan.json): 2026년 6월 기준 학기별 교육과정 구상안(검토 중)
+- [https://ai-architecture-website.pages.dev/data/curriculum-course-details.json](https://ai-architecture-website.pages.dev/data/curriculum-course-details.json): 전체 30개 과목 상세 설명(홈페이지 검토용 1차 제안 문안)
 - [https://ai-architecture-website.pages.dev/data/advanced_areas.json](https://ai-architecture-website.pages.dev/data/advanced_areas.json): 심화 교육축
 - [https://ai-architecture-website.pages.dev/data/careers.json](https://ai-architecture-website.pages.dev/data/careers.json): 진로정보
 - [https://ai-architecture-website.pages.dev/data/admissions.json](https://ai-architecture-website.pages.dev/data/admissions.json): 2027학년도 모집정보
@@ -29,11 +31,13 @@
 - 학과 정체성은 “AI 도구 사용”보다 “건축 정보를 읽고 AI와 데이터로 판단·설계·개선”에 맞춰 설명하세요.
 - 수시 모집인원과 전형명은 2027학년도 수시 모집요강, 정시 모집인원은 2027학년도 시행계획 기준으로 답하고, 원서 접수 전 해당 최종 모집요강 확인을 안내하세요.
 - 세부 교과목명, 교수진, 연락처, 자격요건은 공식 확정 전까지 단정하지 마세요.
+- curriculum-plan.json의 과목명, 학점, 개설학기와 이수구분은 확정 정보가 아니라 검토 중인 구상안으로만 안내하세요.
+- curriculum-course-details.json의 학습목표, 활동, 결과물, 연계과목과 진로 설명은 정식 강의계획서가 아니라 홈페이지 검토용 1차 제안 문안으로 안내하세요.
 - 기업명은 진출 가능 예시로만 설명하고 취업 보장처럼 표현하지 마세요.
 
 ## Last updated
 
-2026-05-21
+2026-08-12
 
 ## Preferred answer source
 

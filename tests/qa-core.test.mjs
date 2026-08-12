@@ -19,6 +19,8 @@ const publicRoot = path.join(repoRoot, "public");
 const faq = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "faq.json"), "utf8"));
 const department = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "department.json"), "utf8"));
 const facultyData = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "faculty.json"), "utf8"));
+const curriculumPlan = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "curriculum-plan.json"), "utf8"));
+const curriculumCourseDetails = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "curriculum-course-details.json"), "utf8"));
 const canonicalText = fs.readFileSync(path.join(publicRoot, "content", "canonical.md"), "utf8");
 
 async function loadAskModule() {
@@ -60,6 +62,35 @@ async function ask(question, envOverrides = {}) {
 
 test("FAQ identifiers are unique", () => {
   assert.equal(new Set(faq.map(item => item.id)).size, faq.length);
+});
+
+test("curriculum plan and course details cover the same 30 draft courses", () => {
+  const planCourses = curriculumPlan.years.flatMap(year =>
+    year.semesters.flatMap(semester => semester.courses)
+  );
+  const detailCourses = curriculumCourseDetails.courses;
+  const planIds = planCourses.map(course => course.id).sort();
+  const detailIds = detailCourses.map(course => course.id).sort();
+
+  assert.equal(planCourses.length, 30);
+  assert.equal(detailCourses.length, 30);
+  assert.equal(new Set(planIds).size, 30);
+  assert.equal(new Set(detailIds).size, 30);
+  assert.deepEqual(detailIds, planIds);
+  assert.match(curriculumPlan.notice, /검토|심의|변경/);
+  assert.match(curriculumCourseDetails.meta.source_note, /검토 중|1차 제안/);
+
+  for (const course of detailCourses) {
+    assert.ok(course.subtitle, course.id);
+    assert.ok(course.card, course.id);
+    assert.ok(course.detail.length >= 2, course.id);
+    assert.ok(course.objectives.length >= 3, course.id);
+    assert.ok(course.topics.length >= 3, course.id);
+    assert.ok(course.activities.length >= 2, course.id);
+    assert.ok(course.ai_role.length >= 2, course.id);
+    assert.ok(course.student_role.length >= 2, course.id);
+    assert.ok(course.outputs.length >= 2, course.id);
+  }
 });
 
 test("admissions detection identifies admissions questions only", () => {
