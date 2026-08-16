@@ -131,6 +131,7 @@ test("strong department questions route to the expected FAQ", () => {
   const bim = scoreFaq("BIM은 어떻게 배우나요?", faq)[0];
   const graduateSchool = scoreFaq("대학원 진학은 가능한가요?", faq)[0];
   const license = scoreFaq("건축사 시험 합격 방법", faq)[0];
+  const colloquialLicense = scoreFaq("건축사 딸 수 있어요?", faq)[0];
 
   assert.equal(professor.item.id, "ops-002a");
   assert.ok(professor.score >= STATIC_ANSWER_SCORE);
@@ -139,6 +140,13 @@ test("strong department questions route to the expected FAQ", () => {
   assert.equal(graduateSchool.item.id, "career-009");
   assert.ok(graduateSchool.score >= 55);
   assert.equal(license.item.id, "diff-006");
+  assert.equal(colloquialLicense.item.id, "diff-006");
+  assert.ok(colloquialLicense.score >= STATIC_ANSWER_SCORE);
+});
+
+test("the default generative model is Gemini 3.7 Flash", async () => {
+  const { DEFAULT_GEMINI_MODEL } = await loadAskModule();
+  assert.equal(DEFAULT_GEMINI_MODEL, "gemini-3.7-flash");
 });
 
 test("disclaimers depend on the user intent and are not duplicated", () => {
@@ -193,6 +201,12 @@ test("worker returns safe static and fallback answers without Gemini", async () 
   const afterAdmission = await ask("입학 후 어떤 과목을 배우나요?");
   assert.notEqual(afterAdmission.type, "admissions-redirect");
   assert.equal(afterAdmission.matched_id, "cur-005");
+
+  const colloquialLicense = await ask("건축사 딸 수 있어요?");
+  assert.equal(colloquialLicense.type, "answer");
+  assert.equal(colloquialLicense.matched_id, "diff-006");
+  assert.match(colloquialLicense.answer, /졸업하는 것만으로.*자동으로 주어지는 과정은 아닙니다/);
+  assert.match(colloquialLicense.answer, /건축학교육 인증|실무수련/);
 
   for (const [question, expectedId] of [
     ["트랙은 몇 개인가요?", "area-001"],
