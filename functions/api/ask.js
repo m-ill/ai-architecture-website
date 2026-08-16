@@ -13,6 +13,8 @@ import {
   scoreFaq as scoreFaqCore
 } from "../_lib/qa-core.mjs";
 
+export const DEFAULT_GEMINI_MODEL = "gemini-3.7-flash";
+
 export async function onRequest(context) {
   const { request, env } = context;
   const corsHeaders = {
@@ -133,7 +135,7 @@ export async function onRequest(context) {
 
     // Rule B: Generative AI natural language search via Gemini API (if API Key provided)
     const apiKey = env.GEMINI_API_KEY;
-    const apiModel = env.GEMINI_MODEL || "gemini-3.5-flash";
+    const apiModel = env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL;
     let apiErrorMsg = null;
     
     if (apiKey) {

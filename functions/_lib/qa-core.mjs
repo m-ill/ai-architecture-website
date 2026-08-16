@@ -21,7 +21,10 @@ const INTENT_ROUTES = [
   },
   {
     intent: "건축사 자격",
-    triggers: ["건축사 자격", "건축사 면허", "건축사 되는", "건축사 시험"],
+    triggers: [
+      "건축사 자격", "건축사 면허", "건축사 되는", "건축사 시험",
+      "건축사 딸", "건축사 따", "건축사 취득", "건축사 가능", "건축사 할 수", "건축사 할수"
+    ],
     preferred_faq_id: "diff-006",
     preferred_url: "/architecture-vs-ai-architecture"
   },
