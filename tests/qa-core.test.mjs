@@ -121,7 +121,9 @@ test("admissions detection identifies admissions questions only", () => {
     "2027 수시 모집인원은 몇 명인가요?",
     "내신 몇 등급이면 되나요?",
     "원서 접수 일정 알려줘",
-    "DKU인재 전형 지원자격은 무엇인가요?"
+    "DKU인재 전형 지원자격은 무엇인가요?",
+    "진학 상담을 받고 싶어요",
+    "지원 방법이 궁금해요"
   ]) {
     assert.equal(isAdmissionsQuestion(question), true, question);
   }
@@ -132,6 +134,7 @@ test("admissions detection identifies admissions questions only", () => {
     "교육 일정은 어떻게 되나요?",
     "건축사 시험 합격 방법을 알려주세요",
     "건축사 시험 합격 점수는 몇 점인가요?",
+    "프로그래밍 경험이 없어도 지원할 수 있나요?",
     "입학 전에 무엇을 공부해야 하나요?",
     "입학 후 어떤 과목을 배우나요?"
   ]) {
@@ -149,12 +152,29 @@ test("unrelated questions no longer receive category baseline scores", () => {
   assert.equal(isLikelyDepartmentQuestion("점심 메뉴 추천해줘"), false);
 });
 
+test("prospective student harness keeps readiness questions in scope", () => {
+  for (const question of [
+    "코딩 몰라도 되나요?",
+    "프로그래밍 경험이 없어도 지원할 수 있나요?",
+    "건축을 배운 적 없어도 괜찮나요?",
+    "문과인데 따라갈 수 있나요?",
+    "진학 상담을 받고 싶어요",
+    "수학에 자신 없어도 괜찮을까요?"
+  ]) {
+    assert.equal(isLikelyDepartmentQuestion(question), true, question);
+  }
+
+  assert.equal(isLikelyDepartmentQuestion("오늘 날씨 몰라도 괜찮나요?"), false);
+});
+
 test("strong department questions route to the expected FAQ", () => {
   const professor = scoreFaq("교수 인원은 확정됐나요?", faq)[0];
   const bim = scoreFaq("BIM은 어떻게 배우나요?", faq)[0];
   const graduateSchool = scoreFaq("대학원 진학은 가능한가요?", faq)[0];
   const license = scoreFaq("건축사 시험 합격 방법", faq)[0];
   const colloquialLicense = scoreFaq("건축사 딸 수 있어요?", faq)[0];
+  const noCodingBackground = scoreFaq("코딩 몰라도 되나요?", faq)[0];
+  const humanitiesStudent = scoreFaq("문과인데 따라갈 수 있나요?", faq)[0];
 
   assert.equal(professor.item.id, "ops-002a");
   assert.ok(professor.score >= STATIC_ANSWER_SCORE);
@@ -165,6 +185,10 @@ test("strong department questions route to the expected FAQ", () => {
   assert.equal(license.item.id, "diff-006");
   assert.equal(colloquialLicense.item.id, "diff-006");
   assert.ok(colloquialLicense.score >= STATIC_ANSWER_SCORE);
+  assert.equal(noCodingBackground.item.id, "fit-004");
+  assert.ok(noCodingBackground.score >= STATIC_ANSWER_SCORE);
+  assert.equal(humanitiesStudent.item.id, "seo-student-001");
+  assert.ok(humanitiesStudent.score >= STATIC_ANSWER_SCORE);
 });
 
 test("the default generative model is Gemini 3.7 Flash", async () => {
@@ -231,6 +255,19 @@ test("worker returns safe static and fallback answers without Gemini", async () 
   assert.match(colloquialLicense.answer, /졸업하는 것만으로.*자동으로 주어지는 과정은 아닙니다/);
   assert.match(colloquialLicense.answer, /건축학교육 인증|실무수련/);
 
+  const noCodingBackground = await ask("코딩 몰라도 되나요?");
+  assert.equal(noCodingBackground.type, "answer");
+  assert.equal(noCodingBackground.matched_id, "fit-004");
+  assert.match(noCodingBackground.answer, /코딩을 몰라도 지원할 수/);
+
+  const humanitiesStudent = await ask("문과인데 따라갈 수 있나요?");
+  assert.equal(humanitiesStudent.type, "answer");
+  assert.equal(humanitiesStudent.matched_id, "seo-student-001");
+
+  const noProgrammingExperience = await ask("프로그래밍 경험이 없어도 지원할 수 있나요?");
+  assert.equal(noProgrammingExperience.type, "answer");
+  assert.equal(noProgrammingExperience.matched_id, "fit-004");
+
   for (const [question, expectedId] of [
     ["트랙은 몇 개인가요?", "area-001"],
     ["4년 동안 무엇을 배우나요?", "cur-001"],
@@ -258,6 +295,10 @@ test("worker returns safe static and fallback answers without Gemini", async () 
   assert.match(admissionsGuidance.answer, /단정할 수 없습니다/);
   assert.match(admissionsGuidance.answer, /031-8005-2550~3/);
   assert.ok(admissionsGuidance.sources.length >= 2);
+
+  const counselingGuidance = await ask("진학 상담을 받고 싶어요");
+  assert.equal(counselingGuidance.type, "admissions-guidance");
+  assert.match(counselingGuidance.answer, /031-8005-2550~3/);
 
   const facultyProject = await ask("김종호 대표 프로젝트는 무엇인가요?");
   assert.equal(facultyProject.type, "answer");
