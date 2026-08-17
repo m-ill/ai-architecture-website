@@ -1481,7 +1481,7 @@
 
     .faculty-project-mini-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
     }
 
@@ -1605,6 +1605,30 @@
       line-height: 1.65;
       word-break: keep-all;
       margin: 0;
+    }
+
+    .project-detail-attribution {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #f4f7fc;
+      color: var(--neutral-gray);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      word-break: keep-all;
+    }
+
+    .project-detail-source {
+      width: fit-content;
+      color: var(--tech-blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .project-detail-source:hover {
+      text-decoration: underline;
     }
 
     .project-detail-status {
@@ -3936,6 +3960,7 @@
     }
 
     function getProjectImageStatusLabel(status) {
+      if (status === 'provided_research_material') return '제공된 조사 자료 · 게시 전 사용 허락과 크레딧 조건 확인 필요';
       if (status === 'candidate_check_license') return '1차 수집 이미지 · 사용권 검토 필요';
       if (status === 'commons_candidate_download_retry') return '공개 후보 확인됨 · 다운로드 재시도 필요';
       if (status === 'needs_official_or_permission') return '공식 이미지 또는 사용 허가 필요';
@@ -3953,7 +3978,7 @@
         <div class="faculty-project-strip">
           <div class="faculty-project-strip-title">
             <span>대표 프로젝트 이미지</span>
-            <small>검토용</small>
+            <small>출처 확인</small>
           </div>
           <div class="faculty-project-mini-grid">
             ${imageProjects.map(project => `
@@ -3990,10 +4015,12 @@
       const titleNode = document.getElementById('projectDetailTitle');
       const roleNode = document.getElementById('projectDetailRole');
       const summaryNode = document.getElementById('projectDetailSummary');
+      const creditNode = document.getElementById('projectDetailCredit');
+      const sourceNode = document.getElementById('projectDetailSource');
       const statusNode = document.getElementById('projectDetailStatus');
       const closeBtn = document.getElementById('projectDetailCloseBtn');
 
-      if (!modal || !image || !personNode || !titleNode || !roleNode || !summaryNode || !statusNode) return;
+      if (!modal || !image || !personNode || !titleNode || !roleNode || !summaryNode || !creditNode || !sourceNode || !statusNode) return;
 
       image.src = project.imageCandidate;
       image.alt = project.name;
@@ -4001,6 +4028,14 @@
       titleNode.textContent = project.name;
       roleNode.textContent = project.role;
       summaryNode.textContent = person.summary;
+      creditNode.textContent = project.credit ? `사진 크레딧: ${project.credit}` : '사진 크레딧은 원 출처에서 확인해 주세요.';
+      if (project.sourceUrl) {
+        sourceNode.href = project.sourceUrl;
+        sourceNode.hidden = false;
+      } else {
+        sourceNode.removeAttribute('href');
+        sourceNode.hidden = true;
+      }
       statusNode.textContent = getProjectImageStatusLabel(project.imageStatus);
       modal.classList.add('is-open');
       document.body.style.overflow = 'hidden';
@@ -4247,7 +4282,7 @@
 
       // 2a. Faculty Data Hydration
       const fac = await fetchJsonSafely('/data/faculty.json');
-      peopleProjectData = await fetchJsonSafely('/data/people-projects.draft.json');
+      peopleProjectData = await fetchJsonSafely('/data/people-projects.json');
       if (fac) {
         const renderFacultyBrochureCard = (f, variant = 'faculty') => {
           const isIndustry = variant === 'industry';
@@ -5097,6 +5132,10 @@
         <h3 id="projectDetailTitle"></h3>
         <p class="project-detail-role" id="projectDetailRole"></p>
         <p class="project-detail-summary" id="projectDetailSummary"></p>
+        <div class="project-detail-attribution">
+          <span id="projectDetailCredit"></span>
+          <a class="project-detail-source" id="projectDetailSource" href="#" target="_blank" rel="noopener noreferrer">원 출처 확인 ↗</a>
+        </div>
         <div class="project-detail-status" id="projectDetailStatus"></div>
       </div>
     </div>
