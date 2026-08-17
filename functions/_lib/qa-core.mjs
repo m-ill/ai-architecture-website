@@ -192,7 +192,17 @@ const WIKI_INTENTS = [
     heading: "무엇을 배우나요?",
     category: "교육과정",
     related_url: "/#curriculum",
-    patterns: [/배우|배울|수업|과목|공부|교육\s*과정|교육과정|커리큘럼|교과|학년/u]
+    patterns: [/배우|배워|배울|수업|과목|공부|교육\s*과정|교육과정|커리큘럼|교과|학년/u]
+  },
+  {
+    id: "coding",
+    heading: "코딩은 얼마나, 어떻게 배우나요?",
+    category: "교육과정",
+    related_url: "/student-preparation-guide",
+    patterns: [
+      /(?:코딩|프로그래밍|개발).{0,20}(?:배우|배워|배울|해야|하나요|합니까|필수|필요|많이|얼마나|어느\s*정도|어떻게)/iu,
+      /(?:배우|배워|배울|해야|필수|필요).{0,20}(?:코딩|프로그래밍|개발)/iu
+    ]
   },
   {
     id: "advanced-areas",
@@ -354,7 +364,7 @@ export function isClearlyOutOfScope(question) {
 export function findWikiIntent(question) {
   const normalized = normalize(question);
   const priority = [
-    "license", "preparation", "career", "faculty", "admissions",
+    "license", "coding", "preparation", "career", "faculty", "admissions",
     "advanced-areas", "learning-style", "learning", "identity"
   ];
   for (const intentId of priority) {
@@ -385,22 +395,31 @@ function extractMarkdownHeadingSection(markdown, heading) {
 
 export function buildWikiFallbackAnswer(question, wikiText) {
   const intent = findWikiIntent(question);
-  const fallbackIntent = {
-    id: "clarify",
-    heading: "질문이 짧거나 모호할 때",
-    category: "학과 안내",
-    related_url: "/#ask"
-  };
-  const selected = intent || fallbackIntent;
-  const answer = extractMarkdownHeadingSection(wikiText, selected.heading);
+  if (!intent) {
+    const clarificationIntent = {
+      id: "clarify",
+      heading: "추가 질문 필요",
+      category: "학과 안내",
+      related_url: "/#ask"
+    };
+    return {
+      answer: "AI건축융합학과에 관해 어떤 점이 궁금한지 조금만 더 알려주세요. 교육과정, 코딩·수학 준비, 진로, 교수진, 입학 안내 중 원하는 내용을 말씀해 주시면 바로 답하겠습니다.",
+      category: clarificationIntent.category,
+      matchedId: "wiki-clarify",
+      relatedUrl: clarificationIntent.related_url,
+      intent: clarificationIntent
+    };
+  }
+
+  const answer = extractMarkdownHeadingSection(wikiText, intent.heading);
   if (!answer) return null;
 
   return {
     answer,
-    category: selected.category,
-    matchedId: `wiki-${selected.id}`,
-    relatedUrl: selected.related_url,
-    intent: selected
+    category: intent.category,
+    matchedId: `wiki-${intent.id}`,
+    relatedUrl: intent.related_url,
+    intent
   };
 }
 

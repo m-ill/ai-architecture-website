@@ -4743,22 +4743,27 @@
       const normalized = normalizeString(question);
       const intents = [
         { id: 'license', heading: '건축사 자격을 취득할 수 있나요?', category: '자격·면허 안내', url: '/architecture-vs-ai-architecture', pattern: /건축사|자격증|자격|면허|기사|기술사/u },
+        { id: 'coding', heading: '코딩은 얼마나, 어떻게 배우나요?', category: '교육과정', url: '/student-preparation-guide', pattern: /(?:코딩|프로그래밍|개발).{0,20}(?:배우|배워|배울|해야|하나요|합니까|필수|필요|많이|얼마나|어느\s*정도|어떻게)|(?:배우|배워|배울|해야|필수|필요).{0,20}(?:코딩|프로그래밍|개발)/iu },
         { id: 'preparation', heading: '처음이어도 괜찮나요?', category: '지원자 적합성', url: '/student-preparation-guide', pattern: /처음|초보|몰라|못해|문과|이과|비전공|따라갈|준비|적성|어렵|난이도|선행|자신\s*없/u },
         { id: 'career', heading: '졸업 후 무엇을 할 수 있나요?', category: '진로', url: '/ai-architecture-careers', pattern: /졸업|진로|취업|직업|회사|대학원|창업|연구\s*개발|r&d/iu },
         { id: 'faculty', heading: '교수진과 산학 전문가는 어떻게 안내하나요?', category: '교수진', url: '/#faculty', pattern: /교수|전문가|멘토|교원|산학/u },
         { id: 'admissions', heading: '입학 질문은 어디까지 답하나요?', category: '입학 안내', url: '/#admissions', pattern: /입학|입시|수시|정시|수능|내신|모집|원서|학생부|생기부|세특|지원/u },
         { id: 'advanced-areas', heading: '심화 교육축은 무엇인가요?', category: '심화 교육축', url: '/#pillars', pattern: /심화|트랙|교육축|디지털트윈|구조안전|시공품질|건축환경/u },
         { id: 'learning-style', heading: '수업과 학습 방식은 어떤가요?', category: '교육과정', url: '/#curriculum', pattern: /프로젝트|실습|과제|포트폴리오|캡스톤|학습\s*방식/u },
-        { id: 'learning', heading: '무엇을 배우나요?', category: '교육과정', url: '/#curriculum', pattern: /배우|배울|수업|과목|공부|교육\s*과정|교육과정|커리큘럼|교과|학년/u },
+        { id: 'learning', heading: '무엇을 배우나요?', category: '교육과정', url: '/#curriculum', pattern: /배우|배워|배울|수업|과목|공부|교육\s*과정|교육과정|커리큘럼|교과|학년/u },
         { id: 'identity', heading: '어떤 학과인가요?', category: '학과소개', url: '/#about', pattern: /어떤\s*학과|무슨\s*학과|뭐\s*하는|뭐하는|학과\s*소개|정체성|핵심|여기|장점|특징|차별|좋은\s*점|왜\s*(?:지원|선택|가야)/u }
       ];
-      const selected = intents.find(intent => intent.pattern.test(normalized)) || {
+      const selected = intents.find(intent => intent.pattern.test(normalized));
+      const clarification = !selected;
+      const resolvedIntent = selected || {
         id: 'clarify',
-        heading: '질문이 짧거나 모호할 때',
+        heading: '추가 질문 필요',
         category: '학과 안내',
         url: '/#ask'
       };
-      const answer = extractLocalWikiSection(selected.heading);
+      const answer = clarification
+        ? 'AI건축융합학과에 관해 어떤 점이 궁금한지 조금만 더 알려주세요. 교육과정, 코딩·수학 준비, 진로, 교수진, 입학 안내 중 원하는 내용을 말씀해 주시면 바로 답하겠습니다.'
+        : extractLocalWikiSection(resolvedIntent.heading);
       if (!answer) return null;
 
       return {
@@ -4767,16 +4772,22 @@
         question,
         answer,
         confidence: 0.72,
-        matched_id: `wiki-${selected.id}`,
-        category: selected.category,
-        related_url: selected.url,
+        matched_id: `wiki-${resolvedIntent.id}`,
+        category: resolvedIntent.category,
+        related_url: resolvedIntent.url,
         match: {
-          id: `wiki-${selected.id}`,
-          question: selected.heading,
-          category: selected.category
+          id: `wiki-${resolvedIntent.id}`,
+          question: resolvedIntent.heading,
+          category: resolvedIntent.category
         },
         related: [],
-        sources: ['/content/llm-wiki.md']
+        sources: ['/content/llm-wiki.md'],
+        ai: {
+          provider: 'Google Gemini API',
+          model: 'gemini-3.6-flash',
+          status: 'browser-fallback',
+          reason: 'api-unavailable'
+        }
       };
     }
 
@@ -5098,17 +5109,29 @@
       let mainAnswer = data.answer || data.message || '답변 내용을 확인할 수 없습니다.';
       let disclaimerText = "";
       const numericConfidence = Number(data.confidence);
-      const confidenceText = data.type === 'fallback'
-        ? '범위 외 질문'
-        : (String(data.type || '').startsWith('admissions-')
-          ? '공식 입학자료 기준'
-          : (data.type === 'wiki-answer'
-            ? '학과 LLM Wiki 기반'
-            : (data.type === 'ai-answer'
-              ? 'LLM Wiki·공식자료 기반'
-              : (data.type === 'clarification'
-                ? '추가 질문 필요'
-                : (Number.isFinite(numericConfidence) ? `자료 일치도: ${Math.round(numericConfidence * 100)}%` : '공식 자료 기반')))));
+      const geminiModelLabel = data.ai?.model === 'gemini-3.6-flash'
+        ? 'Gemini 3.6 Flash'
+        : (data.ai?.model || 'Gemini');
+      let confidenceText = Number.isFinite(numericConfidence)
+        ? `자료 일치도: ${Math.round(numericConfidence * 100)}%`
+        : '공식 자료 기반';
+      if (data.type === 'fallback') {
+        confidenceText = '범위 외 질문';
+      } else if (String(data.type || '').startsWith('admissions-')) {
+        confidenceText = '공식 입학자료 기준';
+      } else if (data.type === 'wiki-answer') {
+        confidenceText = data.ai?.status === 'browser-fallback'
+          ? '브라우저 학과 지식 답변'
+          : `학과 지식 답변 · ${geminiModelLabel} 대체`;
+      } else if (data.type === 'ai-answer') {
+        confidenceText = `${geminiModelLabel} 생성 답변`;
+      } else if (data.type === 'clarification') {
+        confidenceText = '추가 질문 필요';
+      } else if (data.ai?.status === 'not-required') {
+        confidenceText = '검증된 공식 답변';
+      } else if (data.ai?.status === 'fallback' || data.ai?.status === 'not-configured') {
+        confidenceText = `공식자료 답변 · ${geminiModelLabel} 대체`;
+      }
       
       const disclaimerDelimiter = "입학 관련 세부사항은";
       if (mainAnswer.includes(disclaimerDelimiter)) {
@@ -5184,7 +5207,7 @@
               };
               const label = sourceLabels[src] ||
                 (src.includes('ipsi.dankook.ac.kr') ? '단국대학교 입학안내' :
-                  (src.startsWith('Gemini API') ? 'LLM 기반 요약' : src.substring(src.lastIndexOf('/') + 1)));
+                  (src.startsWith('Gemini API') ? `Google ${geminiModelLabel}` : src.substring(src.lastIndexOf('/') + 1)));
               const isLink = src.startsWith('/') || /^https?:\/\//i.test(src);
               return isLink
                 ? `<a href="${escapeHtml(src)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`
