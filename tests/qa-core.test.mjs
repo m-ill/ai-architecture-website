@@ -19,6 +19,7 @@ const publicRoot = path.join(repoRoot, "public");
 const faq = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "faq.json"), "utf8"));
 const department = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "department.json"), "utf8"));
 const facultyData = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "faculty.json"), "utf8"));
+const peopleProjects = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "people-projects.json"), "utf8"));
 const curriculumPlan = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "curriculum-plan.json"), "utf8"));
 const curriculumCourseDetails = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "curriculum-course-details.json"), "utf8"));
 const canonicalText = fs.readFileSync(path.join(publicRoot, "content", "canonical.md"), "utf8");
@@ -90,6 +91,28 @@ test("curriculum plan and course details cover the same 30 draft courses", () =>
     assert.ok(course.ai_role.length >= 2, course.id);
     assert.ok(course.student_role.length >= 2, course.id);
     assert.ok(course.outputs.length >= 2, course.id);
+  }
+});
+
+test("all seven participating people have two credited project images", () => {
+  const facultyIds = [
+    ...facultyData.faculty.map(person => person.id),
+    ...facultyData.industry_experts.map(person => person.id)
+  ].sort();
+  const projectPeopleIds = peopleProjects.people.map(person => person.id).sort();
+
+  assert.equal(peopleProjects.people.length, 7);
+  assert.deepEqual(projectPeopleIds, facultyIds);
+
+  for (const person of peopleProjects.people) {
+    assert.equal(person.projects.length, 2, person.id);
+    for (const project of person.projects) {
+      const relativeImagePath = project.imageCandidate.replace(/^\/+/, "");
+      assert.ok(fs.existsSync(path.join(publicRoot, relativeImagePath)), project.imageCandidate);
+      assert.ok(project.credit, `${person.id}: ${project.name}`);
+      assert.match(project.sourceUrl, /^https:\/\//, `${person.id}: ${project.name}`);
+      assert.equal(project.imageStatus, "provided_research_material");
+    }
   }
 });
 

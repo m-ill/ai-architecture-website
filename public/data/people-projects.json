@@ -1,0 +1,175 @@
+{
+  "status": "research_material_review",
+  "source_date": "2026-08-17",
+  "note": "홈페이지 사진자료 조사본에서 인물별 대표 이미지 2장씩을 연결했습니다. 공개 게시 전 원 출처의 사용 허락, 라이선스와 크레딧 조건을 다시 확인해야 합니다.",
+  "people": [
+    {
+      "id": "jeong-ran",
+      "name": "정란",
+      "field": "내진·리모델링·풍진동제어",
+      "summary": "내진성능 향상과 초고층 진동제어 기술을 통해 건축물의 구조안전을 고도화해 온 연구 분야를 소개합니다.",
+      "projects": [
+        {
+          "name": "초고층빌딩 글로벌 R&BD센터",
+          "role": "초고층 설계기술 연구와 전문인력 양성 기반을 소개하는 자료",
+          "imageCandidate": "/assets/projects/faculty-showcase/jeong-ran-rbd-center.jpg",
+          "imageStatus": "provided_research_material",
+          "credit": "단국대학교",
+          "sourceUrl": "https://grec.dankook.ac.kr/ko/web/kor/-550"
+        },
+        {
+          "name": "초고층 풍진동 제어기술",
+          "role": "초고층 건축물의 풍진동 제어 기술 연구 소개",
+          "imageCandidate": "/assets/projects/faculty-showcase/jeong-ran-wind-control.jpg",
+          "imageStatus": "provided_research_material",
+          "credit": "단국대학교",
+          "sourceUrl": "https://grec.dankook.ac.kr/ko/web/kor/-550"
+        }
+      ]
+    },
+    {
+      "id": "lee-sanghyun",
+      "name": "이상현",
+      "field": "구조동역학·진동제어",
+      "summary": "건축물의 동적 거동을 계측·해석·제어해 구조안전과 사용성을 검토하는 연구와 실무 사례를 소개합니다.",
+      "projects": [
+        {
+          "name": "플랫폼창동61",
+          "role": "공연장 진동 계측·사용성 평가와 진동제어 관련 사례",
+          "imageCandidate": "/assets/projects/faculty-showcase/lee-sanghyun-platform61.jpg",
+          "imageStatus": "provided_research_material",
+          "credit": "서울특별시",
+          "sourceUrl": "https://english.seoul.go.kr/platform-changdong-61/"
+        },
+        {
+          "name": "Multi-action Hybrid Damper 실험",
+          "role": "스마트 진동제어 장치의 반복가력 실험 연구 도판",
+          "imageCandidate": "/assets/projects/faculty-showcase/lee-sanghyun-mhd-test.png",
+          "imageStatus": "provided_research_material",
+          "credit": "Roh, Hur, Choi, Lee (2018), Figure 9",
+          "sourceUrl": "https://onlinelibrary.wiley.com/doi/10.1155/2018/5630746"
+        }
+      ]
+    },
+    {
+      "id": "kang-taewoong",
+      "name": "강태웅",
+      "field": "목조건축·Design-Build",
+      "summary": "목조건축의 설계·시공·공업화를 연결한 저에너지 목조건축 교육과 실증 사례를 소개합니다.",
+      "projects": [
+        {
+          "name": "2019 수퍼-E 기술연수",
+          "role": "저에너지 목조건축 설계·시공 전문교육 사례",
+          "imageCandidate": "/assets/projects/faculty-showcase/kang-taewoong-super-e-training.jpg",
+          "imageStatus": "provided_research_material",
+          "credit": "단국대학교 제공(기사 표기 기준)",
+          "sourceUrl": "https://viva100.com/article/201908164179136?site_preference=normal"
+        },
+        {
+          "name": "메이플빌리지 옵티말하우스",
+          "role": "목조건축 설계·시공과 저에너지 주택 모델 사례",
+          "imageCandidate": "/assets/projects/faculty-showcase/kang-taewoong-optimal-house.jpg",
+          "imageStatus": "provided_research_material",
+          "credit": "케이스건축 제공(기사 표기 기준)",
+          "sourceUrl": "https://go.seoul.co.kr/news/newsView.php?id=20190423500066"
+        }
+      ]
+    },
+    {
+      "id": "wi-jinbok",
+      "name": "위진복",
+      "field": "엔지니어링 기반 건축설계",
+      "summary": "구조·재료·환경을 통합해 공공성과 도시 맥락을 구현한 건축설계 사례를 소개합니다.",
+      "projects": [
+        {
+          "name": "신흥시장 CLOUD",
+          "role": "시장 재생 아케이드 건축설계 사례",
+          "imageCandidate": "/assets/projects/faculty-showcase/wi-jinbok-cloud.jpg",
+          "imageStatus": "provided_research_material",
+          "credit": "© Jaeik Shin (브리크 페이지 표기)",
+          "sourceUrl": "https://magazine.brique.co/project/uia_qpartners_cloud/"
+        },
+        {
+          "name": "2025 오사카 엑스포 대한민국관",
+          "role": "임시전시 건축 설계 사례",
+          "imageCandidate": "/assets/projects/faculty-showcase/wi-jinbok-korea-pavilion.jpg",
+          "imageStatus": "provided_research_material",
+          "credit": "Photo: UNREALSTUDIO (KKDC 페이지 표기)",
+          "sourceUrl": "https://kkdc.lighting/en/projects/expo-2025-osaka-korea-pavilion"
+        }
+      ]
+    },
+    {
+      "id": "jeong-gwangryang",
+      "name": "정광량",
+      "field": "초고층 구조설계·구조안전",
+      "summary": "초고층 구조설계와 구조안전진단을 연결한 고층건축 구조엔지니어링 사례를 소개합니다.",
+      "projects": [
+        {
+          "name": "해운대 LCT The Sharp",
+          "role": "초고층 복합개발 구조설계·구조해석 관련 실적",
+          "imageCandidate": "/assets/projects/faculty-showcase/jeong-gwangryang-lct.jpg",
+          "imageStatus": "provided_research_material",
+          "credit": "CVU / The Skyscraper Center",
+          "sourceUrl": "https://www.skyscrapercenter.com/building/lct-landmark-tower/108"
+        },
+        {
+          "name": "Northeast Asia Trade Tower",
+          "role": "초고층 구조설계 관련 실적",
+          "imageCandidate": "/assets/projects/faculty-showcase/jeong-gwangryang-neatt.jpg",
+          "imageStatus": "provided_research_material",
+          "credit": "CVU / The Skyscraper Center",
+          "sourceUrl": "https://www.skyscrapercenter.com/building/northeast-asia-trade-tower/475"
+        }
+      ]
+    },
+    {
+      "id": "kim-jongho",
+      "name": "김종호",
+      "field": "초고층 구조엔지니어링",
+      "summary": "초고층·대형 건축물의 구조설계와 성능검토에 관련된 구조엔지니어링 사례를 소개합니다.",
+      "projects": [
+        {
+          "name": "롯데월드타워",
+          "role": "초고층 구조 엔지니어링과 피어리뷰 기술 검토 관련 실적",
+          "imageCandidate": "/assets/projects/faculty-showcase/kim-jongho-lotte-world-tower.jpg",
+          "imageStatus": "provided_research_material",
+          "credit": "CVU / The Skyscraper Center",
+          "sourceUrl": "https://www.skyscrapercenter.com/building/lotte-world-tower/88"
+        },
+        {
+          "name": "인천국제공항 제2여객터미널",
+          "role": "대형 공공 교통 인프라 구조설계 관련 실적",
+          "imageCandidate": "/assets/projects/faculty-showcase/kim-jongho-incheon-t2.jpg",
+          "imageStatus": "provided_research_material",
+          "credit": "희림건축",
+          "sourceUrl": "https://www.heerim.com/kr/project/project_view.php?idx=5"
+        }
+      ]
+    },
+    {
+      "id": "kim-jongsu",
+      "name": "김종수",
+      "field": "대공간·특수구조",
+      "summary": "대공간 지붕과 특수구조 시스템으로 경기장·아레나의 무주공간을 구현한 구조엔지니어링 사례를 소개합니다.",
+      "projects": [
+        {
+          "name": "Philippine Arena",
+          "role": "대공간 아레나 구조설계 관련 실적",
+          "imageCandidate": "/assets/projects/faculty-showcase/kim-jongsu-philippine-arena.jpg",
+          "imageStatus": "provided_research_material",
+          "credit": "CS구조",
+          "sourceUrl": "https://www.csse.kr/eng/proj/spat/philippine.html"
+        },
+        {
+          "name": "전주월드컵경기장",
+          "role": "케이블 스테이드 트러스 지붕 구조설계 관련 실적",
+          "imageCandidate": "/assets/projects/faculty-showcase/kim-jongsu-jeonju-stadium.jpg",
+          "imageStatus": "provided_research_material",
+          "credit": "CS구조",
+          "sourceUrl": "https://www.csse.kr/eng/proj/pc/2002world.html"
+        }
+      ]
+    }
+  ]
+}
