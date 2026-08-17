@@ -4784,7 +4784,7 @@
         sources: ['/content/llm-wiki.md'],
         ai: {
           provider: 'Google Gemini API',
-          model: 'gemini-3.6-flash',
+          model: 'gemini-3.7-flash',
           status: 'browser-fallback',
           reason: 'api-unavailable'
         }
@@ -5109,8 +5109,8 @@
       let mainAnswer = data.answer || data.message || '답변 내용을 확인할 수 없습니다.';
       let disclaimerText = "";
       const numericConfidence = Number(data.confidence);
-      const geminiModelLabel = data.ai?.model === 'gemini-3.6-flash'
-        ? 'Gemini 3.6 Flash'
+      const geminiModelLabel = data.ai?.model === 'gemini-3.7-flash'
+        ? 'Gemini 3.7 Flash'
         : (data.ai?.model || 'Gemini');
       let confidenceText = Number.isFinite(numericConfidence)
         ? `자료 일치도: ${Math.round(numericConfidence * 100)}%`

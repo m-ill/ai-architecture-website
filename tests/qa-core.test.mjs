@@ -222,10 +222,10 @@ test("strong department questions route to the expected FAQ", () => {
   assert.ok(humanitiesStudent.score >= STATIC_ANSWER_SCORE);
 });
 
-test("the default generative model is the official Gemini 3.6 Flash model", async () => {
+test("the default generative model is Gemini 3.7 Flash", async () => {
   const { DEFAULT_GEMINI_MODEL, resolveGeminiModel } = await loadAskModule();
-  assert.equal(DEFAULT_GEMINI_MODEL, "gemini-3.6-flash");
-  assert.equal(resolveGeminiModel("gemini-3.7-flash"), "gemini-3.6-flash");
+  assert.equal(DEFAULT_GEMINI_MODEL, "gemini-3.7-flash");
+  assert.equal(resolveGeminiModel("gemini-3.7-flash"), "gemini-3.7-flash");
   assert.equal(resolveGeminiModel("gemini-3.5-flash"), "gemini-3.5-flash");
 });
 
@@ -387,10 +387,10 @@ test("worker sends a grounded project prompt to Gemini", async () => {
     assert.equal(result.related_url, "/#faculty");
     assert.equal(result.debug, undefined);
     assert.equal(result.ai.status, "generated");
-    assert.equal(result.ai.model, "gemini-3.6-flash");
+    assert.equal(result.ai.model, "gemini-3.7-flash");
     assert.doesNotMatch(result.answer, /자랑스러운|거장|총괄/);
 
-    assert.match(requestUrl, /models\/gemini-3\.6-flash:generateContent$/);
+    assert.match(requestUrl, /models\/gemini-3\.7-flash:generateContent$/);
     assert.doesNotMatch(requestUrl, /[?&]key=/);
     assert.equal(requestHeaders.get("x-goog-api-key"), "test-key");
     assert.equal(requestBody.generationConfig.maxOutputTokens, 2048);
@@ -429,7 +429,7 @@ test("Gemini is the primary responder for ordinary high-confidence questions", a
     assert.equal(requestCount, 1);
     assert.equal(result.type, "ai-answer");
     assert.equal(result.matched_id, "gemini-grounded");
-    assert.equal(result.ai.model, "gemini-3.6-flash");
+    assert.equal(result.ai.model, "gemini-3.7-flash");
     assert.match(result.answer, /입학 전에 코딩을 잘해야 하는 것은 아닙니다/);
   } finally {
     globalThis.fetch = originalFetch;
