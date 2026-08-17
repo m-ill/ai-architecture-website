@@ -15,9 +15,10 @@ import {
   scoreFaq as scoreFaqCore
 } from "../_lib/qa-core.mjs";
 
-export const DEFAULT_GEMINI_MODEL = "gemini-3.6-flash";
+export const DEFAULT_GEMINI_MODEL = "gemini-3.7-flash";
 
 const SUPPORTED_GEMINI_MODELS = new Set([
+  "gemini-3.7-flash",
   "gemini-3.6-flash",
   "gemini-3.5-flash",
   "gemini-3.5-flash-lite",
