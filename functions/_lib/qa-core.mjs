@@ -122,7 +122,7 @@ const DOMAIN_TERMS = [
   "ai건축", "건축", "학과", "교수", "교육", "교과", "배우", "수업", "심화", "트랙", "진로", "취업",
   "대학원", "bim", "cim", "디지털트윈", "구조", "시공", "안전", "환경", "프로젝트", "포트폴리오",
   "코딩", "수학", "물리", "디자인", "캠퍼스", "연구", "자격증", "건축사", "정란", "이상현", "강태웅",
-  "위진복", "정광량", "김종호", "김종수"
+  "위진복", "정광량", "김종호", "김종수", "입학", "입시", "진학", "지원", "편입", "전과", "복수전공", "다전공", "부전공"
 ];
 
 const FACULTY_TERMS = [
@@ -163,8 +163,19 @@ const ADMISSIONS_PATTERNS = [
   /논술/u,
   /특성화고/u,
   /마이스터고/u,
+  /편입|일반\s*편입|학사\s*편입/u,
+  /전과|복수\s*전공|다전공|부전공/u,
   /몇\s*명.{0,8}뽑/u,
   /뽑.{0,8}몇\s*명/u
+];
+
+const PROTECTED_ADMISSIONS_PATTERNS = [
+  /내신|수능|입결|커트\s*라인|점수|등급|석차|백분위/u,
+  /합격\s*(?:선|점수|등급|가능성)|붙을\s*수|붙을까|안정권|상향\s*지원|하향\s*지원/u,
+  /경쟁률|지원\s*자격|지원\s*조건|수능\s*최저|최저\s*학력/u,
+  /원서\s*접수|접수\s*(?:일정|기간|마감)|전형\s*(?:일정|방법)|평가\s*방법|반영\s*비율|가산점/u,
+  /모집\s*(?:요강|인원|정원|단위|군|일정)|선발\s*인원|모집\s*정원|정원\s*(?:내|외)/u,
+  /몇\s*명.{0,8}(?:뽑|선발|모집)|(?:뽑|선발|모집).{0,8}몇\s*명/u
 ];
 
 const PROSPECTIVE_STUDENT_PATTERNS = [
@@ -245,6 +256,27 @@ const WIKI_INTENTS = [
     category: "입학 안내",
     related_url: "/#admissions",
     patterns: [/입학|입시|수시|정시|수능|내신|모집|원서|학생부|생기부|세특|지원/u]
+  },
+  {
+    id: "admissions-contact",
+    heading: "입학 상담은 어디로 문의하나요?",
+    category: "입학 안내",
+    related_url: "https://ipsi.dankook.ac.kr/jukjeon/main.html",
+    patterns: [/(?:입학|입시|진학).{0,12}(?:상담|문의|연락|전화)|(?:상담|문의|연락|전화).{0,12}(?:입학|입시|진학)/u]
+  },
+  {
+    id: "transfer",
+    heading: "편입할 수 있나요?",
+    category: "편입학 안내",
+    related_url: "https://ipsi.dankook.ac.kr/jukjeon/doumi/mojip.html?bbsid=juk_paper&ctg_cd=05",
+    patterns: [/편입|일반\s*편입|학사\s*편입/u]
+  },
+  {
+    id: "academic-mobility",
+    heading: "전과·다전공이 가능한가요?",
+    category: "학사 안내",
+    related_url: "/#admissions",
+    patterns: [/전과|복수\s*전공|다전공|부전공/u]
   },
   {
     id: "learning-style",
@@ -344,6 +376,16 @@ export function isAdmissionsQuestion(question) {
   return ADMISSIONS_PATTERNS.some(pattern => pattern.test(normalized));
 }
 
+export function isProtectedAdmissionsQuestion(question) {
+  const normalized = normalize(question);
+  const isLearningReadinessQuestion = PROSPECTIVE_STUDENT_PATTERNS.slice(1, 4)
+    .some(pattern => pattern.test(normalized));
+  if (isLearningReadinessQuestion && !/내신|수능|입결|전형|경쟁률|정원|합격|점수|등급/u.test(normalized)) {
+    return false;
+  }
+  return PROTECTED_ADMISSIONS_PATTERNS.some(pattern => pattern.test(normalized));
+}
+
 export function isLikelyDepartmentQuestion(question) {
   const normalized = normalize(question);
   if (!normalized || isClearlyOutOfScope(normalized)) return false;
@@ -364,7 +406,7 @@ export function isClearlyOutOfScope(question) {
 export function findWikiIntent(question) {
   const normalized = normalize(question);
   const priority = [
-    "license", "coding", "preparation", "career", "faculty", "admissions",
+    "license", "coding", "preparation", "career", "faculty", "transfer", "academic-mobility", "admissions-contact", "admissions",
     "advanced-areas", "learning-style", "learning", "identity"
   ];
   for (const intentId of priority) {
@@ -570,6 +612,9 @@ function selectCanonicalContext(question, canonicalText) {
   if (["진로", "취업", "직업", "회사", "졸업", "대학원", "연구개발"].some(term => normalized.includes(term))) {
     sectionNames.push("진로정보");
   }
+  if (["입학", "입시", "진학", "수시", "정시", "지원", "모집", "편입", "전과", "복수전공", "다전공", "부전공"].some(term => normalized.includes(term))) {
+    sectionNames.push("입학정보 요약");
+  }
 
   return [...new Set(sectionNames)]
     .map(name => extractTopLevelSection(canonicalText, name))
@@ -654,7 +699,7 @@ function selectFacultyContext(question, facultyData) {
   }));
 }
 
-export function buildModelContext({ question, matches, department, facultyData, canonicalText, wikiText = "" }) {
+export function buildModelContext({ question, matches, department, facultyData, admissionsData, canonicalText, wikiText = "" }) {
   const faculty = selectFacultyContext(question, facultyData);
   const normalizedQuestion = normalize(question);
   const allFaculty = facultyData
@@ -685,6 +730,21 @@ export function buildModelContext({ question, matches, department, facultyData, 
   };
 
   const canonical = selectCanonicalContext(question, canonicalText);
+  const needsAdmissionsContext = [
+    "입학", "입시", "진학", "수시", "정시", "지원", "모집", "편입", "전과", "복수전공", "다전공", "부전공"
+  ].some(term => normalizedQuestion.includes(term));
+  const admissions = needsAdmissionsContext && admissionsData ? {
+    admission_year: admissionsData.admission_year,
+    opening: admissionsData.opening,
+    total_quota_regular: admissionsData.total_quota_regular,
+    admission_breakdown_regular: admissionsData.admission_breakdown_regular,
+    official_admissions_url: admissionsData.official_admissions_url,
+    official_transfer_guide_url: admissionsData.official_transfer_guide_url,
+    admissions_phone: admissionsData.admissions_phone,
+    transfer_guidance: admissionsData.transfer_guidance,
+    academic_mobility_guidance: admissionsData.academic_mobility_guidance,
+    important_notice: admissionsData.important_notice
+  } : null;
 
   return [
     wikiText ? "[Primary LLM Wiki]" : "",
@@ -693,6 +753,8 @@ export function buildModelContext({ question, matches, department, facultyData, 
     JSON.stringify(identity, null, 2),
     "[Relevant FAQ Entries]",
     JSON.stringify(relevantFaq, null, 2),
+    admissions ? "[Relevant Admissions Data]" : "",
+    admissions ? JSON.stringify(admissions, null, 2) : "",
     faculty.length ? "[Relevant Faculty Data]" : "",
     faculty.length ? JSON.stringify(faculty, null, 2) : "",
     faculty.length && facultyData.disclaimer ? `[Faculty Status Notice]\n${facultyData.disclaimer}` : "",
