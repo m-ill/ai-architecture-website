@@ -15,7 +15,19 @@ import {
   scoreFaq as scoreFaqCore
 } from "../_lib/qa-core.mjs";
 
-export const DEFAULT_GEMINI_MODEL = "gemini-3.7-flash";
+export const DEFAULT_GEMINI_MODEL = "gemini-3.6-flash";
+
+const SUPPORTED_GEMINI_MODELS = new Set([
+  "gemini-3.6-flash",
+  "gemini-3.5-flash",
+  "gemini-3.5-flash-lite",
+  "gemini-flash-latest"
+]);
+
+export function resolveGeminiModel(configuredModel) {
+  const requested = String(configuredModel || "").trim();
+  return SUPPORTED_GEMINI_MODELS.has(requested) ? requested : DEFAULT_GEMINI_MODEL;
+}
 
 export async function onRequest(context) {
   const { request, env } = context;
@@ -107,8 +119,9 @@ export async function onRequest(context) {
     const routedUrl = activeRoute ? activeRoute.preferred_url : null;
 
 
-    // Rule A: Exact or highly confident match in static FAQ -> Return instantly
-    if (best && score >= STATIC_ANSWER_SCORE) {
+    // 자격·면허처럼 제도 확인이 필요한 답변은 생성형 모델보다 검증된 문구를 우선한다.
+    const protectedStaticIds = new Set(["diff-006"]);
+    if (best && score >= STATIC_ANSWER_SCORE && protectedStaticIds.has(best.item.id)) {
       const appliedDisclaimers = getDisclaimersCore(question, best.item.category);
       const answer = appendDisclaimers(best.item.answer, appliedDisclaimers);
       const related = getRelatedQuestions(matches, best.item.id);
@@ -131,18 +144,27 @@ export async function onRequest(context) {
           category: best.item.category
         },
         related,
-        sources: ["/data/faq.json", "/content/faq.md", "/llms.txt"]
+        sources: ["/data/faq.json", "/content/faq.md", "/llms.txt"],
+        ai: {
+          provider: "Google Gemini API",
+          model: DEFAULT_GEMINI_MODEL,
+          status: "not-required",
+          reason: "regulated-answer-guardrail"
+        }
       }, corsHeaders);
     }
 
     const isDepartmentQuestion = isLikelyDepartmentQuestion(question);
 
-    // Rule B: Generative AI natural language search via Gemini API (if API Key provided)
+    // 일반 학과 질문은 Gemini가 LLM Wiki와 공식 자료를 읽고 먼저 답한다.
     const apiKey = env.GEMINI_API_KEY;
-    const apiModel = env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL;
+    const apiModel = resolveGeminiModel(env.GEMINI_MODEL);
     let apiErrorMsg = null;
+    let apiFailureCode = apiKey ? null : "not-configured";
+    let apiHttpStatus = null;
+    const wikiCandidate = buildWikiFallbackAnswer(question, wikiText);
     
-    if (apiKey) {
+    if (apiKey && isDepartmentQuestion) {
       try {
         const systemInstruction = `너는 단국대학교 AI융합대학 AI건축융합학과의 정보 안내원이다.
 
@@ -169,9 +191,12 @@ export async function onRequest(context) {
           wikiText
         });
 
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${apiModel}:generateContent?key=${apiKey}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${apiModel}:generateContent`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": apiKey
+          },
           body: JSON.stringify({
             systemInstruction: {
               parts: [{ text: systemInstruction }]
@@ -183,8 +208,7 @@ export async function onRequest(context) {
               }
             ],
             generationConfig: {
-              temperature: 0.2,
-              maxOutputTokens: 1200
+              maxOutputTokens: 2048
             }
           })
         });
@@ -201,7 +225,9 @@ export async function onRequest(context) {
             const facultyQuestion = isFacultyQuestion(question);
             const answerCategory = facultyQuestion
               ? "교수진"
-              : (best && score >= MIN_RELEVANCE_SCORE ? best.item.category : "AI 안내");
+              : (best && score >= MIN_RELEVANCE_SCORE
+                ? best.item.category
+                : (wikiCandidate?.category || "학과 안내"));
             const appliedDisclaimers = getDisclaimersCore(question, answerCategory);
             const finalAnswer = appendDisclaimers(generatedAnswer, appliedDisclaimers);
             const related = getRelatedQuestions(matches, null)
@@ -209,7 +235,8 @@ export async function onRequest(context) {
             const relatedQuestions = related.map(item => item.question);
             const matchedUrl = facultyQuestion
               ? "/#faculty"
-              : ((best && score >= MIN_RELEVANCE_SCORE && best.item.related_url) || routedUrl || null);
+              : ((best && score >= MIN_RELEVANCE_SCORE && best.item.related_url) ||
+                wikiCandidate?.relatedUrl || routedUrl || null);
             const payload = {
               ok: true,
               type: "ai-answer",
@@ -227,7 +254,13 @@ export async function onRequest(context) {
                 category: answerCategory
               },
               related,
-              sources: ["/content/llm-wiki.md", "/content/canonical.md", `Gemini API (${apiModel})`]
+              sources: ["/content/llm-wiki.md", "/content/canonical.md", `Gemini API (${apiModel})`],
+              ai: {
+                provider: "Google Gemini API",
+                model: apiModel,
+                status: "generated",
+                reason: null
+              }
             };
             if (env.QA_DEBUG === "true") {
               payload.debug = {
@@ -241,25 +274,70 @@ export async function onRequest(context) {
             return json(payload, corsHeaders);
           } else {
             apiErrorMsg = "Gemini API returned no text parts: " + JSON.stringify(apiData);
+            apiFailureCode = "no-text";
           }
         } else {
+          apiHttpStatus = response.status;
           const errText = await response.text().catch(() => "");
           apiErrorMsg = `Gemini API returned HTTP ${response.status}: ${errText}`;
+          apiFailureCode = classifyGeminiFailure(response.status, errText);
         }
       } catch (aiError) {
         apiErrorMsg = `Gemini API fetch error: ${aiError.message || String(aiError)}`;
+        apiFailureCode = "network-error";
       }
       
       if (apiErrorMsg) {
-        console.error("Gemini API call failed, falling back to static matching:", apiErrorMsg);
+        console.error(JSON.stringify({
+          event: "gemini_api_fallback",
+          model: apiModel,
+          failure: apiFailureCode,
+          http_status: apiHttpStatus
+        }));
       }
-    } else {
+    } else if (!apiKey) {
       apiErrorMsg = "GEMINI_API_KEY environment variable is missing or empty. Please check Cloudflare Pages settings and Redeploy.";
+    } else {
+      apiFailureCode = "not-required";
     }
 
-    // Rule C: Wiki-grounded answer when Gemini is unavailable or does not return text.
+    // Gemini가 응답하지 못한 경우에는 정확도가 높은 공식 FAQ를 먼저 사용한다.
+    if (best && score >= STATIC_ANSWER_SCORE) {
+      const appliedDisclaimers = getDisclaimersCore(question, best.item.category);
+      const answer = appendDisclaimers(best.item.answer, appliedDisclaimers);
+      const related = getRelatedQuestions(matches, best.item.id);
+      const matchedUrl = best.item.related_url || routedUrl || null;
+
+      return json({
+        ok: true,
+        type: "answer",
+        question,
+        answer,
+        confidence,
+        matched_id: best.item.id,
+        category: best.item.category,
+        related_url: matchedUrl,
+        related_questions: related.map(item => item.question),
+        disclaimer: appliedDisclaimers.map(item => item.text).join(" ") || null,
+        match: {
+          id: best.item.id,
+          question: best.item.question,
+          category: best.item.category
+        },
+        related,
+        sources: ["/data/faq.json", "/content/faq.md", "/llms.txt"],
+        ai: {
+          provider: "Google Gemini API",
+          model: apiModel,
+          status: apiFailureCode === "not-configured" ? "not-configured" : "fallback",
+          reason: apiFailureCode
+        }
+      }, corsHeaders);
+    }
+
+    // Gemini와 고신뢰 FAQ가 모두 응답하지 못하면 질문별 Wiki 본문으로 답한다.
     const wikiFallback = (!best || score < 55)
-      ? buildWikiFallbackAnswer(question, wikiText)
+      ? wikiCandidate
       : null;
     if (wikiFallback) {
       const appliedDisclaimers = getDisclaimersCore(question, wikiFallback.category);
@@ -283,7 +361,13 @@ export async function onRequest(context) {
           category: wikiFallback.category
         },
         related,
-        sources: ["/content/llm-wiki.md", "/content/canonical.md"]
+        sources: ["/content/llm-wiki.md", "/content/canonical.md"],
+        ai: {
+          provider: "Google Gemini API",
+          model: apiModel,
+          status: apiFailureCode === "not-configured" ? "not-configured" : "fallback",
+          reason: apiFailureCode
+        }
       };
       if (env.QA_DEBUG === "true") {
         payload.debug = {
@@ -311,7 +395,13 @@ export async function onRequest(context) {
         related_url: "/#ask",
         related_questions: ["어떤 내용을 배우나요?", "졸업 후 진로는 무엇인가요?", "코딩을 몰라도 괜찮나요?"],
         disclaimer: null,
-        sources: ["/content/canonical.md"]
+        sources: ["/content/canonical.md"],
+        ai: {
+          provider: "Google Gemini API",
+          model: apiModel,
+          status: apiFailureCode === "not-configured" ? "not-configured" : "fallback",
+          reason: apiFailureCode
+        }
       }, corsHeaders);
     }
 
@@ -338,7 +428,13 @@ export async function onRequest(context) {
         category: best.item.category
       },
       related,
-      sources: ["/data/faq.json", "/content/faq.md", "/llms.txt"]
+      sources: ["/data/faq.json", "/content/faq.md", "/llms.txt"],
+      ai: {
+        provider: "Google Gemini API",
+        model: apiModel,
+        status: apiFailureCode === "not-configured" ? "not-configured" : "fallback",
+        reason: apiFailureCode
+      }
     };
     if (env.QA_DEBUG === "true") {
       payload.debug = {
@@ -417,6 +513,18 @@ function buildAdmissionsResponse(question, admissions) {
     disclaimer: "입학 관련 세부사항은 원서 접수 전 단국대학교 입학처의 최종 모집요강을 확인해야 합니다.",
     sources: ["/data/admissions.json", officialGuideUrl]
   };
+}
+
+function classifyGeminiFailure(status, errorText) {
+  const normalized = String(errorText || "").toLowerCase();
+  if (status === 401 || status === 403) return "authentication-error";
+  if (status === 404 || /model.{0,40}(?:not found|not supported|does not exist)/i.test(normalized)) {
+    return "model-unavailable";
+  }
+  if (status === 429) return "rate-limited";
+  if (status >= 500) return "upstream-error";
+  if (status === 400) return "invalid-request";
+  return "api-error";
 }
 
 async function getQuestion(request) {

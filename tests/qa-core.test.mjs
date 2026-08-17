@@ -161,6 +161,7 @@ test("unrelated questions no longer receive category baseline scores", () => {
 test("LLM Wiki covers common conversational department questions", () => {
   assert.match(wikiText, /건축 정보를 읽고, AI와 데이터로 판단·설계·개선하는 융합형 책임기술 인재 양성/);
   assert.match(wikiText, /## 무엇을 배우나요\?/);
+  assert.match(wikiText, /## 코딩은 얼마나, 어떻게 배우나요\?/);
   assert.match(wikiText, /## 입학 질문은 어디까지 답하나요\?/);
 
   const learning = buildWikiFallbackAnswer("어떤 거 배우는 거예요?", wikiText);
@@ -170,6 +171,12 @@ test("LLM Wiki covers common conversational department questions", () => {
   const difficulty = buildWikiFallbackAnswer("수업이 어렵나요?", wikiText);
   assert.equal(difficulty.matchedId, "wiki-preparation");
   assert.match(difficulty.answer, /입학 전부터 전문적으로/);
+
+  const coding = buildWikiFallbackAnswer("코딩 배워야해요?", wikiText);
+  assert.equal(coding.matchedId, "wiki-coding");
+  assert.match(coding.answer, /코드 자체를 깊게 만드는 것이 목표는 아닙니다/);
+  assert.match(coding.answer, /입학 전에 코딩을 잘해야 하는 것은 아닙니다/);
+  assert.doesNotMatch(coding.answer, /짧은 질문은/);
 
   const career = buildWikiFallbackAnswer("졸업하면 뭐해요?", wikiText);
   assert.equal(career.matchedId, "wiki-career");
@@ -215,9 +222,11 @@ test("strong department questions route to the expected FAQ", () => {
   assert.ok(humanitiesStudent.score >= STATIC_ANSWER_SCORE);
 });
 
-test("the default generative model is Gemini 3.7 Flash", async () => {
-  const { DEFAULT_GEMINI_MODEL } = await loadAskModule();
-  assert.equal(DEFAULT_GEMINI_MODEL, "gemini-3.7-flash");
+test("the default generative model is the official Gemini 3.6 Flash model", async () => {
+  const { DEFAULT_GEMINI_MODEL, resolveGeminiModel } = await loadAskModule();
+  assert.equal(DEFAULT_GEMINI_MODEL, "gemini-3.6-flash");
+  assert.equal(resolveGeminiModel("gemini-3.7-flash"), "gemini-3.6-flash");
+  assert.equal(resolveGeminiModel("gemini-3.5-flash"), "gemini-3.5-flash");
 });
 
 test("disclaimers depend on the user intent and are not duplicated", () => {
@@ -253,6 +262,7 @@ test("worker returns safe static and fallback answers without Gemini", async () 
 
   for (const [question, expectedId, answerPattern] of [
     ["어떤거 배우는거에요?", "wiki-learning", /자연어코딩과 건축데이터분석/],
+    ["코딩 배워야해요?", "wiki-coding", /건축 데이터를 정리·분석/],
     ["뭘 배우나요?", "wiki-learning", /BIM·CAD·CIM/],
     ["여기 뭐하는 곳이에요?", "wiki-identity", /AI건축융합학과는 건축 정보를 읽고/],
     ["졸업하면 뭐해요?", "wiki-career", /건축 데이터 분석/],
@@ -351,7 +361,11 @@ test("worker returns safe static and fallback answers without Gemini", async () 
 test("worker sends a grounded project prompt to Gemini", async () => {
   const originalFetch = globalThis.fetch;
   let requestBody;
-  globalThis.fetch = async (_url, options) => {
+  let requestUrl;
+  let requestHeaders;
+  globalThis.fetch = async (url, options) => {
+    requestUrl = String(url);
+    requestHeaders = new Headers(options.headers);
     requestBody = JSON.parse(options.body);
     return new Response(JSON.stringify({
       candidates: [{
@@ -365,22 +379,58 @@ test("worker sends a grounded project prompt to Gemini", async () => {
   try {
     const result = await ask("대공간 구조 전문가의 프로젝트를 소개해 주세요", {
       GEMINI_API_KEY: "test-key",
-      GEMINI_MODEL: "test-model"
+      GEMINI_MODEL: "gemini-3.7-flash"
     });
 
     assert.equal(result.type, "ai-answer");
     assert.equal(result.category, "교수진");
     assert.equal(result.related_url, "/#faculty");
     assert.equal(result.debug, undefined);
+    assert.equal(result.ai.status, "generated");
+    assert.equal(result.ai.model, "gemini-3.6-flash");
     assert.doesNotMatch(result.answer, /자랑스러운|거장|총괄/);
 
-    assert.equal(requestBody.generationConfig.maxOutputTokens, 1200);
-    assert.equal(requestBody.generationConfig.temperature, 0.2);
+    assert.match(requestUrl, /models\/gemini-3\.6-flash:generateContent$/);
+    assert.doesNotMatch(requestUrl, /[?&]key=/);
+    assert.equal(requestHeaders.get("x-goog-api-key"), "test-key");
+    assert.equal(requestBody.generationConfig.maxOutputTokens, 2048);
+    assert.equal("temperature" in requestBody.generationConfig, false);
     assert.match(requestBody.contents[0].parts[0].text, /김종수/);
     assert.match(requestBody.contents[0].parts[0].text, /Relevant Faculty Data/);
     assert.match(requestBody.contents[0].parts[0].text, /Primary LLM Wiki/);
     assert.match(requestBody.contents[0].parts[0].text, /어떤 거 배워요/);
     assert.match(requestBody.systemInstruction.parts[0].text, /이모지는 사용하지 않는다/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("Gemini is the primary responder for ordinary high-confidence questions", async () => {
+  const originalFetch = globalThis.fetch;
+  let requestCount = 0;
+  globalThis.fetch = async () => {
+    requestCount += 1;
+    return new Response(JSON.stringify({
+      candidates: [{
+        content: {
+          parts: [{
+            text: "코딩은 건축 데이터를 분석하고 BIM·디지털트윈 작업을 자동화하는 도구로 기초부터 배웁니다. 입학 전에 코딩을 잘해야 하는 것은 아닙니다."
+          }]
+        }
+      }]
+    }), { headers: { "Content-Type": "application/json" } });
+  };
+
+  try {
+    const result = await ask("코딩 몰라도 되나요?", {
+      GEMINI_API_KEY: "test-key"
+    });
+
+    assert.equal(requestCount, 1);
+    assert.equal(result.type, "ai-answer");
+    assert.equal(result.matched_id, "gemini-grounded");
+    assert.equal(result.ai.model, "gemini-3.6-flash");
+    assert.match(result.answer, /입학 전에 코딩을 잘해야 하는 것은 아닙니다/);
   } finally {
     globalThis.fetch = originalFetch;
   }
