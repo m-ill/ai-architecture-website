@@ -176,6 +176,82 @@ const PROSPECTIVE_STUDENT_PATTERNS = [
   /(?:준비|가능|조건|자격|방법|추천|상담|적성|선행).{0,20}(?:지원|입학|진학|학과)/u
 ];
 
+const CLEARLY_OUT_OF_SCOPE_PATTERNS = [
+  /(?:오늘|내일|주간)?\s*(?:날씨|기온|미세먼지|강수량|우산)/u,
+  /(?:아침|점심|저녁|야식).{0,10}(?:메뉴|추천)|맛집|레시피|요리법/u,
+  /주식|코인|가상화폐|환율|투자\s*추천/u,
+  /축구|야구|농구|배구|골프|경기\s*(?:결과|일정|스코어)/u,
+  /대통령|국회의원|정당|선거\s*(?:결과|예측)/u,
+  /연예인|아이돌|드라마|영화\s*추천|노래\s*추천|게임\s*(?:공략|추천)/u,
+  /번역해\s*줘|코드\s*짜\s*줘|프로그램\s*만들어\s*줘/u
+];
+
+const WIKI_INTENTS = [
+  {
+    id: "learning",
+    heading: "무엇을 배우나요?",
+    category: "교육과정",
+    related_url: "/#curriculum",
+    patterns: [/배우|배울|수업|과목|공부|교육\s*과정|교육과정|커리큘럼|교과|학년/u]
+  },
+  {
+    id: "advanced-areas",
+    heading: "심화 교육축은 무엇인가요?",
+    category: "심화 교육축",
+    related_url: "/#pillars",
+    patterns: [/심화|트랙|교육축|디지털트윈|구조안전|시공품질|건축환경/u]
+  },
+  {
+    id: "preparation",
+    heading: "처음이어도 괜찮나요?",
+    category: "지원자 적합성",
+    related_url: "/student-preparation-guide",
+    patterns: [/처음|초보|몰라|못해|문과|이과|비전공|따라갈|준비|적성|어렵|난이도|선행|자신\s*없/u]
+  },
+  {
+    id: "career",
+    heading: "졸업 후 무엇을 할 수 있나요?",
+    category: "진로",
+    related_url: "/ai-architecture-careers",
+    patterns: [/졸업|진로|취업|직업|회사|대학원|창업|연구\s*개발|r&d/iu]
+  },
+  {
+    id: "faculty",
+    heading: "교수진과 산학 전문가는 어떻게 안내하나요?",
+    category: "교수진",
+    related_url: "/#faculty",
+    patterns: [/교수|전문가|멘토|교원|산학/u]
+  },
+  {
+    id: "license",
+    heading: "건축사 자격을 취득할 수 있나요?",
+    category: "자격·면허 안내",
+    related_url: "/architecture-vs-ai-architecture",
+    patterns: [/건축사|자격증|자격|면허|기사|기술사/u]
+  },
+  {
+    id: "admissions",
+    heading: "입학 질문은 어디까지 답하나요?",
+    category: "입학 안내",
+    related_url: "/#admissions",
+    patterns: [/입학|입시|수시|정시|수능|내신|모집|원서|학생부|생기부|세특|지원/u]
+  },
+  {
+    id: "learning-style",
+    heading: "수업과 학습 방식은 어떤가요?",
+    category: "교육과정",
+    related_url: "/#curriculum",
+    patterns: [/프로젝트|실습|과제|포트폴리오|캡스톤|학습\s*방식/u]
+  },
+  {
+    id: "identity",
+    heading: "어떤 학과인가요?",
+    category: "학과소개",
+    related_url: "/#about",
+    patterns: [/어떤\s*학과|무슨\s*학과|뭐\s*하는|뭐하는|학과\s*소개|정체성|핵심|여기|장점|특징|차별|좋은\s*점|왜\s*(?:지원|선택|가야)/u]
+  }
+];
+
 export function normalize(text) {
   return String(text || "")
     .toLowerCase()
@@ -260,8 +336,72 @@ export function isAdmissionsQuestion(question) {
 
 export function isLikelyDepartmentQuestion(question) {
   const normalized = normalize(question);
-  return DOMAIN_TERMS.some(term => normalized.includes(term)) ||
+  if (!normalized || isClearlyOutOfScope(normalized)) return false;
+
+  const hasDepartmentSignal = DOMAIN_TERMS.some(term => normalized.includes(term)) ||
     PROSPECTIVE_STUDENT_PATTERNS.some(pattern => pattern.test(normalized));
+  if (hasDepartmentSignal) return true;
+
+  return normalized.length <= 80 &&
+    /뭐|무엇|어떤|어떻게|왜|언제|어디|누구|궁금|알려|설명|나요|가요|까요|예요|에요|해요|돼요|되나요/u.test(normalized);
+}
+
+export function isClearlyOutOfScope(question) {
+  const normalized = normalize(question);
+  return CLEARLY_OUT_OF_SCOPE_PATTERNS.some(pattern => pattern.test(normalized));
+}
+
+export function findWikiIntent(question) {
+  const normalized = normalize(question);
+  const priority = [
+    "license", "preparation", "career", "faculty", "admissions",
+    "advanced-areas", "learning-style", "learning", "identity"
+  ];
+  for (const intentId of priority) {
+    const intent = WIKI_INTENTS.find(item => item.id === intentId);
+    if (intent && intent.patterns.some(pattern => pattern.test(normalized))) return intent;
+  }
+  return null;
+}
+
+function extractMarkdownHeadingSection(markdown, heading) {
+  const lines = String(markdown || "").split(/\r?\n/);
+  const normalizedHeading = normalize(heading);
+  const start = lines.findIndex(line => {
+    const match = line.match(/^##\s+(.+)$/);
+    return match && normalize(match[1]) === normalizedHeading;
+  });
+  if (start < 0) return "";
+
+  let end = lines.length;
+  for (let index = start + 1; index < lines.length; index += 1) {
+    if (/^##\s+/.test(lines[index])) {
+      end = index;
+      break;
+    }
+  }
+  return lines.slice(start + 1, end).join("\n").trim();
+}
+
+export function buildWikiFallbackAnswer(question, wikiText) {
+  const intent = findWikiIntent(question);
+  const fallbackIntent = {
+    id: "clarify",
+    heading: "질문이 짧거나 모호할 때",
+    category: "학과 안내",
+    related_url: "/#ask"
+  };
+  const selected = intent || fallbackIntent;
+  const answer = extractMarkdownHeadingSection(wikiText, selected.heading);
+  if (!answer) return null;
+
+  return {
+    answer,
+    category: selected.category,
+    matchedId: `wiki-${selected.id}`,
+    relatedUrl: selected.related_url,
+    intent: selected
+  };
 }
 
 export function isFacultyQuestion(question) {
@@ -495,7 +635,7 @@ function selectFacultyContext(question, facultyData) {
   }));
 }
 
-export function buildModelContext({ question, matches, department, facultyData, canonicalText }) {
+export function buildModelContext({ question, matches, department, facultyData, canonicalText, wikiText = "" }) {
   const faculty = selectFacultyContext(question, facultyData);
   const normalizedQuestion = normalize(question);
   const allFaculty = facultyData
@@ -528,6 +668,8 @@ export function buildModelContext({ question, matches, department, facultyData, 
   const canonical = selectCanonicalContext(question, canonicalText);
 
   return [
+    wikiText ? "[Primary LLM Wiki]" : "",
+    wikiText ? String(wikiText).slice(0, 16000) : "",
     "[Official Department Data]",
     JSON.stringify(identity, null, 2),
     "[Relevant FAQ Entries]",
