@@ -1,6 +1,7 @@
 {
   "source": "2027학년도 수시 신입생 모집요강(배포용 2026-07-20) 및 2027학년도 대학입학전형시행계획 기준",
   "official_susi_guide_url": "https://ipsi.dankook.ac.kr/jukjeon/doumi/mojip.html?bbsid=juk_paper&ctg_cd=01",
+  "official_transfer_guide_url": "https://ipsi.dankook.ac.kr/jukjeon/doumi/mojip.html?bbsid=juk_paper&ctg_cd=05",
   "official_admissions_url": "https://ipsi.dankook.ac.kr/jukjeon/main.html",
   "admissions_phone": "031-8005-2550~3",
   "admission_year": "2027학년도",
@@ -56,6 +57,20 @@
   "not_selected_in_2027": [
     "DKU인재(면접형)"
   ],
+  "transfer_guidance": {
+    "status": "해당 학년도 편입학 모집요강에서 확정",
+    "summary": "AI건축융합학과는 2027년 신설 학과이므로 현재 공개된 신입학 자료만으로 향후 편입생 모집 시기나 인원을 확정할 수 없습니다. 지원하려는 학년도의 편입학 모집요강에 학과가 모집단위로 포함되면 그 요강에 따라 지원할 수 있습니다.",
+    "checkpoints": [
+      "AI건축융합학과의 편입학 모집단위 포함 여부와 모집인원",
+      "일반편입·학사편입 구분과 지원자격",
+      "전적대학 수료·학점 요건",
+      "전형방법, 제출서류와 일정"
+    ]
+  },
+  "academic_mobility_guidance": {
+    "status": "대학 학칙과 해당 학년도 학사 공지에서 확인",
+    "summary": "전과, 다전공·복수전공과 부전공은 신입학·편입학과 다른 학사제도입니다. 신설 학과의 허용 시기, 신청자격, 선발인원과 교과 이수 기준은 대학의 공식 학사 안내가 확정 기준입니다."
+  },
   "important_notice": "AI건축융합학과는 2027학년도 신설 확정 학과이며 정원내 총 20명입니다. 수시 12명은 2027학년도 수시 모집요강, 정시 8명은 대학입학전형시행계획 기준입니다. 정시 인원은 수시 이월 등에 따라 달라질 수 있으므로 원서 접수 전 단국대학교 입학처의 최종 정시 모집요강을 확인해야 합니다.",
-  "last_updated": "2026-08-12"
+  "last_updated": "2026-08-17"
 }

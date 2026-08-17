@@ -4652,12 +4652,28 @@
       const officialGuideUrl = admissionsData?.official_susi_guide_url ||
         'https://ipsi.dankook.ac.kr/jukjeon/doumi/mojip.html?bbsid=juk_paper&ctg_cd=01';
       const admissionsUrl = admissionsData?.official_admissions_url || 'https://ipsi.dankook.ac.kr/jukjeon/main.html';
+      const transferGuideUrl = admissionsData?.official_transfer_guide_url ||
+        'https://ipsi.dankook.ac.kr/jukjeon/doumi/mojip.html?bbsid=juk_paper&ctg_cd=05';
       const phone = admissionsData?.admissions_phone || '031-8005-2550~3';
       const rows = Array.isArray(admissionsData?.admission_breakdown_regular)
         ? admissionsData.admission_breakdown_regular
         : [];
       const normalized = String(question || '').toLowerCase().replace(/\s+/g, '');
       const asksForCount = /(모집인원|선발인원|모집정원|정원|몇명|몇 명|인원|뽑)/u.test(question);
+
+      if (/편입/u.test(normalized)) {
+        return {
+          ok: true,
+          type: 'admissions-guidance',
+          question,
+          answer: `편입 지원 가능 여부는 **지원하려는 학년도의 편입학 모집요강에 AI건축융합학과가 모집단위로 포함되는지**로 확정됩니다. 이 학과는 2027년 신설 학과이므로 현재 공개된 신입학 자료만으로 편입생 모집 시기나 인원을 단정할 수 없습니다.\n\n모집요강에서 학과 포함 여부, 일반편입·학사편입 구분, 전적대학 수료·학점 요건, 전형방법을 확인해 주세요. 학과가 해당 연도 편입 모집단위에 포함되면 그 요강에 따라 지원할 수 있습니다.\n\n- 단국대학교 죽전캠퍼스 편입학 모집요강: ${transferGuideUrl}\n- 단국대학교 입학팀: ${phone}`,
+          confidence: 1,
+          matched_id: 'admissions-transfer-guidance',
+          category: '편입학 안내',
+          related_url: transferGuideUrl,
+          sources: ['/data/admissions.json', '/content/llm-wiki.md', transferGuideUrl]
+        };
+      }
 
       if (asksForCount && rows.length > 0) {
         const namedRow = rows.find(row => normalized.includes(String(row.name || '').toLowerCase().replace(/\s+/g, ''))) ||
@@ -4747,6 +4763,9 @@
         { id: 'preparation', heading: '처음이어도 괜찮나요?', category: '지원자 적합성', url: '/student-preparation-guide', pattern: /처음|초보|몰라|못해|문과|이과|비전공|따라갈|준비|적성|어렵|난이도|선행|자신\s*없/u },
         { id: 'career', heading: '졸업 후 무엇을 할 수 있나요?', category: '진로', url: '/ai-architecture-careers', pattern: /졸업|진로|취업|직업|회사|대학원|창업|연구\s*개발|r&d/iu },
         { id: 'faculty', heading: '교수진과 산학 전문가는 어떻게 안내하나요?', category: '교수진', url: '/#faculty', pattern: /교수|전문가|멘토|교원|산학/u },
+        { id: 'transfer', heading: '편입할 수 있나요?', category: '편입학 안내', url: 'https://ipsi.dankook.ac.kr/jukjeon/doumi/mojip.html?bbsid=juk_paper&ctg_cd=05', pattern: /편입|일반\s*편입|학사\s*편입/u },
+        { id: 'academic-mobility', heading: '전과·다전공이 가능한가요?', category: '학사 안내', url: '/#admissions', pattern: /전과|복수\s*전공|다전공|부전공/u },
+        { id: 'admissions-contact', heading: '입학 상담은 어디로 문의하나요?', category: '입학 안내', url: 'https://ipsi.dankook.ac.kr/jukjeon/main.html', pattern: /(?:입학|입시|진학).{0,12}(?:상담|문의|연락|전화)|(?:상담|문의|연락|전화).{0,12}(?:입학|입시|진학)/u },
         { id: 'admissions', heading: '입학 질문은 어디까지 답하나요?', category: '입학 안내', url: '/#admissions', pattern: /입학|입시|수시|정시|수능|내신|모집|원서|학생부|생기부|세특|지원/u },
         { id: 'advanced-areas', heading: '심화 교육축은 무엇인가요?', category: '심화 교육축', url: '/#pillars', pattern: /심화|트랙|교육축|디지털트윈|구조안전|시공품질|건축환경/u },
         { id: 'learning-style', heading: '수업과 학습 방식은 어떤가요?', category: '교육과정', url: '/#curriculum', pattern: /프로젝트|실습|과제|포트폴리오|캡스톤|학습\s*방식/u },
@@ -4831,7 +4850,17 @@
         /최저\s*학력/u, /반영\s*비율/u, /모집\s*(요강|인원|정원|단위|군|일정)/u,
         /정원\s*(내|외)/u, /가군|나군|다군/u, /dku\s*인재/iu,
         /지역\s*균형/u, /기회\s*균형/u, /사회적\s*배려/u, /논술/u,
-        /특성화고/u, /마이스터고/u, /몇\s*명.{0,8}뽑/u, /뽑.{0,8}몇\s*명/u
+        /특성화고/u, /마이스터고/u, /편입|일반\s*편입|학사\s*편입/u,
+        /전과|복수\s*전공|다전공|부전공/u, /몇\s*명.{0,8}뽑/u, /뽑.{0,8}몇\s*명/u
+      ];
+
+      const protectedAdmissionsPatterns = [
+        /내신|수능|입결|커트\s*라인|점수|등급|석차|백분위/u,
+        /합격\s*(?:선|점수|등급|가능성)|붙을\s*수|붙을까|안정권|상향\s*지원|하향\s*지원/u,
+        /경쟁률|지원\s*자격|지원\s*조건|수능\s*최저|최저\s*학력/u,
+        /원서\s*접수|접수\s*(?:일정|기간|마감)|전형\s*(?:일정|방법)|평가\s*방법|반영\s*비율|가산점/u,
+        /모집\s*(?:요강|인원|정원|단위|군|일정)|선발\s*인원|모집\s*정원|정원\s*(?:내|외)/u,
+        /몇\s*명.{0,8}(?:뽑|선발|모집)|(?:뽑|선발|모집).{0,8}몇\s*명/u
       ];
 
       const isGraduateSchoolQuestion = /대학원/u.test(normalizedQuestion);
@@ -4845,6 +4874,7 @@
       const isLearningReadinessQuestion = learningReadinessPatterns.some(pattern => pattern.test(normalizedQuestion));
       if (
         admissionsPatterns.some(pattern => pattern.test(normalizedQuestion)) &&
+        protectedAdmissionsPatterns.some(pattern => pattern.test(normalizedQuestion)) &&
         (!isGraduateSchoolQuestion || hasExplicitAdmissionContext) &&
         (!isLearningReadinessQuestion || hasFormalAdmissionSignal)
       ) {
@@ -5120,9 +5150,7 @@
       } else if (String(data.type || '').startsWith('admissions-')) {
         confidenceText = '공식 입학자료 기준';
       } else if (data.type === 'wiki-answer') {
-        confidenceText = data.ai?.status === 'browser-fallback'
-          ? '브라우저 학과 지식 답변'
-          : `학과 지식 답변 · ${geminiModelLabel} 대체`;
+        confidenceText = '공식 학과 자료 기반 답변';
       } else if (data.type === 'ai-answer') {
         confidenceText = `${geminiModelLabel} 생성 답변`;
       } else if (data.type === 'clarification') {
@@ -5130,7 +5158,7 @@
       } else if (data.ai?.status === 'not-required') {
         confidenceText = '검증된 공식 답변';
       } else if (data.ai?.status === 'fallback' || data.ai?.status === 'not-configured') {
-        confidenceText = `공식자료 답변 · ${geminiModelLabel} 대체`;
+        confidenceText = '공식 학과 자료 기반 답변';
       }
       
       const disclaimerDelimiter = "입학 관련 세부사항은";

@@ -11,6 +11,7 @@ import {
   buildWikiFallbackAnswer,
   getDisclaimers,
   isAdmissionsQuestion,
+  isProtectedAdmissionsQuestion,
   isClearlyOutOfScope,
   isLikelyDepartmentQuestion,
   scoreFaq
@@ -20,6 +21,7 @@ const repoRoot = path.resolve(import.meta.dirname, "..");
 const publicRoot = path.join(repoRoot, "public");
 const faq = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "faq.json"), "utf8"));
 const department = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "department.json"), "utf8"));
+const admissionsData = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "admissions.json"), "utf8"));
 const facultyData = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "faculty.json"), "utf8"));
 const peopleProjects = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "people-projects.json"), "utf8"));
 const curriculumPlan = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "curriculum-plan.json"), "utf8"));
@@ -126,7 +128,9 @@ test("admissions detection identifies admissions questions only", () => {
     "원서 접수 일정 알려줘",
     "DKU인재 전형 지원자격은 무엇인가요?",
     "진학 상담을 받고 싶어요",
-    "지원 방법이 궁금해요"
+    "지원 방법이 궁금해요",
+    "편입가능한가요?",
+    "전과 가능한가요?"
   ]) {
     assert.equal(isAdmissionsQuestion(question), true, question);
   }
@@ -142,6 +146,24 @@ test("admissions detection identifies admissions questions only", () => {
     "입학 후 어떤 과목을 배우나요?"
   ]) {
     assert.equal(isAdmissionsQuestion(question), false, question);
+  }
+
+  for (const question of [
+    "내신 몇 등급이면 되나요?",
+    "2027 수시 모집인원은 몇 명인가요?",
+    "DKU인재 전형 지원자격은 무엇인가요?",
+    "원서 접수 일정 알려줘"
+  ]) {
+    assert.equal(isProtectedAdmissionsQuestion(question), true, question);
+  }
+
+  for (const question of [
+    "편입가능한가요?",
+    "전과 가능한가요?",
+    "지원 방법이 궁금해요",
+    "코딩 몰라도 지원할 수 있나요?"
+  ]) {
+    assert.equal(isProtectedAdmissionsQuestion(question), false, question);
   }
 });
 
@@ -163,6 +185,9 @@ test("LLM Wiki covers common conversational department questions", () => {
   assert.match(wikiText, /## 무엇을 배우나요\?/);
   assert.match(wikiText, /## 코딩은 얼마나, 어떻게 배우나요\?/);
   assert.match(wikiText, /## 입학 질문은 어디까지 답하나요\?/);
+  assert.match(wikiText, /## 편입할 수 있나요\?/);
+  assert.match(wikiText, /## 전과·다전공이 가능한가요\?/);
+  assert.match(wikiText, /## 입학 상담은 어디로 문의하나요\?/);
 
   const learning = buildWikiFallbackAnswer("어떤 거 배우는 거예요?", wikiText);
   assert.equal(learning.matchedId, "wiki-learning");
@@ -181,6 +206,11 @@ test("LLM Wiki covers common conversational department questions", () => {
   const career = buildWikiFallbackAnswer("졸업하면 뭐해요?", wikiText);
   assert.equal(career.matchedId, "wiki-career");
   assert.match(career.answer, /BIM·디지털트윈 엔지니어/);
+
+  const transfer = buildWikiFallbackAnswer("편입가능한가요?", wikiText);
+  assert.equal(transfer.matchedId, "wiki-transfer");
+  assert.match(transfer.answer, /편입학 모집요강에 AI건축융합학과가 모집단위로 포함되는지/);
+  assert.doesNotMatch(transfer.answer, /어떤 점이 궁금한지 조금만 더/);
 });
 
 test("prospective student harness keeps readiness questions in scope", () => {
@@ -190,7 +220,9 @@ test("prospective student harness keeps readiness questions in scope", () => {
     "건축을 배운 적 없어도 괜찮나요?",
     "문과인데 따라갈 수 있나요?",
     "진학 상담을 받고 싶어요",
-    "수학에 자신 없어도 괜찮을까요?"
+    "수학에 자신 없어도 괜찮을까요?",
+    "편입가능한가요?",
+    "전과 가능한가요?"
   ]) {
     assert.equal(isLikelyDepartmentQuestion(question), true, question);
   }
@@ -206,6 +238,7 @@ test("strong department questions route to the expected FAQ", () => {
   const colloquialLicense = scoreFaq("건축사 딸 수 있어요?", faq)[0];
   const noCodingBackground = scoreFaq("코딩 몰라도 되나요?", faq)[0];
   const humanitiesStudent = scoreFaq("문과인데 따라갈 수 있나요?", faq)[0];
+  const transfer = scoreFaq("편입가능한가요?", faq)[0];
 
   assert.equal(professor.item.id, "ops-002a");
   assert.ok(professor.score >= STATIC_ANSWER_SCORE);
@@ -220,6 +253,8 @@ test("strong department questions route to the expected FAQ", () => {
   assert.ok(noCodingBackground.score >= STATIC_ANSWER_SCORE);
   assert.equal(humanitiesStudent.item.id, "seo-student-001");
   assert.ok(humanitiesStudent.score >= STATIC_ANSWER_SCORE);
+  assert.equal(transfer.item.id, "admissions-transfer-001");
+  assert.ok(transfer.score >= STATIC_ANSWER_SCORE);
 });
 
 test("the default generative model is Gemini 3.7 Flash", async () => {
@@ -246,6 +281,7 @@ test("named faculty context is scoped and neutral", () => {
     matches,
     department,
     facultyData,
+    admissionsData,
     canonicalText
   });
 
@@ -345,8 +381,16 @@ test("worker returns safe static and fallback answers without Gemini", async () 
   assert.match(admissionsGuidance.answer, /031-8005-2550~3/);
   assert.ok(admissionsGuidance.sources.length >= 2);
 
+  const transferGuidance = await ask("편입가능한가요?");
+  assert.equal(transferGuidance.type, "answer");
+  assert.equal(transferGuidance.matched_id, "admissions-transfer-001");
+  assert.match(transferGuidance.answer, /편입학 모집요강에 AI건축융합학과가 모집단위로 포함되는지/);
+  assert.doesNotMatch(transferGuidance.answer, /어떤 점이 궁금한지 조금만 더/);
+  assert.equal(transferGuidance.related_url, "https://ipsi.dankook.ac.kr/jukjeon/doumi/mojip.html?bbsid=juk_paper&ctg_cd=05");
+
   const counselingGuidance = await ask("진학 상담을 받고 싶어요");
-  assert.equal(counselingGuidance.type, "admissions-guidance");
+  assert.equal(counselingGuidance.type, "wiki-answer");
+  assert.equal(counselingGuidance.matched_id, "wiki-admissions-contact");
   assert.match(counselingGuidance.answer, /031-8005-2550~3/);
 
   const facultyProject = await ask("김종호 대표 프로젝트는 무엇인가요?");
@@ -431,6 +475,43 @@ test("Gemini is the primary responder for ordinary high-confidence questions", a
     assert.equal(result.matched_id, "gemini-grounded");
     assert.equal(result.ai.model, "gemini-3.7-flash");
     assert.match(result.answer, /입학 전에 코딩을 잘해야 하는 것은 아닙니다/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("Gemini receives grounded transfer guidance and answers transfer questions first", async () => {
+  const originalFetch = globalThis.fetch;
+  let requestCount = 0;
+  let requestBody;
+  globalThis.fetch = async (_url, options) => {
+    requestCount += 1;
+    requestBody = JSON.parse(options.body);
+    return new Response(JSON.stringify({
+      candidates: [{
+        content: {
+          parts: [{
+            text: "편입 지원 가능 여부는 지원 학년도의 편입학 모집요강에 AI건축융합학과가 모집단위로 포함되는지에 따라 확정됩니다. 현재는 2027년 신설 학과이므로 향후 모집 시기와 인원을 단정할 수 없으며, 모집단위 포함 여부와 일반편입·학사편입 지원자격을 확인해 주세요."
+          }]
+        }
+      }]
+    }), { headers: { "Content-Type": "application/json" } });
+  };
+
+  try {
+    const result = await ask("편입가능한가요?", {
+      GEMINI_API_KEY: "test-key"
+    });
+
+    assert.equal(requestCount, 1);
+    assert.equal(result.type, "ai-answer");
+    assert.equal(result.matched_id, "gemini-grounded");
+    assert.equal(result.ai.status, "generated");
+    assert.equal(result.category, "편입학 안내");
+    assert.match(result.answer, /모집단위로 포함되는지/);
+    assert.match(requestBody.contents[0].parts[0].text, /\[Relevant Admissions Data\]/);
+    assert.match(requestBody.contents[0].parts[0].text, /official_transfer_guide_url/);
+    assert.match(requestBody.systemInstruction.parts[0].text, /단순히 "모집요강을 확인하세요"로 끝내거나/);
   } finally {
     globalThis.fetch = originalFetch;
   }
