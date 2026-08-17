@@ -4704,7 +4704,9 @@
       }
 
       const admissionsPatterns = [
-        /입학/u, /입시/u, /수시/u, /정시/u, /수능/u, /내신/u, /입결/u,
+        /입학/u, /입시/u, /(?:지원|진학)\s*(?:방법|절차|상담|문의|자격|조건)/u,
+        /(?:지원|진학)(?:하려면|하고\s*싶|할\s*수|할수)/u,
+        /수시/u, /정시/u, /수능/u, /내신/u, /입결/u,
         /커트\s*라인/u, /합격\s*(선|점수|등급|가능성)/u, /경쟁률/u,
         /학생부/u, /생기부/u, /세특/u, /원서\s*접수/u, /지원\s*자격/u,
         /최저\s*학력/u, /반영\s*비율/u, /모집\s*(요강|인원|정원|단위|군|일정)/u,
@@ -4713,7 +4715,20 @@
         /특성화고/u, /마이스터고/u, /몇\s*명.{0,8}뽑/u, /뽑.{0,8}몇\s*명/u
       ];
 
-      if (admissionsPatterns.some(pattern => pattern.test(normalizedQuestion))) {
+      const isGraduateSchoolQuestion = /대학원/u.test(normalizedQuestion);
+      const hasExplicitAdmissionContext = /입학|입시|수시|정시|수능|내신|모집|원서|학생부|생기부|세특/u.test(normalizedQuestion);
+      const hasFormalAdmissionSignal = /입시|수시|정시|수능|내신|입결|모집|원서|학생부|생기부|세특|전형|경쟁률|정원|합격/u.test(normalizedQuestion);
+      const learningReadinessPatterns = [
+        /(?:코딩|프로그래밍|개발|건축|ai|수학|물리|디자인).{0,16}(?:몰라|못해|처음|초보|경험.{0,4}없|자신.{0,4}없|어려|따라갈|괜찮)/iu,
+        /(?:몰라|못해|처음|초보|경험.{0,4}없|자신.{0,4}없|어려|따라갈|괜찮).{0,16}(?:코딩|프로그래밍|개발|건축|ai|수학|물리|디자인)/iu,
+        /(?:문과|이과|비전공).{0,16}(?:괜찮|지원|입학|진학|따라갈|가능|적합)/u
+      ];
+      const isLearningReadinessQuestion = learningReadinessPatterns.some(pattern => pattern.test(normalizedQuestion));
+      if (
+        admissionsPatterns.some(pattern => pattern.test(normalizedQuestion)) &&
+        (!isGraduateSchoolQuestion || hasExplicitAdmissionContext) &&
+        (!isLearningReadinessQuestion || hasFormalAdmissionSignal)
+      ) {
         return buildLocalAdmissionsResponse(question);
       }
 
@@ -4780,6 +4795,10 @@
 
       const intentRoutes = [
         { triggers: ['교수', '참여교수', '전문가', '멘토'], id: 'ops-002a', url: '/#faculty' },
+        { triggers: ['코딩 몰라도', '코딩을 몰라도', '코딩 못해도', '코딩을 못해도', '코딩 처음', '코딩 경험 없어', '프로그래밍 몰라도', '프로그래밍을 몰라도', '프로그래밍 못해도', '프로그래밍 경험이 없어', '개발 경험이 없어'], id: 'fit-004', url: '/student-preparation-guide', boost: 70 },
+        { triggers: ['건축 몰라도', '건축을 몰라도', '건축 처음', '건축 경험 없어', '건축을 배운 적 없어', '건축 안 배워'], id: 'fit-003', url: '/student-preparation-guide', boost: 70 },
+        { triggers: ['수학 못해도', '수학을 못해도', '수학 자신 없', '수학이 어려', '수학 약해', '물리 못해도', '물리를 못해도', '물리 자신 없'], id: 'cur-007', url: '/student-preparation-guide', boost: 70 },
+        { triggers: ['문과인데', '이과인데', '비전공', '따라갈 수', '따라갈수', '선행 학습', '선행학습', '예비 신입생', '적성에 맞'], id: 'seo-student-001', url: '/student-preparation-guide', boost: 70 },
         { triggers: ['건축사 자격', '건축사 면허', '건축사 시험'], id: 'diff-006', url: '/architecture-vs-ai-architecture' },
         { triggers: ['건축학', '건축학과', '건축설계'], id: 'seo-diff-architecture-001', url: '/architecture-vs-ai-architecture' },
         { triggers: ['건축공학', '건축공학과', '구조안전', '시공품질'], id: 'seo-diff-engineering-001', url: '/architectural-engineering-vs-ai-architecture' },
@@ -4814,7 +4833,7 @@
           score += 28;
         }
         if (activeRoute && item.id === activeRoute.id) {
-          score += 48;
+          score += activeRoute.boost || 48;
         }
         if (score > 0) {
           score += Math.min(1, (item.priority || 0) / 100);
@@ -4831,7 +4850,16 @@
         '환경', '프로젝트', '포트폴리오', '코딩', '수학', '물리', '디자인', '캠퍼스',
         '연구', '자격증', '건축사', '정란', '이상현', '강태웅', '위진복', '정광량', '김종호', '김종수'
       ];
-      const isDepartmentQuestion = domainTerms.some(term => normalizedQuestion.includes(term));
+      const prospectiveStudentPatterns = [
+        /고등학생|고교생|수험생|예비\s*신입생|학부모|진학\s*상담/u,
+        /(?:코딩|프로그래밍|개발|건축|ai|수학|물리|디자인).{0,16}(?:몰라|못해|처음|초보|경험.{0,4}없|자신.{0,4}없|어려|따라갈|괜찮)/iu,
+        /(?:몰라|못해|처음|초보|경험.{0,4}없|자신.{0,4}없|어려|따라갈|괜찮).{0,16}(?:코딩|프로그래밍|개발|건축|ai|수학|물리|디자인)/iu,
+        /(?:문과|이과|비전공).{0,16}(?:괜찮|지원|입학|진학|따라갈|가능|적합)/u,
+        /(?:지원|입학|진학|학과).{0,20}(?:준비|가능|조건|자격|방법|추천|상담|적성|선행)/u,
+        /(?:준비|가능|조건|자격|방법|추천|상담|적성|선행).{0,20}(?:지원|입학|진학|학과)/u
+      ];
+      const isDepartmentQuestion = domainTerms.some(term => normalizedQuestion.includes(term)) ||
+        prospectiveStudentPatterns.some(pattern => pattern.test(normalizedQuestion));
 
       if (!best || score < 24 || (!isDepartmentQuestion && score < 68)) {
         return {

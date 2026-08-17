@@ -14,6 +14,47 @@ const INTENT_ROUTES = [
     preferred_url: "/#faculty"
   },
   {
+    intent: "코딩 입문",
+    triggers: [
+      "코딩 몰라도", "코딩을 몰라도", "코딩 못해도", "코딩을 못해도", "코딩 처음",
+      "코딩 경험 없어", "프로그래밍 몰라도", "프로그래밍을 몰라도", "프로그래밍 못해도",
+      "프로그래밍 경험이 없어", "개발 경험이 없어"
+    ],
+    preferred_faq_id: "fit-004",
+    preferred_url: "/student-preparation-guide",
+    score_boost: 70
+  },
+  {
+    intent: "건축 입문",
+    triggers: [
+      "건축 몰라도", "건축을 몰라도", "건축 처음", "건축 경험 없어",
+      "건축을 배운 적 없어", "건축 안 배워"
+    ],
+    preferred_faq_id: "fit-003",
+    preferred_url: "/student-preparation-guide",
+    score_boost: 70
+  },
+  {
+    intent: "수학 준비",
+    triggers: [
+      "수학 못해도", "수학을 못해도", "수학 자신 없", "수학이 어려", "수학 약해",
+      "물리 못해도", "물리를 못해도", "물리 자신 없"
+    ],
+    preferred_faq_id: "cur-007",
+    preferred_url: "/student-preparation-guide",
+    score_boost: 70
+  },
+  {
+    intent: "진학 준비",
+    triggers: [
+      "문과인데", "이과인데", "비전공", "따라갈 수", "따라갈수",
+      "선행 학습", "선행학습", "예비 신입생", "적성에 맞"
+    ],
+    preferred_faq_id: "seo-student-001",
+    preferred_url: "/student-preparation-guide",
+    score_boost: 70
+  },
+  {
     intent: "건축학 비교",
     triggers: ["건축학", "건축학과", "건축설계", "설계 중심"],
     preferred_faq_id: "seo-diff-architecture-001",
@@ -94,6 +135,8 @@ const ADMISSIONS_PATTERNS = [
   /입학(?:은|이|을|에|으로)?\s*(어떻게|가능|방법|절차|조건|자격|문의)/u,
   /입학(?:하려면|하려고|하고\s*싶|할\s*수|할수)/u,
   /입시/u,
+  /(?:지원|진학)\s*(?:방법|절차|상담|문의|자격|조건)/u,
+  /(?:지원|진학)(?:하려면|하고\s*싶|할\s*수|할수)/u,
   /수시/u,
   /정시/u,
   /수능/u,
@@ -122,6 +165,15 @@ const ADMISSIONS_PATTERNS = [
   /마이스터고/u,
   /몇\s*명.{0,8}뽑/u,
   /뽑.{0,8}몇\s*명/u
+];
+
+const PROSPECTIVE_STUDENT_PATTERNS = [
+  /고등학생|고교생|수험생|예비\s*신입생|학부모|진학\s*상담/u,
+  /(?:코딩|프로그래밍|개발|건축|ai|수학|물리|디자인).{0,16}(?:몰라|못해|처음|초보|경험.{0,4}없|자신.{0,4}없|어려|따라갈|괜찮)/iu,
+  /(?:몰라|못해|처음|초보|경험.{0,4}없|자신.{0,4}없|어려|따라갈|괜찮).{0,16}(?:코딩|프로그래밍|개발|건축|ai|수학|물리|디자인)/iu,
+  /(?:문과|이과|비전공).{0,16}(?:괜찮|지원|입학|진학|따라갈|가능|적합)/u,
+  /(?:지원|입학|진학|학과).{0,20}(?:준비|가능|조건|자격|방법|추천|상담|적성|선행)/u,
+  /(?:준비|가능|조건|자격|방법|추천|상담|적성|선행).{0,20}(?:지원|입학|진학|학과)/u
 ];
 
 export function normalize(text) {
@@ -195,14 +247,21 @@ export function findIntentRoute(query) {
 export function isAdmissionsQuestion(question) {
   const normalized = normalize(question);
   const isLicenseQuestion = /건축사|기사|기술사|자격증|면허/u.test(normalized);
+  const isGraduateSchoolQuestion = /대학원/u.test(normalized);
   const hasExplicitAdmissionContext = /입학|입시|수시|정시|수능|내신|모집|원서|학생부|생기부|세특/u.test(normalized);
+  const hasFormalAdmissionSignal = /입시|수시|정시|수능|내신|입결|모집|원서|학생부|생기부|세특|전형|경쟁률|정원|합격/u.test(normalized);
+  const isLearningReadinessQuestion = PROSPECTIVE_STUDENT_PATTERNS.slice(1, 4)
+    .some(pattern => pattern.test(normalized));
   if (isLicenseQuestion && !hasExplicitAdmissionContext) return false;
+  if (isGraduateSchoolQuestion && !hasExplicitAdmissionContext) return false;
+  if (isLearningReadinessQuestion && !hasFormalAdmissionSignal) return false;
   return ADMISSIONS_PATTERNS.some(pattern => pattern.test(normalized));
 }
 
 export function isLikelyDepartmentQuestion(question) {
   const normalized = normalize(question);
-  return DOMAIN_TERMS.some(term => normalized.includes(term));
+  return DOMAIN_TERMS.some(term => normalized.includes(term)) ||
+    PROSPECTIVE_STUDENT_PATTERNS.some(pattern => pattern.test(normalized));
 }
 
 export function isFacultyQuestion(question) {
@@ -261,7 +320,7 @@ export function scoreFaq(query, faq) {
     }
 
     if (route && item.id === route.preferred_faq_id) {
-      score += 48;
+      score += route.score_boost || 48;
     }
 
     if (score > 0) {
