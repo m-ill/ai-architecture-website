@@ -8,8 +8,10 @@ import {
   STATIC_ANSWER_SCORE,
   appendDisclaimers,
   buildModelContext,
+  buildWikiFallbackAnswer,
   getDisclaimers,
   isAdmissionsQuestion,
+  isClearlyOutOfScope,
   isLikelyDepartmentQuestion,
   scoreFaq
 } from "../functions/_lib/qa-core.mjs";
@@ -23,6 +25,7 @@ const peopleProjects = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", 
 const curriculumPlan = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "curriculum-plan.json"), "utf8"));
 const curriculumCourseDetails = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "curriculum-course-details.json"), "utf8"));
 const canonicalText = fs.readFileSync(path.join(publicRoot, "content", "canonical.md"), "utf8");
+const wikiText = fs.readFileSync(path.join(publicRoot, "content", "llm-wiki.md"), "utf8");
 
 async function loadAskModule() {
   const askPath = path.join(repoRoot, "functions", "api", "ask.js");
@@ -150,6 +153,27 @@ test("unrelated questions no longer receive category baseline scores", () => {
   assert.equal(isLikelyDepartmentQuestion("오늘 날씨 어때?"), false);
   assert.ok(lunch.score < STATIC_ANSWER_SCORE);
   assert.equal(isLikelyDepartmentQuestion("점심 메뉴 추천해줘"), false);
+  assert.equal(isClearlyOutOfScope("오늘 날씨 어때?"), true);
+  assert.equal(isClearlyOutOfScope("점심 메뉴 추천해줘"), true);
+  assert.equal(isClearlyOutOfScope("어떤 거 배우는 거예요?"), false);
+});
+
+test("LLM Wiki covers common conversational department questions", () => {
+  assert.match(wikiText, /건축 정보를 읽고, AI와 데이터로 판단·설계·개선하는 융합형 책임기술 인재 양성/);
+  assert.match(wikiText, /## 무엇을 배우나요\?/);
+  assert.match(wikiText, /## 입학 질문은 어디까지 답하나요\?/);
+
+  const learning = buildWikiFallbackAnswer("어떤 거 배우는 거예요?", wikiText);
+  assert.equal(learning.matchedId, "wiki-learning");
+  assert.match(learning.answer, /자연어코딩과 건축데이터분석/);
+
+  const difficulty = buildWikiFallbackAnswer("수업이 어렵나요?", wikiText);
+  assert.equal(difficulty.matchedId, "wiki-preparation");
+  assert.match(difficulty.answer, /입학 전부터 전문적으로/);
+
+  const career = buildWikiFallbackAnswer("졸업하면 뭐해요?", wikiText);
+  assert.equal(career.matchedId, "wiki-career");
+  assert.match(career.answer, /BIM·디지털트윈 엔지니어/);
 });
 
 test("prospective student harness keeps readiness questions in scope", () => {
@@ -226,6 +250,21 @@ test("worker returns safe static and fallback answers without Gemini", async () 
   const identity = await ask("AI건축융합학과는 어떤 학과인가요?");
   assert.equal(identity.type, "answer");
   assert.equal(identity.matched_id, "identity-001");
+
+  for (const [question, expectedId, answerPattern] of [
+    ["어떤거 배우는거에요?", "wiki-learning", /자연어코딩과 건축데이터분석/],
+    ["뭘 배우나요?", "wiki-learning", /BIM·CAD·CIM/],
+    ["여기 뭐하는 곳이에요?", "wiki-identity", /AI건축융합학과는 건축 정보를 읽고/],
+    ["졸업하면 뭐해요?", "wiki-career", /건축 데이터 분석/],
+    ["수업이 어렵나요?", "wiki-preparation", /기초부터 배우는 흐름/]
+  ]) {
+    const result = await ask(question);
+    assert.equal(result.type, "wiki-answer", question);
+    assert.equal(result.matched_id, expectedId, question);
+    assert.match(result.answer, answerPattern, question);
+    assert.notEqual(result.type, "fallback", question);
+    assert.ok(result.sources.includes("/content/llm-wiki.md"), question);
+  }
 
   const weather = await ask("오늘 날씨 어때?");
   assert.equal(weather.type, "fallback");
@@ -339,6 +378,8 @@ test("worker sends a grounded project prompt to Gemini", async () => {
     assert.equal(requestBody.generationConfig.temperature, 0.2);
     assert.match(requestBody.contents[0].parts[0].text, /김종수/);
     assert.match(requestBody.contents[0].parts[0].text, /Relevant Faculty Data/);
+    assert.match(requestBody.contents[0].parts[0].text, /Primary LLM Wiki/);
+    assert.match(requestBody.contents[0].parts[0].text, /어떤 거 배워요/);
     assert.match(requestBody.systemInstruction.parts[0].text, /이모지는 사용하지 않는다/);
   } finally {
     globalThis.fetch = originalFetch;
