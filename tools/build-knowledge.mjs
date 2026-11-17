@@ -27,6 +27,8 @@ markdown('content/education-philosophy.md', 'philosophy', '2026-11-17', '교육�
 markdown('content/conversation-guide.md', 'conversation', null, '기존 상담 안내 · 원본 기준 확인');
 // Canonical is long-form authority; section-level links remain stable when reordered.
 markdown('content/canonical.md', 'canonical', null, '기존 통합 원문 · 항목별 기준 확인');
+const careers=json('data/careers.json');
+for(const c of careers.roles) add(`career-${c.id}`,c.title,`${c.label}\n하는 일: ${c.work}\n결과물 예시: ${c.output}\n준비 역량: ${c.skills}\n${careers.notice}${c.id==='fde'?'\n팔란티어의 공식 FDSE 직무는 고객의 문제를 파악하고 데이터와 소프트웨어로 해법을 구현하는 역할을 설명합니다. 이 학과의 건축 적용 예시는 그 방식을 참고한 진로 제안입니다.\n참고: '+careers.source.url:''}`,'/data/careers.json',careers.updated,'진로·업무 예시 · 취업 보장 아님',['진로','취업',c.title,...(c.id==='fde'?['FDE','전진배치','팔란티어','현장도입']:[])]);
 const faq = json('data/faq.json');
 for (const item of faq) add(`faq-${item.id}`, item.question, item.answer, '/data/faq.json', item.last_updated, item.category, [...(item.aliases || []), ...(item.keywords || [])]);
 add('admissions', '입학·모집인원·지원 안내', `${admissions.source}\n${admissions.admission_year}\n${admissions.admission_breakdown_regular.map(r => `${r.period} ${r.name}: ${r.count}명 (${r.note})`).join('\n')}\n${admissions.important_notice}\n자료 기준일: ${admissions.last_updated}. 현재 모집요강을 재확인해야 합니다.\n입학안내: ${admissions.official_admissions_url}\n문의: ${admissions.admissions_phone}`, '/data/admissions.json', admissions.last_updated, '기존 입학자료 · 최종 모집요강 확인', ['수시','정시','모집','입학']);
