@@ -3,7 +3,7 @@
   "site_name_en": "Department of AI-Architecture Convergence",
   "base_url": "https://ai-architecture-website.pages.dev",
   "language": "ko-KR",
-  "last_updated": "2026-08-12",
+  "last_updated": "2026-11-17",
   "owner": "AI건축융합학과 준비 페이지",
   "deployment": {
     "recommended_host": "Cloudflare Pages",
@@ -12,9 +12,9 @@
     "serverless_functions_directory": "functions"
   },
   "contact_placeholders": {
-    "office": "단국대학교 입학팀 (죽전캠퍼스)",
-    "email": "공식 계정 개설 후 업데이트 예정",
-    "phone": "031-8005-2550~3"
+    "office": "AI융합대학 교학행정팀",
+    "phone": "031-8005-3142",
+    "email": "jhj1218@dankook.ac.kr"
   },
   "replace_before_deploy": [
     "public/sitemap.xml의 YOUR-DOMAIN.example",

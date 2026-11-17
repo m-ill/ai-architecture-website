@@ -6,10 +6,18 @@
   "scripts": {
     "dev": "wrangler pages dev public --ip 0.0.0.0 --compatibility-date=2026-07-08",
     "check:json": "node -e \"for (const f of ['public/data/department.json','public/data/faq.json','public/data/curriculum.json','public/data/curriculum-plan.json','public/data/curriculum-course-details.json','public/data/admissions.json','public/data/suggested_questions.json','public/data/answer_policy.json','public/data/faculty.json','public/data/people-projects.json','public/data/advanced_areas.json']) JSON.parse(require('fs').readFileSync(f,'utf8')); console.log('JSON OK')\"",
-    "test:qa": "node --test tests/qa-core.test.mjs",
-    "test": "npm run check:json && npm run test:qa"
+    "test:qa": "node --test tests/*.test.mjs",
+    "test": "npm run build && npm run check:json && npm run test:qa",
+    "build": "node tools/build-knowledge.mjs && node tools/build-home.mjs && node tools/build-guides.mjs",
+    "dev:local": "node tools/dev-server.mjs",
+    "dev:secure": "node tools/check-school-ai.mjs --serve",
+    "check:school": "node tools/check-school-ai.mjs",
+    "build:animation": "node tools/encode-learning-architecture.mjs",
+    "package:pages": "npm run build && node tools/package-pages.mjs && node tools/verify-release.mjs"
   },
   "devDependencies": {
+    "lucide-static": "^1.73.0",
+    "sharp": "^0.35.5",
     "wrangler": "^4.107.0"
   }
 }

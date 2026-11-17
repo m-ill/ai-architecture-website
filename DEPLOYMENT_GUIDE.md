@@ -1,54 +1,17 @@
-# GitHub + Cloudflare Pages 배포 가이드
+# 배포 안내
 
-## 1. GitHub 저장소 만들기
+기존 GitHub + Cloudflare Pages 구조를 유지합니다.
 
-1. GitHub에서 새 저장소를 만든다.
-2. 이 패키지의 전체 파일을 저장소에 올린다.
-3. `public/assets/`에 최종 브로셔 이미지를 확인한다.
-4. `public/data/*.json`을 열어 문의처와 도메인 placeholder를 수정한다.
+1. `npm install` 후 `npm test`를 실행합니다.
+2. Cloudflare Pages Build command: `npm run build`
+3. Build output directory: `public`, Functions directory: `functions`
+4. 비밀 환경변수: `SCHOOL_AI_API_KEY`
+5. 선택 환경변수: `SCHOOL_AI_BASE_URL`, `SCHOOL_AI_MODEL` (기본 `local/qwen3.8-flash`)
+6. 공개 운영 시 `/api/ask`에 분산 rate limit을 적용합니다.
+7. 배포 환경에서 학교 API 접근, 실제 답변과 근거 링크를 확인합니다.
 
-## 2. Cloudflare Pages 연결
+키를 Git·정적 파일·명령 인수에 넣지 않습니다. 키가 없거나 API 장애가 있으면 FAQ/위키 원문 답변으로 동작합니다. 입학 수치와 기준일은 원본 자료를 재확인합니다.
 
-1. Cloudflare Dashboard → Workers & Pages → Create application → Pages
-2. Connect to Git 선택
-3. GitHub 저장소 선택
-4. 설정값:
-   - Framework preset: None
-   - Build command: 없음
-   - Build output directory: `public`
-5. 배포한다.
+세부 사항은 [재구축 운영 문서](docs/REBUILD.md)를 참고하세요.
 
-## 3. 도메인 치환
-
-배포 주소가 정해지면 다음 파일에서 `https://YOUR-DOMAIN.example`을 실제 주소로 바꾼다.
-
-- `public/llms.txt`
-- `public/robots.txt`
-- `public/sitemap.xml`
-- `public/data/site.json`
-- `public/schema/department.jsonld`
-
-## 4. 테스트 URL
-
-- `/`
-- `/llms.txt`
-- `/robots.txt`
-- `/sitemap.xml`
-- `/content/canonical.md`
-- `/data/department.json`
-- `/data/faq.json`
-- `/api/health`
-- `/api/ask?q=AI건축융합학과는 어떤 학과인가요?`
-
-## 5. 검색/AI 노출 체크
-
-- Google Search Console에 sitemap 제출
-- Cloudflare Web Analytics 또는 서버 로그에서 Googlebot, OAI-SearchBot, Claude-SearchBot 접근 확인
-- ChatGPT/Claude/Gemini에서 학과명으로 검색 테스트
-
-## 6. 업데이트 기준
-
-- 최종 모집요강이 나오면 admissions 관련 파일 전체 업데이트
-- 교육과정 세부 교과목 확정 시 curriculum 파일 업데이트
-- 공식 연락처 확정 시 site, index, FAQ 업데이트
-- 브로셔 수정 시 assets 이미지 교체 및 Markdown/JSON 원문 동시 수정
+배포 파일 준비: npm run package:pages. 최신 업로드 폴더는 output/releases/latest.json의 site 값입니다. 컴파일된 _worker.js와 _routes.json을 포함하며, 실제 게시 전 Cloudflare 로그인이 필요합니다. 학교 AI 키는 업로드 파일에 포함하지 않고 기존 프로젝트의 암호화된 환경변수를 사용합니다.

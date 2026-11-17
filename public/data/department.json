@@ -11,7 +11,7 @@
   "direction": "건축공학·AI 중심 + 건축학 + 시공·구조·환경 기초",
   "tagline": "건축 정보를 읽고, AI와 데이터로 판단·설계·개선하는 융합형 책임기술 인재 양성",
   "slogan": "도구보다 판단, 기술을 넘어 안전.",
-  "core_message": "AI건축융합학과는 단순히 AI 도구를 사용하는 인재가 아니라, 건축 문제를 이해하고 근거 있게 판단하며 책임 있게 안전을 개선할 수 있는 새로운 융합형 전문가를 기릅니다.",
+  "core_message": "건축 정보를 읽고, AI와 데이터로 판단·설계·개선하는 융합형 책임기술 인재 양성",
   "one_sentence": "건축 정보를 읽고, 공간과 현장을 이해하며, AI와 데이터로 설계·분석·진단·안전 개선을 수행하는 융합형 책임기술 인재를 기르는 학과입니다.",
   "not_for": [
     "AI 도구 사용법만 배우고 싶은 사람만을 위한 학과",
@@ -46,5 +46,29 @@
     "OSC",
     "프리팹"
   ],
-  "last_updated": "2026-05-20"
+  "last_updated": "2026-05-20",
+  "education_philosophy_source": "/content/education-philosophy.md",
+  "status": "established",
+  "status_label": "2027학년도 신설 학과",
+  "status_updated": "2026-11-17",
+  "contact": {
+    "office": "AI융합대학 교학행정팀",
+    "phone": "031-8005-3142",
+    "email": "jhj1218@dankook.ac.kr",
+    "role": "행정 실무",
+    "additional": [
+      {
+        "role": "행정 총괄",
+        "phone": "031-8005-3141",
+        "email": "cws0526@dankook.ac.kr"
+      },
+      {
+        "role": "사회봉사 · 공인영어 · 유고결석",
+        "phone": "031-8005-3181",
+        "email": "ever_upward@dankook.ac.kr"
+      }
+    ],
+    "source": "학과 담당자 제공",
+    "updated": "2026-11-17"
+  }
 }

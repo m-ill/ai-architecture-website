@@ -1,79 +1,29 @@
-# AI건축융합학과 NLWeb-lite 자료 패키지
+# 단국대학교 AI건축융합학과
 
-이 저장소는 **GitHub + Cloudflare Pages**로 AI건축융합학과 홍보 페이지를 만들기 위한 자료 패키지입니다.
+기존 학과 자료를 보존한 정적 홈페이지 + Cloudflare Pages Functions 기반 학과 Q&A입니다.
 
-목표는 두 가지입니다.
+건축 정보를 읽고, AI와 데이터로 판단·설계·개선하는 융합형 책임기술 인재 양성
 
-1. 사람이 보는 학과 홈페이지를 빠르게 공개한다.
-2. ChatGPT, Gemini, Claude 같은 AI가 학과 정보를 잘 읽고 근거로 사용할 수 있게 한다.
+## 실행
 
-## 핵심 구조
+- `npm install`
+- `npm test`: 위키·페이지 생성 및 검증
+- `npm run dev:local`: API 키 없는 자료 안내 모드
+- `npm run dev:secure`: 키를 숨김 입력으로 받아 학교 AI 연결 검증 후 로컬 미리보기 실행
+- `npm run dev`: 기존 Wrangler 개발 서버
 
-```text
-public/
-  index.html                    # 사람용 랜딩페이지
-  llms.txt                      # AI 안내파일
-  robots.txt                    # 접근정책
-  sitemap.xml                   # 검색엔진 안내
-  content/
-    canonical.md                # AI가 읽을 통합 원문
-    about.md                    # 학과소개 원문
-    curriculum.md               # 교과과정 요약
-    advanced-areas.md           # 심화 교육축
-    careers.md                  # 진로정보
-    admissions.md               # 입학정보 요약
-    faq.md                      # FAQ
-  data/
-    department.json             # 학과 핵심정보
-    curriculum.json             # 교과과정 데이터
-    advanced_areas.json         # 심화 교육축 데이터
-    careers.json                # 진로정보 데이터
-    admissions.json             # 입학정보 데이터
-    faq.json                    # FAQ 데이터
-    answer_policy.json          # AI 답변 정책
-    search-index.json           # 검색용 간이 색인
-  assets/
-    brochure-page-1.png
-    brochure-page-2.png
-    talent-identity.png
-functions/
-  api/ask.js                    # Cloudflare Pages Function: /api/ask
-  api/health.js                 # 상태 확인: /api/health
-```
+키는 파일이나 코드에 저장하지 않습니다. 로컬 기본 주소는 `http://127.0.0.1:8788`입니다.
 
-## 배포 방식
+## 콘텐츠 관리
 
-Cloudflare Pages에서 GitHub 저장소를 연결하고 다음처럼 설정합니다.
+학과 기본정보와 문의처는 `public/data/department.json`, 입학정보는 `public/data/admissions.json`, FAQ는 `public/data/faq.json`, 통합 원문은 `public/content/canonical.md`가 기준입니다. 교육·연구철학은 `public/content/education-philosophy.md`에 보존했습니다.
 
-- Framework preset: None
-- Build command: 비움 또는 없음
-- Build output directory: `public`
-- Functions directory: `functions`
+원본 수정 후 `npm run build`로 메인 페이지·위키·상세 가이드를 재생성합니다. 생성된 파일을 직접 수정하지 않습니다. 교수 사진·브로셔·프로젝트 자료는 기존 자산을 사용합니다.
 
-## 배포 전 꼭 바꿀 것
+[구축·운영·검증 안내](docs/REBUILD.md) · [이미지 생성 프롬프트](docs/image-generation-prompts.md)
 
-아래 파일의 `https://YOUR-DOMAIN.example`을 실제 Cloudflare Pages 주소나 학교 도메인으로 바꾸세요.
+## 배포
 
-- `public/llms.txt`
-- `public/robots.txt`
-- `public/sitemap.xml`
-- `public/data/site.json`
-- `public/schema/department.jsonld`
+기존 Cloudflare Pages 프로젝트에서 Build command `npm run build`, output directory `public`, functions directory `functions`를 사용합니다. 학교 API 키는 프로젝트의 비밀 환경변수 `SCHOOL_AI_API_KEY`로 등록합니다. 키가 없으면 공식 자료 안내 모드로 동작합니다.
 
-문의처가 확정되면 다음도 바꾸세요.
-
-- `public/data/site.json`
-- `public/content/about.md`
-- `public/index.html` 하단 문의 영역
-
-## /api/ask 사용 예시
-
-```bash
-curl -X POST https://YOUR-DOMAIN.example/api/ask \
-  -H "Content-Type: application/json" \
-  -d '{"question":"AI건축융합학과는 어떤 학과인가요?"}'
-```
-
-## 주의
-
-입학 관련 수치와 일정은 2027학년도 대학입학전형시행계획 기준입니다. 최종 모집요강이 공개되면 `public/data/admissions.json`, `public/content/admissions.md`, `public/data/faq.json`을 업데이트해야 합니다.
+입학자료는 기존 자료 기준일을 표시합니다. 원서 접수 전 반드시 해당 학년도 최종 모집요강을 확인해야 합니다.

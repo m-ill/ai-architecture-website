@@ -1,0 +1,3 @@
+# Copy settings only; enter the school key through a secure local input or deployment secret.
+SCHOOL_AI_BASE_URL=https://dku-chat.kloud.zone/llm/v1
+SCHOOL_AI_MODEL=local/qwen3.8-flash
